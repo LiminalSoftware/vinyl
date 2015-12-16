@@ -4,6 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "lint": "npm run lint-js && npm run lint-css",
+    "lint-js": "eslint . --ext .js --ext .jsx",
+    "lint-css": "csslint build/styles.css --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +26,8 @@
     "babel-eslint": "^5.0.0-beta6",
     "babel-loader": "^6.2.0",
     "eslint": "^1.10.3",
+    "eslint-loader": "^1.1.1",
+    "eslint-plugin-react": "^3.11.3",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^1.7.0",
     "object-assign": "^4.0.1",
