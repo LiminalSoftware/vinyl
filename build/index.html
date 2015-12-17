@@ -70,10 +70,10 @@
 
         .rail {
             background-color: #fa5046;
-            height: 5px;
+            height: 2px;
             width: 250px;
             position: absolute;
-            top: 18px;
+            top: 22px;
         }
 
         .scrubber {
@@ -85,7 +85,8 @@
             height: 28px;
             background-color: #fa5046;
             border: 2px solid white;
-            border-radius: 100px;
+            border-radius: 10px;
+            cursor: pointer;
         }
 
         .time-code {
@@ -94,6 +95,22 @@
             color: white;
             position: absolute;
             right: 4px;
+        }
+
+        .dots {
+            margin: 45px 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50px;
+            background-color: #fc6060;
+            margin: 15px 0;
+        }
+
+        .dots .active {
+            background-color: white;
         }
     </style>
 </head>
@@ -123,6 +140,17 @@
             </div>
         </div>
         <p class="song-title">Bohemian Rhapsody</p>
+    </div>
+    <div class="dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
     </div>
     <img class="tonearm" src="assets/tonearm.png" alt=""/>
 </div>
