@@ -5,12 +5,77 @@
     <meta name="viewport" content="width=320, initial-scale=1"/>
     <title></title>
     <link rel="stylesheet" href="style.css"/>
+    <style type="text/css">
+        .linear-playhead {
+            background-color: #b20000;
+            max-height: 45px;
+            height: 45px;
+        }
+
+        .headsup {
+            max-height: 105px;
+            height: 105px;
+            background-color: #ed3333;
+
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .button {
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .itunes {
+            width: 45px;
+            height: 45px;
+            background: url(assets/itunes.svg) no-repeat;
+        }
+        .beatport {
+            width: 45px;
+            height: 45px;
+            background: url(assets/beatport.svg) no-repeat;
+        }
+        .youtube {
+            width: 45px;
+            height: 45px;
+            background: url(assets/youtube.svg) no-repeat;
+        }
+        .mp3 {
+            width: 45px;
+            height: 45px;
+            background: url(assets/mp3.svg) no-repeat;
+        }
+
+        .song-title {
+            width: 100%;
+            text-align: center;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 20px;
+            color: white;
+        }
+
+    </style>
 </head>
 <body>
 <div class="hide">
     <img class="platter" src="assets/platter.png" alt=""/>
 </div>
 <div id="main">
+    <div class="linear-playhead">
+
+    </div>
+    <div class="headsup">
+        <div class="buttons">
+            <div class="itunes button"></div>
+            <div class="beatport button"></div>
+            <div class="youtube button"></div>
+            <div class="mp3 button"></div>
+        </div>
+        <p class="song-title">Bohemian Rhapsody</p>
+    </div>
     <img class="tonearm" src="assets/tonearm.png" alt=""/>
 </div>
 <canvas class="platter"></canvas>
