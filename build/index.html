@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css"/>
     <style type="text/css">
         .linear-playhead {
+            position: relative;
             background-color: #b20000;
             max-height: 45px;
             height: 45px;
@@ -33,21 +34,25 @@
             display: flex;
             justify-content: center;
         }
+
         .itunes {
             width: 45px;
             height: 45px;
             background: url(assets/itunes.svg) no-repeat;
         }
+
         .beatport {
             width: 45px;
             height: 45px;
             background: url(assets/beatport.svg) no-repeat;
         }
+
         .youtube {
             width: 45px;
             height: 45px;
             background: url(assets/youtube.svg) no-repeat;
         }
+
         .mp3 {
             width: 45px;
             height: 45px;
@@ -60,8 +65,36 @@
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-size: 20px;
             color: white;
+            margin: 10px 2px;
         }
 
+        .rail {
+            background-color: #fa5046;
+            height: 5px;
+            width: 250px;
+            position: absolute;
+            top: 18px;
+        }
+
+        .scrubber {
+            position: absolute;
+            top: 4px;
+            left: 4px; /*starting point?*/
+            z-index: 2;
+            width: 28px;
+            height: 28px;
+            background-color: #fa5046;
+            border: 2px solid white;
+            border-radius: 100px;
+        }
+
+        .time-code {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: white;
+            position: absolute;
+            right: 4px;
+        }
     </style>
 </head>
 <body>
@@ -70,7 +103,9 @@
 </div>
 <div id="main">
     <div class="linear-playhead">
-
+        <div class="scrubber"></div>
+        <div class="rail"></div>
+        <p class="time-code">00:01</p>
     </div>
     <div class="headsup">
         <div class="buttons">

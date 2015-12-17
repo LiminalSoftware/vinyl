@@ -47,10 +47,11 @@ module.exports = {
         loader: 'url?limit=10000&minetype=image/svg+xml&name=assets/[name].[hash].[ext]'
       },
       {
-        test: /\.js?$/,
-        loaders: ['babel'],
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loaders: ['babel-loader'],
         include: path.resolve(ROOT_PATH, 'src')
       }
     ]
   }
-}
+};
