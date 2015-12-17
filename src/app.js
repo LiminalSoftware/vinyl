@@ -16,13 +16,15 @@ const qs = document.querySelector.bind(document)
   , tonearmRotate = qs('#tonearmRotate')
   ;
 
-var tonearmRotationDeg = 0;
-var rotateIntervalId = 0;
-var platterRotationDeg = 0;
+var tonearmRotationDeg = 0
+  , rotateIntervalId   = 0
+  , platterRotationDeg = 0
+  , cartrigeUp         = false
+  ;
 
-tonearmRotate.oninput = function () {
-  tonearmRotationDeg = -360 * (((tonearmRotate.value * 0.05) + 95) / 100) + 360;
-};
+//tonearmRotate.oninput = function () {
+//  tonearmRotationDeg = -360 * (((tonearmRotate.value * 0.05) + 95) / 100) + 360;
+//};
 
 function draw() {
   //var width = platter.width = window.innerWidth
@@ -68,6 +70,36 @@ const degToRad = (degrees) => {
   return degrees * (Math.PI / 180)
 };
 
+const cartrigeLifted = () => {
+  cartrigeUp = true;
+  // pause();
+};
+
+const cartrigePlaced = (where) => {
+  cartrigeUp = false;
+  // play(where);
+};
+
+const cartrigeTouchStartHandler = (e) => {
+  console.log(e);
+  cartrigeLifted();
+  tonearmImage.style.marginLeft = '10px';
+};
+
+const cartrigeTouchEndHandler = (e) => {
+  console.log(e);
+  tonearmImage.style.marginLeft = '0px';
+};
+
+const cartrigeTouchMoveHandler = (e) => {
+  console.log(e.touches[0].clientY);
+  cartrigePlaced(e.touches[0].clientY);
+};
+
 //-- INIT
 draw();
 rotate();
+
+tonearmImage.addEventListener('touchstart', cartrigeTouchStartHandler);
+tonearmImage.addEventListener('touchmove', cartrigeTouchMoveHandler);
+tonearmImage.addEventListener('touchend', cartrigeTouchEndHandler);
