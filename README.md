@@ -1,4 +1,5 @@
 npm install
 
-
-build: npm run build
+then, 
+tab one: npm run start
+tab two: npm run build
