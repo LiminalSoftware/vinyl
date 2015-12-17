@@ -20,6 +20,7 @@ var tonearmRotationDeg = 0
   , rotateIntervalId   = 0
   , platterRotationDeg = 0
   , cartrigeUp         = false
+  , lastTouch          = null
   ;
 
 //tonearmRotate.oninput = function () {
@@ -81,19 +82,32 @@ const cartrigePlaced = (where) => {
 };
 
 const cartrigeTouchStartHandler = (e) => {
-  console.log(e);
+  //console.log(e);
   cartrigeLifted();
   tonearmImage.style.marginLeft = '10px';
 };
 
 const cartrigeTouchEndHandler = (e) => {
-  console.log(e);
+  //console.log(e);
   tonearmImage.style.marginLeft = '0px';
+  cartrigePlaced(lastTouch.clientY);
 };
 
 const cartrigeTouchMoveHandler = (e) => {
-  console.log(e.touches[0].clientY);
-  cartrigePlaced(e.touches[0].clientY);
+  var newPosition = (e.touches[0].clientY - 385)
+    , lowerLimit = 35
+    , upperLimit = -200
+    ;
+
+  //console.log(newPosition);
+  if (lowerLimit > newPosition && newPosition > upperLimit) {
+    tonearmImage.style.marginTop = newPosition + 'px';
+    lastTouch = e.touches[0];
+  } else if (lowerLimit < newPosition) {
+    tonearmImage.style.marginTop = lowerLimit + 'px';
+  } else if (newPosition < upperLimit) {
+    tonearmImage.style.marginTop = upperLimit + 'px';
+  }
 };
 
 //-- INIT
