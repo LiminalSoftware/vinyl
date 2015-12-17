@@ -1,14 +1,19 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 45">
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
   <defs>
     <style>
       .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
         fill: #fffefe;
       }
     </style>
   </defs>
   <title>mp3</title>
+  <rect class="cls-1" width="45" height="45"/>
   <g>
-    <polygon class="cls-1" points="18 33 33 18 24 18 24 0 12 0 12.05 18 3 18 18 33"/>
-    <polygon class="cls-1" points="30 33 30 39 6 39 6 33 0 33 0 39 0 45 36 45 36 33 30 33"/>
+    <polygon class="cls-2" points="22.5 33 37.5 18 28.5 18 28.5 0 16.5 0 16.55 18 7.5 18 22.5 33"/>
+    <polygon class="cls-2" points="34.5 33 34.5 39 10.5 39 10.5 33 4.5 33 4.5 39 4.5 45 40.5 45 40.5 33 34.5 33"/>
   </g>
 </svg>
