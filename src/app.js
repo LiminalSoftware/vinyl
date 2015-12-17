@@ -25,10 +25,15 @@ tonearmRotate.oninput = function () {
 };
 
 function draw() {
-  var width = platter.width = window.innerWidth
-    , height = platter.height = window.innerHeight
+  //var width = platter.width = window.innerWidth
+  platter.width = window.innerWidth;
+  platter.height = window.innerHeight;
+
+  var width =  320
+    //, height = platter.height = window.innerHeight
+    , height = 480
     , recordDiameter = width * (platterToPhoneWidthRatio / 100)
-    , tonearmWidth = window.innerWidth * (tonearmToPhoneWidthRatio / 100)
+    //, tonearmWidth = window.innerWidth * (tonearmToPhoneWidthRatio / 100)
   //, tonearmHeight = tonearmWidth / tonearmAspectRatio
     ;
 

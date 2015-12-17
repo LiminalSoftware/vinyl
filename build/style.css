@@ -2,10 +2,6 @@
     display: none;
 }
 
-input[type='range'] {
-    z-index: 2
-}
-
 canvas.tonearm {
     z-index: 1;
 }
@@ -29,33 +25,36 @@ canvas {
     left: 0;
 }
 
-input[type=range] {
-    -webkit-appearance: none;
-    background-color: silver;
-    width: 100vw;
-    height: 100px;
-    position: absolute;
-    right: 0;
-}
+/*input[type=range] {*/
+    /*z-index: 2*/
+    /*-webkit-appearance: none;*/
+    /*background-color: silver;*/
+    /*width: 100vw;*/
+    /*height: 100px;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+/*}*/
 
 img.tonearm {
     position: fixed;
-    width: 447.77vw;
-    top: -56vh;
-    left: 13vw;
-    height: 256.749vw;
-    transform-origin: 347vw 39vh;
+    /*width: 447.77vw;*/
+    width: 1432.864px;
+    /*top: -100vw;*/
+    top: -320.0px;
+    left: 38.40px;
+    height: 821.5968px;
+    /*transform-origin: 347vw 39vh;*/
 
 }
 
-#tonearmRotate {
-    bottom: 0;
-}
+/*#tonearmRotate {*/
+    /*bottom: 0;*/
+/*}*/
 
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background-color: #666;
-    opacity: 0.5;
-    width: 50px;
-    height: 150px;
-}
+/*input[type="range"]::-webkit-slider-thumb {*/
+    /*-webkit-appearance: none;*/
+    /*background-color: #666;*/
+    /*opacity: 0.5;*/
+    /*width: 50px;*/
+    /*height: 150px;*/
+/*}*/
