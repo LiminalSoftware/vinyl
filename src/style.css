@@ -58,7 +58,7 @@ img.tonearm {
 .button {
     cursor: pointer;
     margin-top: 10px;
-    background-color: #b20000;
+    background-color: #D43030;
     border-radius: 4px;
     padding: 4px;
     display: flex;
@@ -121,7 +121,7 @@ img.tonearm {
 
 .time-code {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     color: white;
     position: absolute;
     right: 4px;
@@ -141,4 +141,8 @@ img.tonearm {
 
 .dots .active {
     background-color: white;
+}
+
+.invisible {
+    opacity: 0;
 }

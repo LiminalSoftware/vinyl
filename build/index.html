@@ -10,10 +10,13 @@
     <img class="platter" src="assets/platter.png" alt=""/>
 </div>
 <div id="main">
-    <div class="linear-playhead">
+    <div id="playhead" class="linear-playhead invisible">
         <div class="scrubber"></div>
         <div class="rail"></div>
-        <p class="time-code">00:01</p>
+        <p class="time-code">
+            <span id="current-time"></span>/
+            <span id="total-time"></span>
+        </p>
     </div>
     <div class="headsup">
         <div class="buttons">
@@ -30,18 +33,18 @@
                 <div class="mp3"></div>
             </div>
         </div>
-        <p class="song-title">Bohemian Rhapsody</p>
+        <p class="song-title"></p>
     </div>
     <div class="dots">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
+        <div id="dot8" class="dot"></div>
+        <div id="dot7" class="dot"></div>
+        <div id="dot6" class="dot"></div>
+        <div id="dot5" class="dot"></div>
+        <div id="dot4" class="dot"></div>
+        <div id="dot3" class="dot"></div>
+        <div id="dot2" class="dot"></div>
+        <div id="dot1" class="dot"></div>
+        <div id="dot0" class="dot"></div>
     </div>
     <img class="tonearm" src="assets/tonearm.png" alt=""/>
 </div>

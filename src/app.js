@@ -1,11 +1,17 @@
 import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime} from './controls';
+import {playSong, pauseSong} from './audio';
+
 require('./style.css');
 
 const qs = document.querySelector.bind(document)
+  , qsa = document.querySelectorAll.bind(document)
   , platter = qs('canvas.platter')
   , platterContext = platter.getContext('2d')
   , platterImage = qs('img.platter')
   , tonearmImage = qs('img.tonearm')
+  , currentTimeSpan = qs('#current-time')
+  , totalTimeSpan = qs('#total-time')
+  , playhead = qs('#playhead')
   , fps = 30
   , rpm = 34.6
 //, tableRotationDeg = 38.65
@@ -13,22 +19,55 @@ const qs = document.querySelector.bind(document)
   , platterTranslateYPercent = 22.505
   , platterTranslateXPercent = 1.929
   , platterToPhoneWidthRatio = 559.424
-
+  , numberOfSongs = 9
+  , cartridgeYStart = -255
+  , cartridgeYEnd = -489
+  , range = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
+  , dotStep = Math.abs(range / numberOfSongs)
   , tonearmToPhoneWidthRatio = 447.770
   , tonearmAspectRatio = 1.744
   , tonearmRotate = qs('#tonearmRotate')
+  , songList = {
+    0: {title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '7:00'},
+    1: {title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '5:50'},
+    2: {title: 'Don\'t Stop Me Now', file: 'songs/dont-stop-me-now.mp3', duration: '6:00'},
+    3: {title: 'We Are the Champions', file: 'songs/we-are-the-champions.mp3', duration: '4:50'},
+    4: {title: 'Another One Bites the Dust', file: 'songs/another-one-bites-the-dust.mp3', duration: '5:45'},
+    5: {title: 'I Want To Break Free', file: 'songs/i-want-to-break-free.mp3', duration: '6:10'},
+    6: {title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '3:50'},
+    7: {title: 'Under Pressure', file: 'songs/under-pressure.mp3', duration: '4:40'},
+    8: {title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '5:30'}
+  }
+
   ;
 
 var tonearmRotationDeg = 0
-  , rotateIntervalId   = 0
+  , rotateIntervalId = 0
   , platterRotationDeg = 0
-  , cartrigeUp         = false
-  , lastTouch          = null
+  , cartrigeUp = false
+  , lastTouch = null
+  , dotSongLookup = []
+  , lastSelectedSong = null
   ;
 
-//tonearmRotate.oninput = function () {
-//  tonearmRotationDeg = -360 * (((tonearmRotate.value * 0.05) + 95) / 100) + 360;
-//};
+function between(x, min, max) {
+  return x <= min && x >= max;
+}
+
+function init() {
+  /* Create a lookup map for matching cartridge y pos to dot/song numbers */
+  dotSongLookup = [];
+  let start = cartridgeYStart - dotStep;//first position of the first song dot
+  Array.from(Array(numberOfSongs).keys()).forEach((n)=> {
+    let base = (start - (n * dotStep));
+    let from = base + dotStep;
+    let to = base - dotStep;
+    dotSongLookup.push([from, to]);
+    //dotSongLookup[(start - (n * dotStep))] = n;
+  });
+  console.log(dotSongLookup);
+}
+
 
 function draw() {
   //var width = platter.width = window.innerWidth
@@ -74,35 +113,79 @@ const degToRad = (degrees) => {
   return degrees * (Math.PI / 180)
 };
 
+const deactivateDots = () => {
+  [].map.call(document.querySelectorAll('.dot'), function (el) {
+    el.classList.remove('active');
+  });
+}
+
 const cartrigeLifted = () => {
   cartrigeUp = true;
-  // pause();
+  //hide playhead
+  playhead.classList.add('invisible');
+  pauseSong();
 };
 
-const cartrigePlaced = (where) => {
+const cleanUp = () => {
+  console.log('cleaning up');
+  currentTimeSpan.innerText = '';
+  totalTimeSpan.innerText = '';
+  deactivateDots();
+  playhead.classList.add('invisible');
+  document.querySelector('.song-title').innerText = '';//TODO: refactor
+}
+
+const cartrigePlaced = (position) => {
   cartrigeUp = false;
-  // play(where);
+  if (lastSelectedSong > -1 && position < cartridgeYStart) {
+    //show playhead
+    playhead.classList.remove('invisible');
+    totalTimeSpan.innerText = songList[lastSelectedSong].duration;
+    //start song
+    playSong(songList[lastSelectedSong], currentTimeSpan);
+  } else if (position == cartridgeYStart) {
+    //clean up
+    cleanUp();
+  }
 };
+
 
 const cartrigeTouchStartHandler = (e) => {
-  //console.log(e);
   cartrigeLifted();
   tonearmImage.style.marginLeft = '10px';
 };
 
 const cartrigeTouchEndHandler = (e) => {
-  //console.log(e);
   tonearmImage.style.marginLeft = '0px';
-  cartrigePlaced(lastTouch.clientY);
+  cartrigePlaced(e.target.y);
+  console.log(e.target.y);
+};
+
+const calculateCartridgePos = (e) => {
+  //if e.target.y is within range of [-281, -333]
+
+  let validDotIndex = dotSongLookup.findIndex((arr)=> {
+    return between(e.target.y, ...arr);
+  });
+
+  if (validDotIndex > -1) {
+    lastSelectedSong = validDotIndex;
+    deactivateDots();
+    qs('#dot' + validDotIndex).className = 'dot active';
+    //show song title
+    document.querySelector('.song-title').innerText = songList[lastSelectedSong].title;
+  }
 };
 
 const cartrigeTouchMoveHandler = (e) => {
   var newPosition = (e.touches[0].clientY - 385)
-    , lowerLimit = 35
-    , upperLimit = -200
+  //, lowerLimit = 35
+    , lowerLimit = 45
+  //, upperLimit = -200
+    , upperLimit = -190
     ;
 
-  //console.log(newPosition);
+  calculateCartridgePos(e);
   if (lowerLimit > newPosition && newPosition > upperLimit) {
     tonearmImage.style.marginTop = newPosition + 'px';
     lastTouch = e.touches[0];
@@ -114,6 +197,7 @@ const cartrigeTouchMoveHandler = (e) => {
 };
 
 //-- INIT
+init();
 draw();
 rotate();
 
