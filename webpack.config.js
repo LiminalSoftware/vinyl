@@ -2,6 +2,7 @@ var path = require('path');
 var ROOT_PATH = path.resolve(__dirname);
 var webpack = require('webpack');
 
+
 module.exports = {
   entry: path.resolve(ROOT_PATH, 'src/app.js'),
   output: {
@@ -23,8 +24,8 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: ['style', 'css'],
-        include: path.resolve(ROOT_PATH, 'src')
+        loader: 'style-loader!css-loader!autoprefixer-loader'
+
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,

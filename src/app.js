@@ -1,5 +1,5 @@
 import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime} from './controls';
-
+require('./style.css');
 
 const qs = document.querySelector.bind(document)
   , platter = qs('canvas.platter')
