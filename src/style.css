@@ -1,0 +1,144 @@
+.hide {
+    display: none;
+}
+
+canvas.platter {
+    z-index: 0;
+}
+
+#main {
+    z-index: 3;
+}
+
+#main,
+canvas {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+
+img.tonearm {
+    position: fixed;
+    /*width: 447.77vw;*/
+    width: 1432.864px;
+    /*top: -100vw;*/
+    top: -300.0px;
+    left: 38.40px;
+    height: 821.5968px;
+    cursor: pointer;
+    /*transform-origin: 347vw 39vh;*/
+
+}
+
+
+.linear-playhead {
+    position: relative;
+    background-color: #b20000;
+    max-height: 45px;
+    height: 45px;
+}
+
+.headsup {
+    max-height: 105px;
+    height: 105px;
+    background-color: #ed3333;
+
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.button {
+    cursor: pointer;
+    margin-top: 10px;
+    background-color: #b20000;
+    border-radius: 4px;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+}
+
+.itunes {
+    width: 45px;
+    height: 45px;
+    background: url(/build/assets/itunes.svg) no-repeat;
+}
+
+.beatport {
+    width: 45px;
+    height: 45px;
+    background: url(/build/assets/beatport.svg) no-repeat;
+}
+
+.youtube {
+    width: 45px;
+    height: 45px;
+    background: url(/build/assets/youtube.svg) no-repeat;
+}
+
+.mp3 {
+    width: 45px;
+    height: 45px;
+    background: url(/build/assets/mp3.svg) no-repeat;
+}
+
+.song-title {
+    width: 100%;
+    text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    color: white;
+    margin: 10px 2px;
+}
+
+.rail {
+    background-color: #fa5046;
+    height: 2px;
+    width: 250px;
+    position: absolute;
+    top: 22px;
+}
+
+.scrubber {
+    position: absolute;
+    top: 4px;
+    left: 4px; /*starting point?*/
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    background-color: #fa5046;
+    border: 2px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.time-code {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    color: white;
+    position: absolute;
+    right: 4px;
+}
+
+.dots {
+    margin: 45px 10px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50px;
+    background-color: #fc6060;
+    margin: 15px 0;
+}
+
+.dots .active {
+    background-color: white;
+}
