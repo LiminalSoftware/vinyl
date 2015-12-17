@@ -1,3 +1,6 @@
+import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime} from './controls';
+
+
 const qs = document.querySelector.bind(document)
   , platter = qs('canvas.platter')
   , platterContext = platter.getContext('2d')
@@ -32,11 +35,11 @@ function draw() {
   platter.width = window.innerWidth;
   platter.height = window.innerHeight;
 
-  var width =  320
-    //, height = platter.height = window.innerHeight
+  var width = 320
+  //, height = platter.height = window.innerHeight
     , height = 480
     , recordDiameter = width * (platterToPhoneWidthRatio / 100)
-    //, tonearmWidth = window.innerWidth * (tonearmToPhoneWidthRatio / 100)
+  //, tonearmWidth = window.innerWidth * (tonearmToPhoneWidthRatio / 100)
   //, tonearmHeight = tonearmWidth / tonearmAspectRatio
     ;
 
