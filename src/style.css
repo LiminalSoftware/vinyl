@@ -100,22 +100,23 @@ img.tonearm {
 
 .rail {
     background-color: #fa5046;
-    height: 2px;
-    width: 250px;
+    height: 1px;
+    width: 220px;
     position: absolute;
-    top: 22px;
+    top: 23px;
 }
 
 .scrubber {
     position: absolute;
-    top: 4px;
-    left: 4px; /*starting point?*/
+    top: 6px;
+    left: 8px; /*starting point?*/
     z-index: 2;
-    width: 28px;
-    height: 28px;
-    background-color: #fa5046;
-    border: 2px solid white;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    /*background-color: #fa5046;*/
+    /*border: 2px solid white;*/
+    /*border-radius: 10px;*/
+    background: url(/build/assets/knob.svg) no-repeat;
     cursor: pointer;
 }
 
