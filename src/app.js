@@ -134,14 +134,32 @@ const cleanUp = () => {
   totalTimeSpan.innerText = '';
   deactivateDots();
   playhead.classList.add('invisible');
+  qs('.buttons').classList.toggle('hidden');
+  qs('.instructions').classList.toggle('hidden');
   document.querySelector('.song-title').innerText = '';//TODO: refactor
 }
 
-const cartrigePlaced = (position) => {
+function hideInstructions() {
+  qs('.buttons').classList.remove('hidden');
+  qs('.instructions').classList.add('hidden');
+  qs('.down-arrow').classList.add('hidden');
+}
+
+
+function showInstructions() {
+  qs('.buttons').classList.add('hidden');
+  qs('.instructions').classList.remove('hidden');
+  qs('.down-arrow').classList.remove('hidden');
+}
+
+const cartridgePlaced = (position) => {
   cartridgeUp = false;
+
+
   if (lastSelectedSong > -1 && position < cartridgeYStart) {
     //show playhead
     playhead.classList.remove('invisible');
+    hideInstructions();
     totalTimeSpan.innerText = songList[lastSelectedSong].duration;
     //start song
     playSong(songList[lastSelectedSong], currentTimeSpan);
@@ -156,14 +174,14 @@ const cartridgeTouchStartHandler = (e) => {
   fingerCartridgeOffset = (e.touches[0].clientY - e.currentTarget.offsetTop);
   console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
   //console.log(the_offset);
-
+  hideInstructions();
   cartrigeLifted();
   tonearmImage.style.marginLeft = '10px';
 };
 
 const cartridgeTouchEndHandler = (e) => {
   tonearmImage.style.marginLeft = '0px';
-  cartrigePlaced(lastTouch.clientY - fingerCartridgeOffset - cartridgeDefaultY);
+  cartridgePlaced(lastTouch.clientY - fingerCartridgeOffset - cartridgeDefaultY);
 };
 
 const calculateCartridgePos = (position) => {

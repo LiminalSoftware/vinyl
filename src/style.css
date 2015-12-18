@@ -167,3 +167,38 @@ canvas {
     opacity: 0;
 }
 
+.hidden {
+    display: none;
+}
+
+.instructions {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    color: white;
+    padding: 34px 14px;
+    text-align: center;
+
+}
+
+.down-arrow {
+    background: url(/build/assets/down-arrow-thin.svg) no-repeat;
+    width: 51px;
+    height: 24px;
+    margin: 90px auto;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
