@@ -21,8 +21,8 @@ const qs = document.querySelector.bind(document)
   , platterToPhoneWidthRatio = 559.424
   , numberOfSongs = 9
   , cartridgeDefaultY = 343 //NOTE: identical to element's starting `top` css property
-  , cartridgeYStart = 59
-  , cartridgeYEnd = 295
+  , cartridgeYStart = 0 //59
+  , cartridgeYEnd = 216 //213 //295
   , range = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
   , dotStep = Math.abs(range / numberOfSongs)
   , tonearmToPhoneWidthRatio = 447.770
@@ -53,17 +53,17 @@ var tonearmRotationDeg = 0
   ;
 
 function between(x, min, max) {
-  return x <= min && x >= max;
+  return x >= min && x <= max;
 }
 
 function init() {
   /* Create a lookup map for matching cartridge y pos to dot/song numbers */
   dotSongLookup = [];
-  let start = cartridgeYStart - dotStep;//first position of the first song dot
+  let start = cartridgeYStart + dotStep;//first position of the first song dot
   Array.from(Array(numberOfSongs).keys()).forEach((n)=> {
-    let base = (start - (n * dotStep));
-    let from = base + dotStep;
-    let to = base - dotStep;
+    let base = (start + (n * dotStep));
+    let from = base - dotStep / 2;
+    let to = base + dotStep / 2;
     dotSongLookup.push([from, to]);
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
@@ -175,6 +175,8 @@ const calculateCartridgePos = (position) => {
   //console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
   let validDotIndex = dotSongLookup.findIndex((arr)=> {
     //return between(e.target.y, ...arr);
+    console.log('pos: ' + position);
+    console.log('bet: ' + between(position, ...arr));
     return between(position, ...arr);
   });
 
@@ -198,7 +200,7 @@ const cartrigeTouchMoveHandler = (e) => {
     ;
 
   if (lowerLimit > newPosition && newPosition > upperLimit) {
-    calculateCartridgePos(newPosition);
+    calculateCartridgePos(-newPosition);
     tonearmImage.style.marginTop = newPosition + 'px';
     lastTouch = e.touches[0];
   } else if (lowerLimit < newPosition) {
