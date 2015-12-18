@@ -163,8 +163,7 @@ const cartridgeTouchStartHandler = (e) => {
 
 const cartridgeTouchEndHandler = (e) => {
   tonearmImage.style.marginLeft = '0px';
-  cartrigePlaced(e.target.y);
-  console.log(e.target.y);
+  cartrigePlaced(lastTouch.clientY - fingerCartridgeOffset - cartridgeDefaultY);
 };
 
 const calculateCartridgePos = (position) => {
