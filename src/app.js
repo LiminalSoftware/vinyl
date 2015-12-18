@@ -20,7 +20,7 @@ const qs = document.querySelector.bind(document)
   , platterTranslateXPercent = 1.929
   , platterToPhoneWidthRatio = 559.424
   , numberOfSongs = 9
-  , cartridgeYStart = -255
+  , cartridgeDefaultY = 320 //NOTE: identical to element's starting `top` css property
   , cartridgeYEnd = -489
   , range = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
   , dotStep = Math.abs(range / numberOfSongs)
@@ -48,6 +48,7 @@ var tonearmRotationDeg = 0
   , lastTouch = null
   , dotSongLookup = []
   , lastSelectedSong = null
+  , fingerCartridgeOffset
   ;
 
 function between(x, min, max) {
@@ -150,22 +151,30 @@ const cartrigePlaced = (position) => {
 };
 
 
-const cartrigeTouchStartHandler = (e) => {
+const cartridgeTouchStartHandler = (e) => {
+  the_offset = (e.touches[0].clientY - e.currentTarget.offsetTop);
+  console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
+  //console.log(the_offset);
+
   cartrigeLifted();
   tonearmImage.style.marginLeft = '10px';
 };
 
-const cartrigeTouchEndHandler = (e) => {
+const cartridgeTouchEndHandler = (e) => {
   tonearmImage.style.marginLeft = '0px';
   cartrigePlaced(e.target.y);
   console.log(e.target.y);
 };
 
-const calculateCartridgePos = (e) => {
+const calculateCartridgePos = (position) => {
   //if e.target.y is within range of [-281, -333]
 
+  //console.log(e.touches[0].clientY);
+  //console.log(e.currentTarget.offsetTop);
+  //console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
   let validDotIndex = dotSongLookup.findIndex((arr)=> {
-    return between(e.target.y, ...arr);
+    //return between(e.target.y, ...arr);
+    return between(position, ...arr);
   });
 
   if (validDotIndex > -1) {
@@ -178,14 +187,16 @@ const calculateCartridgePos = (e) => {
 };
 
 const cartrigeTouchMoveHandler = (e) => {
-  var newPosition = (e.touches[0].clientY - 385)
+  //console.log(e);
+  //console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
+  var newPosition = (e.touches[0].clientY - fingerCartridgeOffset - 320)
   //, lowerLimit = 35
     , lowerLimit = 45
   //, upperLimit = -200
     , upperLimit = -190
     ;
 
-  calculateCartridgePos(e);
+  calculateCartridgePos(newPosition);
   if (lowerLimit > newPosition && newPosition > upperLimit) {
     tonearmImage.style.marginTop = newPosition + 'px';
     lastTouch = e.touches[0];
@@ -201,6 +212,6 @@ init();
 draw();
 rotate();
 
-tonearmImage.addEventListener('touchstart', cartrigeTouchStartHandler);
+tonearmImage.addEventListener('touchstart', cartridgeTouchStartHandler);
 tonearmImage.addEventListener('touchmove', cartrigeTouchMoveHandler);
-tonearmImage.addEventListener('touchend', cartrigeTouchEndHandler);
+tonearmImage.addEventListener('touchend', cartridgeTouchEndHandler);
