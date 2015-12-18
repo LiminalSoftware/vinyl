@@ -21,7 +21,6 @@ canvas {
     left: 0;
 }
 
-
 img.tonearm {
     position: fixed;
     /*width: 447.77vw;*/
@@ -34,7 +33,6 @@ img.tonearm {
     /*transform-origin: 347vw 39vh;*/
 
 }
-
 
 .linear-playhead {
     position: relative;
@@ -81,6 +79,12 @@ img.tonearm {
     width: 45px;
     height: 45px;
     background: url(/build/assets/youtube.svg) no-repeat;
+}
+
+.soundcloud {
+    width: 45px;
+    height: 45px;
+    background: url(/build/assets/soundcloud.svg) no-repeat;
 }
 
 .mp3 {
@@ -161,3 +165,4 @@ img.tonearm {
 .invisible {
     opacity: 0;
 }
+
