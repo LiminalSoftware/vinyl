@@ -144,8 +144,9 @@ img.tonearm {
     height: 6px;
     border-radius: 50px;
     background-color: #fc6060;
-    margin: 15px 0;
+    margin: 13px 0;
     border: 2px solid #b20000;
+    padding: 1px;
 }
 
 .dots .active {
@@ -154,7 +155,7 @@ img.tonearm {
     height: 8px;
     transition: all 0.25s ease;
     border: 2px solid #fa5046;
-    margin-left: -1px;
+    padding: 0;
 }
 
 .invisible {
