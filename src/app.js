@@ -20,9 +20,9 @@ const qs = document.querySelector.bind(document)
   , platterTranslateXPercent = 1.929
   , platterToPhoneWidthRatio = 559.424
   , numberOfSongs = 9
-  , cartridgeDefaultY = 320 //NOTE: identical to element's starting `top` css property
-  , cartridgeYStart = 320
-  , cartridgeYEnd = -489
+  , cartridgeDefaultY = 343 //NOTE: identical to element's starting `top` css property
+  , cartridgeYStart = 59
+  , cartridgeYEnd = 295
   , range = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
   , dotStep = Math.abs(range / numberOfSongs)
   , tonearmToPhoneWidthRatio = 447.770
@@ -190,15 +190,15 @@ const calculateCartridgePos = (position) => {
 const cartrigeTouchMoveHandler = (e) => {
   //console.log(e);
   //console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
-  var newPosition = (e.touches[0].clientY - fingerCartridgeOffset - 320)
+  var newPosition = (e.touches[0].clientY - fingerCartridgeOffset - cartridgeDefaultY)
   //, lowerLimit = 35
-    , lowerLimit = 45
+    , lowerLimit = 22
   //, upperLimit = -200
-    , upperLimit = -190
+    , upperLimit = -213
     ;
 
-  calculateCartridgePos(newPosition);
   if (lowerLimit > newPosition && newPosition > upperLimit) {
+    calculateCartridgePos(newPosition);
     tonearmImage.style.marginTop = newPosition + 'px';
     lastTouch = e.touches[0];
   } else if (lowerLimit < newPosition) {
