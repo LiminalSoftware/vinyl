@@ -21,6 +21,7 @@ const qs = document.querySelector.bind(document)
   , platterToPhoneWidthRatio = 559.424
   , numberOfSongs = 9
   , cartridgeDefaultY = 320 //NOTE: identical to element's starting `top` css property
+  , cartridgeYStart = 320
   , cartridgeYEnd = -489
   , range = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
   , dotStep = Math.abs(range / numberOfSongs)
@@ -44,7 +45,7 @@ const qs = document.querySelector.bind(document)
 var tonearmRotationDeg = 0
   , rotateIntervalId = 0
   , platterRotationDeg = 0
-  , cartrigeUp = false
+  , cartridgeUp = false
   , lastTouch = null
   , dotSongLookup = []
   , lastSelectedSong = null
@@ -121,7 +122,7 @@ const deactivateDots = () => {
 }
 
 const cartrigeLifted = () => {
-  cartrigeUp = true;
+  cartridgeUp = true;
   //hide playhead
   playhead.classList.add('invisible');
   pauseSong();
@@ -137,7 +138,7 @@ const cleanUp = () => {
 }
 
 const cartrigePlaced = (position) => {
-  cartrigeUp = false;
+  cartridgeUp = false;
   if (lastSelectedSong > -1 && position < cartridgeYStart) {
     //show playhead
     playhead.classList.remove('invisible');
@@ -152,7 +153,7 @@ const cartrigePlaced = (position) => {
 
 
 const cartridgeTouchStartHandler = (e) => {
-  the_offset = (e.touches[0].clientY - e.currentTarget.offsetTop);
+  fingerCartridgeOffset = (e.touches[0].clientY - e.currentTarget.offsetTop);
   console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
   //console.log(the_offset);
 
