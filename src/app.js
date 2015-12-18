@@ -28,17 +28,17 @@ const qs = document.querySelector.bind(document)
   , tonearmAspectRatio = 1.744
   , tonearmRotate = qs('#tonearmRotate')
   , songList = {
-    0: {title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '7:00'},
-    1: {title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '5:50'},
-    2: {title: 'Don\'t Stop Me Now', file: 'songs/dont-stop-me-now.mp3', duration: '6:00'},
-    3: {title: 'We Are the Champions', file: 'songs/we-are-the-champions.mp3', duration: '4:50'},
-    4: {title: 'Another One Bites the Dust', file: 'songs/another-one-bites-the-dust.mp3', duration: '5:45'},
-    5: {title: 'I Want To Break Free', file: 'songs/i-want-to-break-free.mp3', duration: '6:10'},
-    6: {title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '3:50'},
-    7: {title: 'Under Pressure', file: 'songs/under-pressure.mp3', duration: '4:40'},
-    8: {title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '5:30'}
+    0: {title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '05:53'},
+    1: {title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '02:03'},
+    2: {title: 'Killer Queen', file: 'songs/killer-queen.mp3', duration: '03:01'},
+    3: {title: 'We Are the Champions', file: 'songs/we-are-the-champions.mp3', duration: '03:03'},
+    4: {title: 'Another One Bites the Dust', file: 'songs/another-one-bites-the-dust.mp3', duration: '03:37'},
+    5: {title: 'Seven Seas Of Rhye', file: 'songs/seven-seas-of-rhye.mp3', duration: '02:49'},
+    6: {title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '03:38'},
+    7: {title: 'Play The Game', file: 'songs/play-the-game.mp3', duration: '03:32'},
+    8: {title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
   }
-
+  , audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   ;
 
 var tonearmRotationDeg = 0
