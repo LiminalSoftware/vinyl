@@ -221,8 +221,10 @@ const cartrigeTouchMoveHandler = (e) => {
     tonearmImage.style.marginTop = newPosition + 'px';
     lastTouch = e.touches[0];
   } else if (lowerLimit < newPosition) {
+    calculateCartridgePos(-lowerLimit);
     tonearmImage.style.marginTop = lowerLimit + 'px';
   } else if (newPosition < upperLimit) {
+    calculateCartridgePos(-upperLimit);
     tonearmImage.style.marginTop = upperLimit + 'px';
   }
 };
