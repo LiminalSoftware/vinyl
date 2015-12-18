@@ -21,15 +21,16 @@ canvas {
     left: 0;
 }
 
-img.tonearm {
+.tonearm {
     position: fixed;
     /*width: 447.77vw;*/
-    width: 1432.864px;
+    width: 453px;
     /*top: -100vw;*/
-    top: -300.0px;
+    top: 421px;
     left: 38.40px;
-    height: 821.5968px;
+    height: 192.5px;
     cursor: pointer;
+    background: url(/build/assets/cartridge.svg);
     /*transform-origin: 347vw 39vh;*/
 
 }
