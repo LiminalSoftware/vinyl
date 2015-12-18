@@ -1,4 +1,4 @@
-import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime} from './controls';
+import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime, movePlayhead} from './controls';
 import {playSong, pauseSong} from './audio';
 
 require('./style.css');
@@ -11,7 +11,11 @@ const qs = document.querySelector.bind(document)
   , tonearmImage = qs('.tonearm')
   , currentTimeSpan = qs('#current-time')
   , totalTimeSpan = qs('#total-time')
-  , playhead = qs('#playhead')
+  , playhead = qs('#header')
+  , scrubber = qs('.scrubber')
+  , rail = qs('.rail')
+  , railWidth = rail.offsetWidth
+  , scrubberCenterOffset = 20
   , fps = 30
   , rpm = 34.6
 //, tableRotationDeg = 38.65
@@ -42,6 +46,9 @@ const qs = document.querySelector.bind(document)
   , audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   ;
 
+// move playhead 50%
+// movePlayhead(railWidth, 50, scrubberCenterOffset, scrubber)
+
 var tonearmRotationDeg = 0
   , rotateIntervalId = 0
   , platterRotationDeg = 0
@@ -68,7 +75,9 @@ function init() {
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
   console.log(dotSongLookup);
+  console.log(railWidth);
 }
+
 
 
 function draw() {
@@ -119,7 +128,7 @@ const deactivateDots = () => {
   [].map.call(document.querySelectorAll('.dot'), function (el) {
     el.classList.remove('active');
   });
-}
+};
 
 const cartrigeLifted = () => {
   cartridgeUp = true;
@@ -137,7 +146,7 @@ const cleanUp = () => {
   qs('.buttons').classList.toggle('hidden');
   qs('.instructions').classList.toggle('hidden');
   document.querySelector('.song-title').innerText = '';//TODO: refactor
-}
+};
 
 function hideInstructions() {
   qs('.buttons').classList.remove('hidden');
@@ -172,8 +181,11 @@ const cartridgePlaced = (position) => {
 
 const cartridgeTouchStartHandler = (e) => {
   fingerCartridgeOffset = (e.touches[0].clientY - e.currentTarget.offsetTop);
-  console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
-  //console.log(the_offset);
+  console.log({
+    fingerY: e.touches[0].clientY,
+    cartrigeY: e.currentTarget.offsetTop,
+    finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop
+  });
   hideInstructions();
   cartrigeLifted();
   tonearmImage.style.marginLeft = '10px';

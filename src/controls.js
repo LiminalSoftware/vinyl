@@ -1,3 +1,9 @@
+export function movePlayhead(railWidth, percentage, scrubberCenterOffset, scrubber) {
+  let newpos = ((railWidth * (percentage/100)) + scrubberCenterOffset).toString()  + 'px';
+  scrubber.style.left = newpos;
+  return newpos;
+}
+
 export function grabCartridge() {
   console.log('grabbing cartridge');
 }

@@ -35,11 +35,17 @@ canvas {
 
 }
 
+.header {
+    width: 100%;
+    display: flex;
+}
+
 .linear-playhead {
     position: relative;
     background-color: #b20000;
     max-height: 45px;
     height: 45px;
+    width: 75%;
 }
 
 .headsup {
@@ -106,21 +112,19 @@ canvas {
 .rail {
     background-color: #fa5046;
     height: 1px;
-    width: 220px;
+    width: 83%;
     position: absolute;
     top: 23px;
+    left: 31px;
 }
 
 .scrubber {
     position: absolute;
     top: 6px;
-    left: 8px; /*starting point?*/
+    left: 6px; /*starting point?*/
     z-index: 2;
     width: 40px;
     height: 40px;
-    /*background-color: #fa5046;*/
-    /*border: 2px solid white;*/
-    /*border-radius: 10px;*/
     background: url(/build/assets/knob.svg) no-repeat;
     cursor: pointer;
 }
@@ -129,8 +133,13 @@ canvas {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     color: white;
-    position: absolute;
-    right: 4px;
+    background-color: #b20000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
 }
 
 .dots {
