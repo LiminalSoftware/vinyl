@@ -14,7 +14,6 @@ const qs = document.querySelector.bind(document)
   , playhead = qs('#header')
   , scrubber = qs('.scrubber')
   , rail = qs('.rail')
-  , railWidth = rail.offsetWidth
   , scrubberCenterOffset = 20
   , fps = 30
   , rpm = 34.6
@@ -32,6 +31,8 @@ const qs = document.querySelector.bind(document)
   , tonearmToPhoneWidthRatio = 447.770
   , tonearmAspectRatio = 1.744
   , tonearmRotate = qs('#tonearmRotate')
+  , scrubberDefaultY = 6
+  , scrubberDefaultX = 0
   , songList = {
     0: {title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '05:53'},
     1: {title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '02:03'},
@@ -57,6 +58,8 @@ var tonearmRotationDeg = 0
   , dotSongLookup = []
   , lastSelectedSong = null
   , fingerCartridgeOffset
+  , scrubberFingerXOffset
+  , railWidth = parseInt(window.getComputedStyle(qs('.rail'), null).getPropertyValue('width'), 10)
   ;
 
 function between(x, min, max) {
@@ -75,10 +78,8 @@ function init() {
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
   console.log(dotSongLookup);
-  console.log(railWidth);
+  console.log('railWidth', railWidth);
 }
-
-
 
 function draw() {
   //var width = platter.width = window.innerWidth
@@ -154,7 +155,6 @@ function hideInstructions() {
   qs('.down-arrow').classList.add('hidden');
 }
 
-
 function showInstructions() {
   qs('.buttons').classList.add('hidden');
   qs('.instructions').classList.remove('hidden');
@@ -163,7 +163,6 @@ function showInstructions() {
 
 const cartridgePlaced = (position) => {
   cartridgeUp = false;
-
 
   if (lastSelectedSong > -1 && position < cartridgeYStart) {
     //show playhead
@@ -178,17 +177,47 @@ const cartridgePlaced = (position) => {
   }
 };
 
+//helper methods
+const getOffsetOfTouchObject = (e) => {
+  let yOffset = e.touches[0].clientY - e.currentTarget.offsetTop;
+  let xOffset = e.touches[0].clientX - e.currentTarget.offsetLeft;
+  return {xOffset, yOffset};
+};
 
 const cartridgeTouchStartHandler = (e) => {
-  fingerCartridgeOffset = (e.touches[0].clientY - e.currentTarget.offsetTop);
+  /*  this is needed to prevent the dark outline
+   from forming on touch of image */
+  e.preventDefault();
+  fingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
+
   console.log({
     fingerY: e.touches[0].clientY,
     cartrigeY: e.currentTarget.offsetTop,
-    finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop
+    finger_cart_offset: fingerCartridgeOffset
   });
   hideInstructions();
   cartrigeLifted();
+  //simulate lift effect
   tonearmImage.style.marginLeft = '10px';
+};
+
+const cartrigeTouchMoveHandler = (e) => {
+  let newPosition = (e.touches[0].clientY - fingerCartridgeOffset - cartridgeDefaultY)
+    , lowerLimit = 22
+    , upperLimit = -213
+    ;
+
+  if (lowerLimit > newPosition && newPosition > upperLimit) {
+    calculateCartridgePos(-newPosition);
+    tonearmImage.style.marginTop = newPosition + 'px';
+    lastTouch = e.touches[0];
+  } else if (lowerLimit < newPosition) {
+    calculateCartridgePos(-lowerLimit);
+    tonearmImage.style.marginTop = lowerLimit + 'px';
+  } else if (newPosition < upperLimit) {
+    calculateCartridgePos(-upperLimit);
+    tonearmImage.style.marginTop = upperLimit + 'px';
+  }
 };
 
 const cartridgeTouchEndHandler = (e) => {
@@ -218,27 +247,29 @@ const calculateCartridgePos = (position) => {
   }
 };
 
-const cartrigeTouchMoveHandler = (e) => {
-  //console.log(e);
-  //console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
-  var newPosition = (e.touches[0].clientY - fingerCartridgeOffset - cartridgeDefaultY)
-  //, lowerLimit = 35
-    , lowerLimit = 22
-  //, upperLimit = -200
-    , upperLimit = -213
-    ;
+const scrubberTouchStartHandler = (e)=> {
+  e.preventDefault();
+  scrubberFingerXOffset = getOffsetOfTouchObject(e).xOffset;
+  scrubber.addEventListener('touchmove', scrubberTouchMoveHandler);
 
-  if (lowerLimit > newPosition && newPosition > upperLimit) {
-    calculateCartridgePos(-newPosition);
-    tonearmImage.style.marginTop = newPosition + 'px';
-    lastTouch = e.touches[0];
-  } else if (lowerLimit < newPosition) {
-    calculateCartridgePos(-lowerLimit);
-    tonearmImage.style.marginTop = lowerLimit + 'px';
-  } else if (newPosition < upperLimit) {
-    calculateCartridgePos(-upperLimit);
-    tonearmImage.style.marginTop = upperLimit + 'px';
-  }
+};
+
+const reportTimelinePercentage = (currentPos) => {
+  return ((parseInt(currentPos, 10) - scrubberDefaultX) / railWidth) * 100;
+};
+
+const scrubberTouchMoveHandler = (e) => {
+  let newPosition = (e.touches[0].clientX - scrubberFingerXOffset - scrubberDefaultX)
+    , lowerLimit = 0
+    , upperLimit = railWidth;
+  let newX = newPosition < lowerLimit ? lowerLimit :
+    (newPosition >= upperLimit ? upperLimit : newPosition);
+  scrubber.style.marginLeft = newX + 'px';
+};
+
+const scrubberTouchEndHandler = (e)=> {
+  scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
+  console.log(reportTimelinePercentage(scrubber.style.marginLeft));
 };
 
 //-- INIT
@@ -249,3 +280,6 @@ rotate();
 tonearmImage.addEventListener('touchstart', cartridgeTouchStartHandler);
 tonearmImage.addEventListener('touchmove', cartrigeTouchMoveHandler);
 tonearmImage.addEventListener('touchend', cartridgeTouchEndHandler);
+
+scrubber.addEventListener('touchstart', scrubberTouchStartHandler);
+scrubber.addEventListener('touchend', scrubberTouchEndHandler);
