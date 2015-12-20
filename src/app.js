@@ -58,6 +58,7 @@ var tonearmRotationDeg = 0
   , dotSongLookup = []
   , lastSelectedSong = null
   , fingerCartridgeOffset
+  , cartridgeFirstTouch
   , scrubberFingerXOffset
   , railWidth = parseInt(window.getComputedStyle(qs('.rail'), null).getPropertyValue('width'), 10)
   ;
@@ -78,7 +79,7 @@ function init() {
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
   console.log(dotSongLookup);
-  console.log('railWidth', railWidth);
+  //console.log('railWidth', railWidth);
 }
 
 function draw() {
@@ -139,7 +140,6 @@ const cartrigeLifted = () => {
 };
 
 const cleanUp = () => {
-  console.log('cleaning up');
   currentTimeSpan.innerText = '';
   totalTimeSpan.innerText = '';
   deactivateDots();
@@ -188,10 +188,11 @@ const cartridgeTouchStartHandler = (e) => {
   /*  this is needed to prevent the dark outline
    from forming on touch of image */
   e.preventDefault();
+  cartridgeFirstTouch = e.touches[0].clientY;
   fingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
 
   console.log({
-    fingerY: e.touches[0].clientY,
+    cartridgeFirstTouch: cartridgeFirstTouch,
     cartrigeY: e.currentTarget.offsetTop,
     finger_cart_offset: fingerCartridgeOffset
   });
@@ -206,18 +207,28 @@ const cartrigeTouchMoveHandler = (e) => {
     , lowerLimit = 22
     , upperLimit = -213
     ;
+  let direction = (e.touches[0].clientY < cartridgeFirstTouch)? 'UP': 'DOWN';
+  //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
 
+  if ((e.currentTarget.offsetTop > cartridgeDefaultY) && (direction == 'DOWN')) {
+    cleanUp();
+    showInstructions();
+  } else
   if (lowerLimit > newPosition && newPosition > upperLimit) {
+    hideInstructions();
     calculateCartridgePos(-newPosition);
     tonearmImage.style.marginTop = newPosition + 'px';
     lastTouch = e.touches[0];
   } else if (lowerLimit < newPosition) {
+    hideInstructions();
     calculateCartridgePos(-lowerLimit);
     tonearmImage.style.marginTop = lowerLimit + 'px';
   } else if (newPosition < upperLimit) {
+    hideInstructions();
     calculateCartridgePos(-upperLimit);
     tonearmImage.style.marginTop = upperLimit + 'px';
   }
+
 };
 
 const cartridgeTouchEndHandler = (e) => {
@@ -226,15 +237,7 @@ const cartridgeTouchEndHandler = (e) => {
 };
 
 const calculateCartridgePos = (position) => {
-  //if e.target.y is within range of [-281, -333]
-
-  //console.log(e.touches[0].clientY);
-  //console.log(e.currentTarget.offsetTop);
-  //console.log({fingerY: e.touches[0].clientY, cartrigeY: e.currentTarget.offsetTop, finger_cart_offset: e.touches[0].clientY - e.currentTarget.offsetTop});
   let validDotIndex = dotSongLookup.findIndex((arr)=> {
-    //return between(e.target.y, ...arr);
-    console.log('pos: ' + position);
-    console.log('bet: ' + between(position, ...arr));
     return between(position, ...arr);
   });
 
