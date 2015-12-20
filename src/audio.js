@@ -24,22 +24,28 @@ export function playSong(context, sources, song, currentTimeSpan) {
   //set current song so that we could stop/pause it later
 
   sources[song.index].connect(context.destination);
-  document.querySelector('#' + song.id).play();
+  sources[song.index].mediaElement.play();
+
+  console.log(sources[song.index].mediaElement.currentTime);
+
+
   let scrubber = document.querySelector('.scrubber')
     , rail = document.querySelector('.rail')
     , scrubberCenterOffset = 20;
 
   currentSong = song;
+  //TODO: move this to the init function and add it to the songList: { duration: {mil: 23432, label: "03:45"}...}
   let [min, sec] = song.duration.split(':');
   let songLengthInMillisec = parseInt(min, 10) * 60 * 1000 + parseInt(sec, 10)  * 1000;
 
   setSongTitle(song.title);
 
   timer = setInterval(()=> {
-    currentTimeSpan.innerText = formatCurrentTime(context.currentTime);
-    let percentage = ((context.currentTime * 1000) / songLengthInMillisec) * 100;
+    let cTime = sources[song.index].mediaElement.currentTime;
+    currentTimeSpan.innerText = formatCurrentTime(cTime);
+    let percentage = ((cTime * 1000) / songLengthInMillisec) * 100;
     console.log('percentage', percentage);
-    console.log('current time: ', context.currentTime, 'songLengthInMillisec', songLengthInMillisec);
+    console.log('current time: ', cTime, 'songLengthInMillisec', songLengthInMillisec);
     movePlayhead(233, percentage, scrubberCenterOffset, scrubber);
   }, 1000);
 }
