@@ -54,7 +54,7 @@ const qs = document.querySelector.bind(document)
 // move playhead 50%
 // movePlayhead(railWidth, 50, scrubberCenterOffset, scrubber)
 
-const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
+//const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
 
 var tonearmRotationDeg = 0
   , rotateIntervalId = 0
@@ -79,7 +79,7 @@ function init() {
   /* Create a lookup map for matching cartridge y pos to dot/song numbers */
   dotSongLookup = [];
   let start = cartridgeYStart + dotStep;//first position of the first song dot
-  Array.from(Array(numberOfSongs).keys()).forEach((n)=> {
+  [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach((n)=> {
     let base = (start + (n * dotStep));
     let from = base - dotStep / 2;
     let to = base + dotStep / 2;
@@ -89,13 +89,12 @@ function init() {
   console.log(dotSongLookup);
 
   /* batch init audio sources */
-  Object.keys(songList).forEach((item, index) => {
+  for (let item in songList) {
     let songElement = document.querySelector('#' + songList[item].id);
-    sources[index] = context.createMediaElementSource(songElement);
-  });
-
-
+    sources[item] = songElement;
+  }
 }
+
 
 function draw() {
   //var width = platter.width = window.innerWidth
@@ -185,7 +184,7 @@ const cartridgePlaced = (position) => {
     hideInstructions();
     totalTimeSpan.innerText = songList[lastSelectedSong].duration;
     //start song
-    playSong(context, sources, songList[lastSelectedSong], currentTimeSpan);
+    playSong(sources, songList[lastSelectedSong], currentTimeSpan);
   } else if (position == cartridgeYStart) {
     //clean up
     cleanUp();
@@ -203,6 +202,8 @@ const cartridgeTouchStartHandler = (e) => {
   /*  this is needed to prevent the dark outline
    from forming on touch of image */
   e.preventDefault();
+  //qs('#bh').play();
+  //qs('#bh').stop();
   cartridgeFirstTouch = e.touches[0].clientY;
   fingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
 
@@ -248,6 +249,7 @@ const cartrigeTouchMoveHandler = (e) => {
 const cartridgeTouchEndHandler = (e) => {
   tonearmImage.style.marginLeft = '0px';
   cartridgePlaced(lastTouch.clientY - fingerCartridgeOffset - cartridgeDefaultY);
+  console.log('cartridgeTouchEndHandler');
 };
 
 const calculateCartridgePos = (position) => {

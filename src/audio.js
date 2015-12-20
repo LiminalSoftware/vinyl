@@ -20,13 +20,12 @@ const formatCurrentTime = (val) => {
   '00' + ':' + seconds;
 };
 
-export function playSong(context, sources, song, currentTimeSpan) {
+export function playSong(sources, song, currentTimeSpan) {
   //set current song so that we could stop/pause it later
 
-  sources[song.index].connect(context.destination);
-  sources[song.index].mediaElement.play();
+  sources[song.index].play();
 
-  console.log(sources[song.index].mediaElement.currentTime);
+  console.log(sources[song.index].currentTime);
 
 
   let scrubber = document.querySelector('.scrubber')
@@ -41,7 +40,7 @@ export function playSong(context, sources, song, currentTimeSpan) {
   setSongTitle(song.title);
 
   timer = setInterval(()=> {
-    let cTime = sources[song.index].mediaElement.currentTime;
+    let cTime = sources[song.index].currentTime;
     currentTimeSpan.innerText = formatCurrentTime(cTime);
     let percentage = ((cTime * 1000) / songLengthInMillisec) * 100;
     console.log('percentage', percentage);
