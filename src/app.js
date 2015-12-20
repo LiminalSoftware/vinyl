@@ -1,5 +1,6 @@
 import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime, movePlayhead} from './controls';
 import {playSong, pauseSong} from './audio';
+import './polyfil';
 
 require('./style.css');
 
@@ -79,7 +80,7 @@ function init() {
   /* Create a lookup map for matching cartridge y pos to dot/song numbers */
   dotSongLookup = [];
   let start = cartridgeYStart + dotStep;//first position of the first song dot
-  Array.from(Array(numberOfSongs).keys()).forEach((n)=> {
+  [0,1,2,3,4,5,6,7,8].forEach((n)=> {
     let base = (start + (n * dotStep));
     let from = base - dotStep / 2;
     let to = base + dotStep / 2;
@@ -204,6 +205,7 @@ const cartridgeTouchStartHandler = (e) => {
    from forming on touch of image */
   e.preventDefault();
   cartridgeFirstTouch = e.touches[0].clientY;
+  lastTouch = e.touches[0];
   fingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
 
   console.log({
@@ -225,6 +227,7 @@ const cartrigeTouchMoveHandler = (e) => {
   let direction = (e.touches[0].clientY < cartridgeFirstTouch) ? 'UP' : 'DOWN';
   //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
 
+  lastTouch = e.touches[0];
   if ((e.currentTarget.offsetTop > cartridgeDefaultY) && (direction == 'DOWN')) {
     cleanUp();
     showInstructions();
@@ -232,7 +235,6 @@ const cartrigeTouchMoveHandler = (e) => {
     hideInstructions();
     calculateCartridgePos(-newPosition);
     tonearmImage.style.marginTop = newPosition + 'px';
-    lastTouch = e.touches[0];
   } else if (lowerLimit < newPosition) {
     hideInstructions();
     calculateCartridgePos(-lowerLimit);
