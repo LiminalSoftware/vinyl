@@ -1,5 +1,6 @@
 import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime, movePlayhead} from './controls';
 import {playSong, pauseSong} from './audio';
+import './polyfil';
 
 require('./style.css');
 
@@ -54,7 +55,7 @@ const qs = document.querySelector.bind(document)
 // move playhead 50%
 // movePlayhead(railWidth, 50, scrubberCenterOffset, scrubber)
 
-//const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
+const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
 
 var tonearmRotationDeg = 0
   , rotateIntervalId = 0
@@ -202,9 +203,8 @@ const cartridgeTouchStartHandler = (e) => {
   /*  this is needed to prevent the dark outline
    from forming on touch of image */
   e.preventDefault();
-  //qs('#bh').play();
-  //qs('#bh').stop();
   cartridgeFirstTouch = e.touches[0].clientY;
+  lastTouch = e.touches[0];
   fingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
 
   console.log({
@@ -226,6 +226,7 @@ const cartrigeTouchMoveHandler = (e) => {
   let direction = (e.touches[0].clientY < cartridgeFirstTouch) ? 'UP' : 'DOWN';
   //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
 
+  lastTouch = e.touches[0];
   if ((e.currentTarget.offsetTop > cartridgeDefaultY) && (direction == 'DOWN')) {
     cleanUp();
     showInstructions();
@@ -233,7 +234,6 @@ const cartrigeTouchMoveHandler = (e) => {
     hideInstructions();
     calculateCartridgePos(-newPosition);
     tonearmImage.style.marginTop = newPosition + 'px';
-    lastTouch = e.touches[0];
   } else if (lowerLimit < newPosition) {
     hideInstructions();
     calculateCartridgePos(-lowerLimit);
@@ -249,7 +249,6 @@ const cartrigeTouchMoveHandler = (e) => {
 const cartridgeTouchEndHandler = (e) => {
   tonearmImage.style.marginLeft = '0px';
   cartridgePlaced(lastTouch.clientY - fingerCartridgeOffset - cartridgeDefaultY);
-  console.log('cartridgeTouchEndHandler');
 };
 
 const calculateCartridgePos = (position) => {
