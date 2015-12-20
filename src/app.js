@@ -34,21 +34,27 @@ const qs = document.querySelector.bind(document)
   , scrubberDefaultY = 6
   , scrubberDefaultX = 0
   , songList = {
-    0: {title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '05:53'},
-    1: {title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '02:03'},
-    2: {title: 'Killer Queen', file: 'songs/killer-queen.mp3', duration: '03:01'},
-    3: {title: 'We Are the Champions', file: 'songs/we-are-the-champions.mp3', duration: '03:03'},
-    4: {title: 'Another One Bites the Dust', file: 'songs/another-one-bites-the-dust.mp3', duration: '03:37'},
-    5: {title: 'Seven Seas Of Rhye', file: 'songs/seven-seas-of-rhye.mp3', duration: '02:49'},
-    6: {title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '03:38'},
-    7: {title: 'Play The Game', file: 'songs/play-the-game.mp3', duration: '03:32'},
-    8: {title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
-  }
-  , audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-  ;
+  0: {index: 0, id: 'bh', title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '05:53'},
+  1: {index: 1, id: 'wwry', title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '02:03'},
+  2: {index: 2, id: 'kq', title: 'Killer Queen', file: 'songs/killer-queen.mp3', duration: '03:01'},
+  3: {index: 3, id: 'watc', title: 'We Are the Champions', file: 'songs/we-are-the-champions.mp3', duration: '03:03'},
+  4: {
+    index: 4,
+    id: 'aobtd',
+    title: 'Another One Bites the Dust',
+    file: 'songs/another-one-bites-the-dust.mp3',
+    duration: '03:37'
+  },
+  5: {index: 5, id: 'ssor', title: 'Seven Seas Of Rhye', file: 'songs/seven-seas-of-rhye.mp3', duration: '02:49'},
+  6: {index: 6, id: 'loml', title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '03:38'},
+  7: {index: 7, id: 'ptg', title: 'Play The Game', file: 'songs/play-the-game.mp3', duration: '03:32'},
+  8: {index: 8, id: 'tsmgo', title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
+};
 
 // move playhead 50%
 // movePlayhead(railWidth, 50, scrubberCenterOffset, scrubber)
+
+const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
 
 var tonearmRotationDeg = 0
   , rotateIntervalId = 0
@@ -61,7 +67,9 @@ var tonearmRotationDeg = 0
   , cartridgeFirstTouch
   , scrubberFingerXOffset
   , railWidth = parseInt(window.getComputedStyle(qs('.rail'), null).getPropertyValue('width'), 10)
+  , sources = []
   ;
+
 
 function between(x, min, max) {
   return x >= min && x <= max;
@@ -79,7 +87,14 @@ function init() {
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
   console.log(dotSongLookup);
-  //console.log('railWidth', railWidth);
+
+  /* batch init audio sources */
+  Object.keys(songList).forEach((item, index) => {
+    let songElement = document.querySelector('#' + songList[item].id);
+    sources[index] = context.createMediaElementSource(songElement);
+  });
+
+
 }
 
 function draw() {
@@ -170,7 +185,7 @@ const cartridgePlaced = (position) => {
     hideInstructions();
     totalTimeSpan.innerText = songList[lastSelectedSong].duration;
     //start song
-    playSong(songList[lastSelectedSong], currentTimeSpan);
+    playSong(context, sources, songList[lastSelectedSong], currentTimeSpan);
   } else if (position == cartridgeYStart) {
     //clean up
     cleanUp();
@@ -207,14 +222,13 @@ const cartrigeTouchMoveHandler = (e) => {
     , lowerLimit = 22
     , upperLimit = -213
     ;
-  let direction = (e.touches[0].clientY < cartridgeFirstTouch)? 'UP': 'DOWN';
+  let direction = (e.touches[0].clientY < cartridgeFirstTouch) ? 'UP' : 'DOWN';
   //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
 
   if ((e.currentTarget.offsetTop > cartridgeDefaultY) && (direction == 'DOWN')) {
     cleanUp();
     showInstructions();
-  } else
-  if (lowerLimit > newPosition && newPosition > upperLimit) {
+  } else if (lowerLimit > newPosition && newPosition > upperLimit) {
     hideInstructions();
     calculateCartridgePos(-newPosition);
     tonearmImage.style.marginTop = newPosition + 'px';
