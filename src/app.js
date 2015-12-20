@@ -1,5 +1,6 @@
 import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime, movePlayhead} from './controls';
-import {playSong, pauseSong} from './audio';
+import {playSong, pauseSong, seek, currentSong} from './audio';
+//import './polyfills';
 
 require('./style.css');
 
@@ -34,25 +35,24 @@ const qs = document.querySelector.bind(document)
   , scrubberDefaultY = 6
   , scrubberDefaultX = 0
   , songList = {
-  0: {index: 0, id: 'bh', title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '05:53'},
-  1: {index: 1, id: 'wwry', title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '02:03'},
-  2: {index: 2, id: 'kq', title: 'Killer Queen', file: 'songs/killer-queen.mp3', duration: '03:01'},
-  3: {index: 3, id: 'watc', title: 'We Are the Champions', file: 'songs/we-are-the-champions.mp3', duration: '03:03'},
-  4: {
-    index: 4,
-    id: 'aobtd',
-    title: 'Another One Bites the Dust',
-    file: 'songs/another-one-bites-the-dust.mp3',
-    duration: '03:37'
-  },
-  5: {index: 5, id: 'ssor', title: 'Seven Seas Of Rhye', file: 'songs/seven-seas-of-rhye.mp3', duration: '02:49'},
-  6: {index: 6, id: 'loml', title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '03:38'},
-  7: {index: 7, id: 'ptg', title: 'Play The Game', file: 'songs/play-the-game.mp3', duration: '03:32'},
-  8: {index: 8, id: 'tsmgo', title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
+  0: {index: 0, id: 'bh', title: 'Bohemian Rhapsody', file: 'songs/bohemian-rhapsody.mp3', duration: '05:53'}
+  //,
+  //1: {index: 1, id: 'wwry', title: 'We Will Rock You', file: 'songs/we-will-rock-you.mp3', duration: '02:03'},
+  //2: {index: 2, id: 'kq', title: 'Killer Queen', file: 'songs/killer-queen.mp3', duration: '03:01'},
+  //3: {index: 3, id: 'watc', title: 'We Are the Champions', file: 'songs/we-are-the-champions.mp3', duration: '03:03'},
+  //4: {
+  //  index: 4,
+  //  id: 'aobtd',
+  //  title: 'Another One Bites the Dust',
+  //  file: 'songs/another-one-bites-the-dust.mp3',
+  //  duration: '03:37'
+  //},
+  //5: {index: 5, id: 'ssor', title: 'Seven Seas Of Rhye', file: 'songs/seven-seas-of-rhye.mp3', duration: '02:49'},
+  //6: {index: 6, id: 'loml', title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '03:38'},
+  //7: {index: 7, id: 'ptg', title: 'Play The Game', file: 'songs/play-the-game.mp3', duration: '03:32'},
+  //8: {index: 8, id: 'tsmgo', title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
 };
 
-// move playhead 50%
-// movePlayhead(railWidth, 50, scrubberCenterOffset, scrubber)
 
 const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
 
@@ -79,20 +79,24 @@ function init() {
   /* Create a lookup map for matching cartridge y pos to dot/song numbers */
   dotSongLookup = [];
   let start = cartridgeYStart + dotStep;//first position of the first song dot
-  Array.from(Array(numberOfSongs).keys()).forEach((n)=> {
+  [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach((n)=> {
     let base = (start + (n * dotStep));
     let from = base - dotStep / 2;
     let to = base + dotStep / 2;
     dotSongLookup.push([from, to]);
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
-  console.log(dotSongLookup);
+  console.log('dotSongLookup.length', dotSongLookup.length, dotSongLookup);
 
   /* batch init audio sources */
-  Object.keys(songList).forEach((item, index) => {
-    let songElement = document.querySelector('#' + songList[item].id);
+  for (let index in songList) {
+    let songElement = document.querySelector('#' + songList[index].id);
     sources[index] = context.createMediaElementSource(songElement);
-  });
+  }
+  //Object.keys(songList).forEach((item, index) => {
+  //  let songElement = document.querySelector('#' + songList[item].id);
+  //  sources[index] = context.createMediaElementSource(songElement);
+  //});
 
 
 }
@@ -282,10 +286,12 @@ const scrubberTouchMoveHandler = (e) => {
   let newX = newPosition < lowerLimit ? lowerLimit :
     (newPosition >= upperLimit ? upperLimit : newPosition);
   scrubber.style.marginLeft = newX + 'px';
+
 };
 
 const scrubberTouchEndHandler = (e)=> {
   scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
+  seek(currentSong, (parseInt(scrubber.style.marginLeft, 10) / railWidth) * 100, sources);
   console.log(reportTimelinePercentage(scrubber.style.marginLeft));
 };
 
