@@ -180,7 +180,7 @@ const cartridgePlaced = (position) => {
     hideInstructions();
     totalTimeSpan.innerText = songList[lastSelectedSong].duration;
     //start song
-    playSong(context, sources, songList[lastSelectedSong], currentTimeSpan);
+    playSong(sources, songList[lastSelectedSong], currentTimeSpan);
   } else if (position == cartridgeYStart) {
     //clean up
     cleanUp();
