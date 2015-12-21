@@ -47,8 +47,6 @@ const qs = document.querySelector.bind(document)
 };
 
 
-const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
-
 var tonearmRotationDeg = 0
   , rotateIntervalId = 0
   , platterRotationDeg = 0
@@ -84,7 +82,7 @@ function init() {
   /* batch init audio sources */
   for (let index in songList) {
     let songElement = document.querySelector('#' + songList[index].id);
-    sources[index] = context.createMediaElementSource(songElement);
+    sources[index] = songElement;
   }
   //Object.keys(songList).forEach((item, index) => {
   //  let songElement = document.querySelector('#' + songList[item].id);
