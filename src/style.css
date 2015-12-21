@@ -98,7 +98,7 @@ canvas {
     width: 45px;
     height: 45px;
     background: url('data:image/svg+xml;utf8,<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"> <defs> <style> .cls-1 { fill: none; } .cls-2 { fill: #fffefe; } </style> </defs> <title>mp3</title> <rect class="cls-1" width="45" height="45"/> <g> <polygon class="cls-2" points="22.5 33 37.5 18 28.5 18 28.5 0 16.5 0 16.55 18 7.5 18 22.5 33"/> <polygon class="cls-2" points="34.5 33 34.5 39 10.5 39 10.5 33 4.5 33 4.5 39 4.5 45 40.5 45 40.5 33 34.5 33"/> </g> </svg>') no-repeat;
-    /*background: url(/build/assets/mp3.svg) no-repeat;*/
+    /*background: url(assets/mp3.svg) no-repeat;*/
 }
 
 .song-title {
@@ -191,7 +191,7 @@ canvas {
 }
 
 .down-arrow {
-    background: url(/build/assets/down-arrow-thin.svg) no-repeat;
+    background: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" standalone="no"?> <svg width="51px" height="24px" viewBox="0 0 51 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"> <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch --> <title>Triangle 1</title> <desc>Created with Sketch.</desc> <defs></defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <path d="M6.53846154,0 L0,0 L25.5,24 L51,0 L44.4615385,0 L25.5,17.8461538 L6.53846154,0 L6.53846154,0 Z" id="Triangle-1" fill="#FFFFFF" sketch:type="MSShapeGroup"></path> </g> </svg>') no-repeat;
     width: 51px;
     height: 24px;
     margin: 90px auto;
