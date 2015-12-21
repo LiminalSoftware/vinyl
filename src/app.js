@@ -1,6 +1,6 @@
 import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime, movePlayhead} from './controls';
-import {playSong, pauseSong} from './audio';
-import './polyfil';
+import {playSong, pauseSong, seek, currentSong} from './audio';
+//import './polyfills';
 
 require('./style.css');
 
@@ -46,8 +46,6 @@ const qs = document.querySelector.bind(document)
   8: {index: 8, id: 'tsmgo', title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
 };
 
-// move playhead 50%
-// movePlayhead(railWidth, 50, scrubberCenterOffset, scrubber)
 
 const context = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext)();
 
@@ -81,15 +79,20 @@ function init() {
     dotSongLookup.push([from, to]);
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
-  console.log(dotSongLookup);
+  console.log('dotSongLookup.length', dotSongLookup.length, dotSongLookup);
 
   /* batch init audio sources */
-  for (let item in songList) {
-    let songElement = document.querySelector('#' + songList[item].id);
-    sources[item] = songElement;
+  for (let index in songList) {
+    let songElement = document.querySelector('#' + songList[index].id);
+    sources[index] = context.createMediaElementSource(songElement);
   }
-}
+  //Object.keys(songList).forEach((item, index) => {
+  //  let songElement = document.querySelector('#' + songList[item].id);
+  //  sources[index] = context.createMediaElementSource(songElement);
+  //});
 
+
+}
 
 function draw() {
   //var width = platter.width = window.innerWidth
@@ -179,7 +182,7 @@ const cartridgePlaced = (position) => {
     hideInstructions();
     totalTimeSpan.innerText = songList[lastSelectedSong].duration;
     //start song
-    playSong(sources, songList[lastSelectedSong], currentTimeSpan);
+    playSong(context, sources, songList[lastSelectedSong], currentTimeSpan);
   } else if (position == cartridgeYStart) {
     //clean up
     cleanUp();
@@ -198,7 +201,6 @@ const cartridgeTouchStartHandler = (e) => {
    from forming on touch of image */
   e.preventDefault();
   cartridgeFirstTouch = e.touches[0].clientY;
-  lastTouch = e.touches[0];
   fingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
 
   console.log({
@@ -220,7 +222,6 @@ const cartrigeTouchMoveHandler = (e) => {
   let direction = (e.touches[0].clientY < cartridgeFirstTouch) ? 'UP' : 'DOWN';
   //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
 
-  lastTouch = e.touches[0];
   if ((e.currentTarget.offsetTop > cartridgeDefaultY) && (direction == 'DOWN')) {
     cleanUp();
     showInstructions();
@@ -228,6 +229,7 @@ const cartrigeTouchMoveHandler = (e) => {
     hideInstructions();
     calculateCartridgePos(-newPosition);
     tonearmImage.style.marginTop = newPosition + 'px';
+    lastTouch = e.touches[0];
   } else if (lowerLimit < newPosition) {
     hideInstructions();
     calculateCartridgePos(-lowerLimit);
@@ -277,10 +279,12 @@ const scrubberTouchMoveHandler = (e) => {
   let newX = newPosition < lowerLimit ? lowerLimit :
     (newPosition >= upperLimit ? upperLimit : newPosition);
   scrubber.style.marginLeft = newX + 'px';
+
 };
 
 const scrubberTouchEndHandler = (e)=> {
   scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
+  seek(currentSong, (parseInt(scrubber.style.marginLeft, 10) / railWidth) * 100, sources);
   console.log(reportTimelinePercentage(scrubber.style.marginLeft));
 };
 
@@ -295,3 +299,5 @@ tonearmImage.addEventListener('touchend', cartridgeTouchEndHandler);
 
 scrubber.addEventListener('touchstart', scrubberTouchStartHandler);
 scrubber.addEventListener('touchend', scrubberTouchEndHandler);
+
+
