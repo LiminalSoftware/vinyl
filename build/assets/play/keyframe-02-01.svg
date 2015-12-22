@@ -1,0 +1,15 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 65">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f05046;
+      }
+    </style>
+  </defs>
+  <title>keyframe-02</title>
+  <g id="play-btn">
+    <path id="left" class="cls-1" d="M32,47H23V19h9V47Z"/>
+    <polygon id="left" class="cls-1" points="32.000 47.000, 23.000 47.000, 23.000 19.000, 32.000 19.000, 32.000 47.000"/>
+    <polygon id="right" class="cls-1" points="33 19 42 19 42 23 42 47 33 47 33 19"/>
+  </g>
+</svg>

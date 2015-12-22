@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 65 65" style="enable-background:new 0 0 65 65;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#F05046;}
+</style>
+<title>third</title>
+<g id="play-btn">
+	<g id="circle">
+		<path class="st0" d="M32.5,2C49.3,2,63,15.7,63,32.5S49.3,63,32.5,63S2,49.3,2,32.5C2,15.7,15.7,2,32.5,2 M32.5,0
+			C14.6,0,0,14.6,0,32.5S14.6,65,32.5,65S65,50.4,65,32.5S50.4,0,32.5,0L32.5,0z"/>
+	</g>
+	<polygon id="left" class="st0" points="30,47 21,47 21,19 30,19 	"/>
+	<polygon id="right_1_" class="st0" points="44,47 35,47 35,19 44,19 44,20 	"/>
+</g>
+</svg>
