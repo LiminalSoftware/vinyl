@@ -54,5 +54,10 @@ export function pauseSong() {
   if (currentSong && currentSong.id) {
     document.querySelector('#' + currentSong.id).pause();
     console.log('pausing song: ', currentSong.file);
+    //TODO: disable scrubber here
   }
+}
+
+export function resumeSong() {
+  console.log('resumeSong');
 }

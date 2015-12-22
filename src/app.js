@@ -1,4 +1,4 @@
-import {grabCartridge, releaseCartridge, grabPlayhead, releasePlayhead, updateTime, movePlayhead} from './controls';
+import {togglePlayPause} from './controls';
 import {playSong, pauseSong, seek, currentSong} from './audio';
 //import './polyfills';
 
@@ -175,9 +175,16 @@ const cartridgePlaced = (position) => {
     totalTimeSpan.innerText = songList[lastSelectedSong].duration;
     //start song
     playSong(sources, songList[lastSelectedSong], currentTimeSpan);
+
+    //show play-pause-btn
+    document.querySelector('#playbtn').classList.add('bounce-up-show');
+
   } else if (position == cartridgeYStart) {
+    //hide play-pause-btn
     //clean up
     cleanUp();
+  } else {
+    document.querySelector('#playbtn').classList.remove('bounce-up-show');
   }
 };
 
@@ -203,7 +210,7 @@ const cartridgeTouchStartHandler = (e) => {
   hideInstructions();
   cartrigeLifted();
   //simulate lift effect
-  tonearmImage.style.marginLeft = '10px';
+  tonearmImage.classList.add('up');
 };
 
 const cartrigeTouchMoveHandler = (e) => {
@@ -235,7 +242,7 @@ const cartrigeTouchMoveHandler = (e) => {
 };
 
 const cartridgeTouchEndHandler = (e) => {
-  tonearmImage.style.marginLeft = '0px';
+  tonearmImage.classList.remove('up');
   cartridgePlaced(lastTouch.clientY - fingerCartridgeOffset - cartridgeDefaultY);
 };
 
