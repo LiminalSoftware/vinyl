@@ -84,12 +84,6 @@ function init() {
     let songElement = document.querySelector('#' + songList[index].id);
     sources[index] = songElement;
   }
-  //Object.keys(songList).forEach((item, index) => {
-  //  let songElement = document.querySelector('#' + songList[item].id);
-  //  sources[index] = context.createMediaElementSource(songElement);
-  //});
-
-
 }
 
 function draw() {
