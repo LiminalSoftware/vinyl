@@ -38,6 +38,8 @@ export default class Controls {
   }
 
   cartridgeLifted() {
+    //simulate lift effect
+    this.tonearm.classList.add('up');
     this.cartridgeUp = true;
     //hide playhead
     this.playhead.classList.add('invisible');
@@ -47,24 +49,28 @@ export default class Controls {
   cartridgePlaced(position) {
     this.cartridgeUp = false;
 
-    if (this.lastSelectedSong > -1 && position < this.cartridgeYStart) {
+    //TODO: don't think this logic is correct anymore - `cartridgeYStart` is the top of the tonearm reach
+    if (this.audio.lastSelectedSong.index > -1 && position < this.cartridgeYStart) {
+      //-- case for resuming?
       //show playhead
       this.playhead.classList.remove('invisible');
-      hideInstructions();
-      this.totalTimeSpan.innerText = this.audio.songList[lastSelectedSong].duration;
+      this.totalTimeSpan.innerText = this.audio.songList[this.audio.lastSelectedSong].duration;
       //start song
       // v-- should this be factored out?
-      this.audio.playSong(this.audio.sources, songList[lastSelectedSong], this.currentTimeSpan);
+      this.audio.playSong(this.currentTimeSpan);
 
       //show play-pause-btn
       this.playButton.classList.add('bounce-up-show');
 
+      //TODO: don't think this logic is correct - `cartridgeYStart` is the top of the tonearm reach
     } else if (position == this.cartridgeYStart) {
       //hide play-pause-btn
       //clean up
       cleanUp(this);
     } else {
+      //-- case for playing a song different from what was playing last?
       this.playButton.classList.remove('bounce-up-show');
+      this.audio.playSong();
     }
   }
 
@@ -80,6 +86,15 @@ export default class Controls {
     return newpos;
   }
 
+  cleanUp() {
+    this.currentTimeSpan.innerText = '';
+    this.totalTimeSpan.innerText = '';
+    deactivateDots();
+    //this.playhead.classList.add('invisible');
+    //qs('.buttons').classList.toggle('hidden');
+    //qs('.instructions').classList.toggle('hidden');
+    qs('.song-title').innerText = '';//TODO: refactor
+  }
 }
 
 //playToPauseLeft.beginElement();
@@ -118,8 +133,7 @@ function cartridgeTouchStartHandler(that) {
     });
     hideInstructions();
     that.cartridgeLifted();
-    //simulate lift effect
-    that.tonearm.classList.add('up');
+
   }
 }
 
@@ -128,27 +142,33 @@ function cartrigeTouchMoveHandler(that) {
     let newPosition = that.calculateCartridgePosition(e.touches[0])
       , lowerLimit  = 22
       , upperLimit  = -213
+      , validDotIndex
+      , currentSongTitle
+      , direction   = (e.touches[0].clientY < that.cartridgeFirstTouch) ? 'UP' : 'DOWN'
       ;
-    let direction = (e.touches[0].clientY < that.cartridgeFirstTouch) ? 'UP' : 'DOWN';
     //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
 
     if ((e.currentTarget.offsetTop > that.cartridgeDefaultY) && (direction == 'DOWN')) {
-      cleanUp();
+      that.cleanUp();
       showInstructions();
     } else if (lowerLimit > newPosition && newPosition > upperLimit) {
       hideInstructions();
-      that.audio.selectSong(-newPosition);
+      currentSongTitle = that.audio.selectSong(-newPosition);
       that.tonearm.style.marginTop = newPosition + 'px';
       that.lastTouch = e.touches[0];
     } else if (lowerLimit < newPosition) {
       hideInstructions();
-      that.audio.selectSong(-lowerLimit);
+      currentSongTitle = that.audio.selectSong(-lowerLimit);
       that.tonearm.style.marginTop = lowerLimit + 'px';
     } else if (newPosition < upperLimit) {
       hideInstructions();
-      that.audio.selectSong(-upperLimit);
+      currentSongTitle = that.audio.selectSong(-upperLimit);
       that.tonearm.style.marginTop = upperLimit + 'px';
     }
+    that.cleanUp();
+    //TODO: refactor --v
+    if (validDotIndex) qs('#dot' + validDotIndex).className = 'dot active';
+    if (currentSongTitle) qs('.song-title').innerText = currentSongTitle;
   }
 }
 
@@ -191,14 +211,10 @@ function scrubberTouchEndHandler(that) {
 }
 
 //helper methods
-function cleanUp(that) {
-  that.currentTimeSpan.innerText = '';
-  that.totalTimeSpan.innerText = '';
-  //that.deactivateDots(); //TODO: needed?
-  that.playhead.classList.add('invisible');
-  qs('.buttons').classList.toggle('hidden');
-  qs('.instructions').classList.toggle('hidden');
-  qs('.song-title').innerText = '';//TODO: refactor
+function deactivateDots() {
+  [].map.call(document.querySelectorAll('.dot'), function (el) {
+    el.classList.remove('active');
+  });
 };
 
 function hideInstructions() {

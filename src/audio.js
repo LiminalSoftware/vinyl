@@ -25,16 +25,17 @@ export default class Audio {
   //  return this.songList;
   //}
 
-  playSong(sources, song, currentTimeSpan) {
+  playSong(currentTimeSpan, song) {
+    if (!song || !song.index) song = this.lastSelectedSong
     //set current song so that we could stop/pause it later
-    sources[song.index].play();
-    console.log(sources[song.index].currentTime);
+    this.sources[song.index].play();
+    console.log(this.sources[song.index].currentTime);
 
     let scrubber             = document.querySelector('.scrubber')
       , rail                 = document.querySelector('.rail')
       , scrubberCenterOffset = 20;
 
-    currentSong = song;
+    this.currentSong = song;
     //TODO: move this to the init function and add it to the songList: { duration: {mil: 23432, label: "03:45"}...}
     let [min, sec] = song.duration.split(':');
     let songLengthInMillisec = parseInt(min, 10) * 60 * 1000 + parseInt(sec, 10) * 1000;
@@ -42,11 +43,13 @@ export default class Audio {
     setSongTitle(song.title);
 
     this.timer = setInterval(()=> {
-      let cTime = sources[song.index].currentTime;
+      let cTime = this.sources[song.index].currentTime;
       currentTimeSpan.innerText = formatCurrentTime(cTime);
       let percentage = ((cTime * 1000) / songLengthInMillisec) * 100;
       console.log('percentage', percentage);
       console.log('current time: ', cTime, 'songLengthInMillisec', songLengthInMillisec);
+
+      //TODO: this is a `control` concern
       movePlayhead(233, percentage, scrubberCenterOffset, scrubber);
     }, 1000);
   }
@@ -77,11 +80,10 @@ export default class Audio {
     });
 
     if (validDotIndex > -1) {
-      this.lastSelectedSong = validDotIndex;
-      //deactivateDots(); //TODO: needed?
-      qs('#dot' + validDotIndex).className = 'dot active';
-      //show song title
-      qs('.song-title').innerText = this.songList[this.lastSelectedSong].title;
+      this.lastSelectedSong = this.songList[validDotIndex];
+      return this.lastSelectedSong.title;
+    } else {
+      return [null, null]
     }
   }
 }

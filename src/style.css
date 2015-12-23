@@ -34,6 +34,7 @@ canvas {
     cursor: pointer;
     /*background: url('/build/assets/cartridge.svg') no-repeat;*/
     /*transform-origin: 347vw 39vh;*/
+    transition: margin-left 250ms;
 
 }
 
