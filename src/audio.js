@@ -1,21 +1,29 @@
 //import { movePlayhead, cartridgeLifted, cartridgePlaced, calculateCartridgePosition } from './controls';
+const qs = document.querySelector.bind(document)
+  ;
 
 export default class Audio {
-  constructor(songList, numberOfSongs) {
+  constructor({songList, numberOfSongs, cartridgeYStart, cartridgeYEnd}) {
     this.songList = songList;
-    this.numberOfSongs = numberOfSongs;
-    this.cartridgeYStart = 0;
-    this.cartridgeYEnd = 216;
 
-    let range = (this.cartridgeYEnd - this.cartridgeYStart); // the range of vertical motion of the cartridge
-    this.dotStep = Math.abs(range / numberOfSongs);
+    let range   = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
+      , dotStep = Math.abs(range / numberOfSongs)
+      ;
 
     this.currentSong = {};
     this.lastSelectedSong = null;
 
     //-- INIT
-    [this.dotSongLookup, this.sources] = buildDotSongLookup();
+    [this.dotSongLookup, this.sources] = buildDotSongLookup({
+      cartridgeYStart,
+      dotStep,
+      songList
+    });
   }
+
+  //get songList() {
+  //  return this.songList;
+  //}
 
   playSong(sources, song, currentTimeSpan) {
     //set current song so that we could stop/pause it later
@@ -44,41 +52,41 @@ export default class Audio {
   }
 
   pauseSong() {
-    clearInterval(timer);
-    if (currentSong && currentSong.id) {
-      document.querySelector('#' + currentSong.id).pause();
+    if (this.timer) clearInterval(this.timer);
+    if (this.currentSong && this.currentSong.id) {
+      qs('#' + currentSong.id).pause();
       console.log('pausing song: ', currentSong.file);
       //TODO: disable scrubber here
     }
   }
 
-  resumeSong() {
-    cartridgePlaced(calculateCartridgePosition());
-
-    //if (currentSong && currentSong.id) {
-    //  document.querySelector('#' + currentSong.id).play();
-    //  console.log('resumeSong');
-    //} else {
-    //  console.log('tried to resume song with no currentSong and/or currentSong.id');
-    //}
-  }
+  //resumeSong() {
+  //  cartridgePlaced(calculateCartridgePosition());
+  //
+  //  //if (currentSong && currentSong.id) {
+  //  //  document.querySelector('#' + currentSong.id).play();
+  //  //  console.log('resumeSong');
+  //  //} else {
+  //  //  console.log('tried to resume song with no currentSong and/or currentSong.id');
+  //  //}
+  //}
 
   selectSong(position) {
-    let validDotIndex = dotSongLookup.findIndex((arr)=> {
+    let validDotIndex = this.dotSongLookup.findIndex((arr)=> {
       return between(position, ...arr);
     });
 
     if (validDotIndex > -1) {
-      lastSelectedSong = validDotIndex;
-      deactivateDots();
+      this.lastSelectedSong = validDotIndex;
+      //deactivateDots(); //TODO: needed?
       qs('#dot' + validDotIndex).className = 'dot active';
       //show song title
-      document.querySelector('.song-title').innerText = songList[lastSelectedSong].title;
+      qs('.song-title').innerText = this.songList[this.lastSelectedSong].title;
     }
   }
 }
 
-function buildDotSongLookup() {
+function buildDotSongLookup({cartridgeYStart, dotStep, songList}) {
   /* Create a lookup map for matching cartridge y pos to dot/song numbers */
   let dotSongLookup = []
     , sources       = []
@@ -96,8 +104,7 @@ function buildDotSongLookup() {
 
   /* batch init audio sources */
   for (let index in songList) {
-    let songElement = document.querySelector('#' + songList[index].id);
-    sources[index] = songElement;
+    sources[index] = document.querySelector('#' + songList[index].id);
   }
 
   return [dotSongLookup, sources]

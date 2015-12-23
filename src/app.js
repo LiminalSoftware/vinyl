@@ -9,12 +9,17 @@ const qs                     = document.querySelector.bind(document)
   , platter                  = qs('canvas.platter')
   , platterContext           = platter.getContext('2d')
   , platterImage             = qs('img.platter')
-  , tonearmImage             = qs('.tonearm')
-  , currentTimeSpan          = qs('#current-time')
-  , totalTimeSpan            = qs('#total-time')
-  , playhead                 = qs('#header')
-  , scrubber                 = qs('.scrubber')
-  , rail                     = qs('.rail')
+  , cartridgeYStart          = 0
+  , cartridgeYEnd            = 216
+  , selectors                = {
+        playButton     : '#playbtn',
+        tonearm        : '.tonearm',
+        currentTimeSpan: '#current-time',
+        totalTimeSpan  : '#total-time',
+        playhead       : '#header',
+        scrubber       : '.scrubber',
+        rail           : '.rail'
+      }
   , scrubberCenterOffset     = 20
   , fps                      = 30
   , rpm                      = 34.6
@@ -25,10 +30,10 @@ const qs                     = document.querySelector.bind(document)
   , platterToPhoneWidthRatio = 559.424
   , tonearmToPhoneWidthRatio = 447.770
   , tonearmAspectRatio       = 1.744
-  , tonearmRotate            = qs('#tonearmRotate')
   , scrubberDefaultY         = 6
   , scrubberDefaultX         = 0
   , numberOfSongs            = 9
+  , railWidth                = parseInt(window.getComputedStyle(qs('.rail'), null).getPropertyValue('width'), 10)
   , songList                 = {
         0: {index: 0, id: 'nu-disco', title: 'Nu Disco', file: 'mixes/nu-disco.mp3', duration: '04:12'},
         1: {index: 1, id: 'cafe-del-mar', title: 'Cafe Del Mar', file: 'mixes/cafe-del-mar.mp3', duration: '05:41'},
@@ -53,8 +58,8 @@ const qs                     = document.querySelector.bind(document)
         }
       };
 
-const audio = new Audio(songList, numberOfSongs);
-const controls = Controls(audio);
+const audio = new Audio({songList, numberOfSongs, cartridgeYStart, cartridgeYEnd});
+const controls = new Controls({audio, selectors, railWidth});
 
 const {playSong, pauseSong, seek} = audio;
 const {togglePlayPause, cartridgePlaced, cartridgeLifted} = controls;
@@ -66,9 +71,7 @@ var tonearmRotationDeg = 0
   , rotateIntervalId   = 0
   , platterRotationDeg = 0
   , scrubberFingerXOffset
-  , railWidth          = parseInt(window.getComputedStyle(qs('.rail'), null).getPropertyValue('width'), 10)
   ;
-
 
 
 function draw() {
@@ -114,7 +117,6 @@ const stopRotate = () => {
 const degToRad = (degrees) => {
   return degrees * (Math.PI / 180)
 };
-
 
 
 //-- INIT
