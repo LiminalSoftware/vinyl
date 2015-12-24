@@ -1,10 +1,15 @@
 import {entries} from './util';
 
 const qs = document.querySelector.bind(document)
-  ;
+  , scrubberDefaultY = 6
+  , scrubberDefaultX = 0;
+
+var cartridgeUp = false;
+//set the playbutton to default paused state
+var stateIsPause = true;
 
 export default class Controls {
-  constructor({ audio, selectors, railWidth }) {
+  constructor({ audio, selectors, railWidth, cartridgeYStart }) {
     Object.keys(selectors).map((name)=> {
       this[name] = qs(selectors[name]);
     });
@@ -19,58 +24,63 @@ export default class Controls {
 
     this.audio = audio;
     this.railWidth = railWidth;
+    this.cartridgeYStart = cartridgeYStart;
     this.playToPauseLeft = qs('#playToPauseLeft');
     this.playToPauseRight = qs('#playToPauseRight');
     this.pauseToPlayLeft = qs('#pauseToPlayLeft');
     this.pauseToPlayRight = qs('#pauseToPlayRight');
-    this.stateIsPause = true;
-    this.cartridgeDefaultY = 343; //NOTE: identical to element's starting `top` css property
-    this.cartridgeUp = false;
+    this.cartridgeDefaultY = 348; //NOTE: identical to element's starting `top` css property
 
-    this.playButton.addEventListener('touchend', togglePlayPause(this));
 
-    this.tonearm.addEventListener('touchstart', cartridgeTouchStartHandler(this));
-    this.tonearm.addEventListener('touchmove', cartrigeTouchMoveHandler(this));
-    this.tonearm.addEventListener('touchend', cartridgeTouchEndHandler(this));
+    this.playToPauseLeft.beginElement();
+    this.playToPauseRight.beginElement();
 
-    this.scrubber.addEventListener('touchstart', scrubberTouchStartHandler(this));
-    this.scrubber.addEventListener('touchend', scrubberTouchEndHandler(this));
+    this.playButton.addEventListener('touchend', togglePlayPauseHandler.bind(this));
+
+    this.tonearm.addEventListener('touchstart', cartridgeTouchStartHandler.bind(this));
+    this.tonearm.addEventListener('touchmove', cartrigeTouchMoveHandler.bind(this));
+    this.tonearm.addEventListener('touchend', cartridgeTouchEndHandler.bind(this));
+
+    this.scrubber.addEventListener('touchstart', scrubberTouchStartHandler.bind(this));
+    this.scrubber.addEventListener('touchend', scrubberTouchEndHandler.bind(this));
+
+    //set up custom event listener for moveHead
+    document.addEventListener('moveHead', (e) => {
+      let {currentSong, railWidth, percentage, scrubberCenterOffset, scrubber} = e.detail;
+      this.movePlayhead(railWidth, percentage, scrubberCenterOffset, this.scrubber);
+    }, false);
   }
 
   cartridgeLifted() {
     //simulate lift effect
     this.tonearm.classList.add('up');
-    this.cartridgeUp = true;
+    cartridgeUp = true;
     //hide playhead
     this.playhead.classList.add('invisible');
     this.audio.pauseSong();
+    console.log('cartLifted');
   }
 
   cartridgePlaced(position) {
-    this.cartridgeUp = false;
-
-    //TODO: don't think this logic is correct anymore - `cartridgeYStart` is the top of the tonearm reach
-    if (this.audio.lastSelectedSong.index > -1 && position < this.cartridgeYStart) {
-      //-- case for resuming?
-      //show playhead
+    console.log('cartridgePlaced');
+    this.tonearm.classList.remove('up');
+    cartridgeUp = false;
+    let offsetTop = qs('.tonearm').offsetTop;
+    if (offsetTop > this.cartridgeYStart && this.audio.currentSong) {
       this.playhead.classList.remove('invisible');
-      this.totalTimeSpan.innerText = this.audio.songList[this.audio.lastSelectedSong].duration;
-      //start song
-      // v-- should this be factored out?
+      this.totalTimeSpan.innerText = this.audio.songList[this.audio.currentSong.index].duration;
       this.audio.playSong(this.currentTimeSpan);
-
-      //show play-pause-btn
       this.playButton.classList.add('bounce-up-show');
-
-      //TODO: don't think this logic is correct - `cartridgeYStart` is the top of the tonearm reach
-    } else if (position == this.cartridgeYStart) {
-      //hide play-pause-btn
-      //clean up
-      cleanUp(this);
+      resetPlayPauseButton(this);
+    } else if (offsetTop > 348) {
+      this.cleanUp(this);
+      this.audio.pauseSong();
+      togglePlayPause(this);
     } else {
       //-- case for playing a song different from what was playing last?
       this.playButton.classList.remove('bounce-up-show');
-      this.audio.playSong();
+      this.audio.playSong(this.currentTimeSpan);
+      resetPlayPauseButton(this);
     }
   }
 
@@ -78,11 +88,12 @@ export default class Controls {
     return (touch || this.lastTouch).clientY - this.lastFingerCartridgeOffset - this.cartridgeDefaultY
   }
 
-  movePlayhead(railWidth, percentage, scrubberCenterOffset, scrubber) {
+  movePlayhead(railWidth, percentage, scrubberCenterOffset) {
     //TODO: different from `this.railWidth`?
-    let newpos = ((railWidth * (percentage / 100)) + this.scrubberCenterOffset).toString() + 'px';
+    let newpos = ((railWidth * (percentage / 100)) + scrubberCenterOffset).toString() + 'px';
     //TODO: different from `this.scrubber`?
-    scrubber.style.left = newpos;
+    this.scrubber.style.left = newpos;
+    //console.log('moved scrubber', newpos);
     return newpos;
   }
 
@@ -97,117 +108,128 @@ export default class Controls {
   }
 }
 
-//playToPauseLeft.beginElement();
-//playToPauseRight.beginElement();
+function resetPlayPauseButton(that) {
+  stateIsPause = true;
+  that.playToPauseLeft.beginElement();
+  that.playToPauseRight.beginElement();
+}
+
+function togglePlayPauseHandler(e) {
+  e.preventDefault();
+  togglePlayPause(this);
+}
+
 function togglePlayPause(that) {
-  return (e)=> {
-    console.log('togglePlayPause', that.stateIsPause);
-    e.preventDefault();
-    if (!stateIsPause) {
-      that.stateIsPause = true;
-      that.playToPauseLeft.beginElement();
-      that.playToPauseRight.beginElement();
-      that.cartridgePlaced(that.calculateCartridgePosition())
-    } else {
-      that.stateIsPause = false;
-      that.pauseToPlayLeft.beginElement();
-      that.pauseToPlayRight.beginElement();
-      that.cartridgeLifted()
-    }
+  if (!stateIsPause) {
+    stateIsPause = true;
+    that.playToPauseLeft.beginElement();
+    that.playToPauseRight.beginElement();
+    that.cartridgePlaced(that.calculateCartridgePosition())
+  } else {
+    stateIsPause = false;
+    that.pauseToPlayLeft.beginElement();
+    that.pauseToPlayRight.beginElement();
+    that.cartridgeLifted()
   }
 }
 
-function cartridgeTouchStartHandler(that) {
-  return (e)=> {
-    /*  that is needed to prevent the dark outline
-     from forming on touch of image */
-    e.preventDefault();
-    that.lastTouch = e.touches[0];
-    that.cartridgeFirstTouch = e.touches[0].clientY;
-    that.lastFingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
+function cartridgeTouchStartHandler(e) {
+  /*  this is needed to prevent the dark outline
+   from forming on touch of image */
+  e.preventDefault();
+  this.lastTouch = e.touches[0];
+  this.cartridgeFirstTouch = e.touches[0].clientY;
+  this.lastFingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
 
-    console.log({
-      cartridgeFirstTouch: that.cartridgeFirstTouch,
-      cartrigeY          : e.currentTarget.offsetTop,
-      finger_cart_offset : that.lastFingerCartridgeOffset
-    });
+  console.log({
+    cartridgeFirstTouch: this.cartridgeFirstTouch,
+    cartrigeY: e.currentTarget.offsetTop,
+    lastFingerCartridgeOffset: this.lastFingerCartridgeOffset
+  });
+  hideInstructions();
+  this.cartridgeLifted();
+}
+
+function cartrigeTouchMoveHandler(e) {
+  let newPosition = this.calculateCartridgePosition(e.touches[0])
+    , lowerLimit = 22
+    , upperLimit = -213
+    , validDotIndex
+    , currentSongTitle
+    , currentSong
+    , direction = (e.touches[0].clientY < this.cartridgeFirstTouch) ? 'UP' : 'DOWN'
+    ;
+  //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
+
+  //CASE we are moving DOWN and we have reached the resting position
+  if ((e.currentTarget.offsetTop > this.cartridgeDefaultY) && (direction == 'DOWN')) {
+    this.cleanUp();
+    showInstructions();
+    this.playButton.classList.remove('bounce-up-show');
+  } else if (lowerLimit > newPosition && newPosition > upperLimit) {
     hideInstructions();
-    that.cartridgeLifted();
-
-  }
-}
-
-function cartrigeTouchMoveHandler(that) {
-  return (e)=> {
-    let newPosition = that.calculateCartridgePosition(e.touches[0])
-      , lowerLimit  = 22
-      , upperLimit  = -213
-      , validDotIndex
-      , currentSongTitle
-      , direction   = (e.touches[0].clientY < that.cartridgeFirstTouch) ? 'UP' : 'DOWN'
-      ;
-    //console.log('direction', direction, 'offsetTop', e.currentTarget.offsetTop, 'newPosition', newPosition);
-
-    if ((e.currentTarget.offsetTop > that.cartridgeDefaultY) && (direction == 'DOWN')) {
-      that.cleanUp();
-      showInstructions();
-    } else if (lowerLimit > newPosition && newPosition > upperLimit) {
-      hideInstructions();
-      currentSongTitle = that.audio.selectSong(-newPosition);
-      that.tonearm.style.marginTop = newPosition + 'px';
-      that.lastTouch = e.touches[0];
-    } else if (lowerLimit < newPosition) {
-      hideInstructions();
-      currentSongTitle = that.audio.selectSong(-lowerLimit);
-      that.tonearm.style.marginTop = lowerLimit + 'px';
-    } else if (newPosition < upperLimit) {
-      hideInstructions();
-      currentSongTitle = that.audio.selectSong(-upperLimit);
-      that.tonearm.style.marginTop = upperLimit + 'px';
+    validDotIndex = this.audio.getValidDotIndex(-newPosition);
+    if (validDotIndex !== null) {
+      this.audio.currentSong = this.audio.selectSong(validDotIndex);
     }
-    that.cleanUp();
-    //TODO: refactor --v
-    if (validDotIndex) qs('#dot' + validDotIndex).className = 'dot active';
-    if (currentSongTitle) qs('.song-title').innerText = currentSongTitle;
+    this.tonearm.style.marginTop = newPosition + 'px';
+    this.lastTouch = e.touches[0];
+
+  } else if (lowerLimit < newPosition) {
+    hideInstructions();
+    validDotIndex = this.audio.getValidDotIndex(-lowerLimit);
+    if (validDotIndex !== null) {
+      this.audio.currentSong = this.audio.selectSong(validDotIndex);
+    }
+    this.tonearm.style.marginTop = lowerLimit + 'px';
+
+  } else if (newPosition < upperLimit) {
+    hideInstructions();
+    validDotIndex = this.audio.getValidDotIndex(-upperLimit);
+    if (validDotIndex !== null) {
+      this.audio.currentSong = this.audio.selectSong(validDotIndex);
+    }
+    console.log('currentSongTitle', currentSongTitle);
+    this.tonearm.style.marginTop = upperLimit + 'px';
+  }
+
+  this.cleanUp();
+  //TODO: refactor --v
+  if (this.audio.currentSong && validDotIndex != null) {
+    activateSongDot(validDotIndex);
+    if (this.audio.currentSong) qs('.song-title').innerText = this.audio.currentSong.title;
   }
 }
 
-function cartridgeTouchEndHandler(that) {
-  return (e)=> {
-    that.tonearm.classList.remove('up');
-    that.cartridgePlaced(that.lastTouch.clientY - that.lastFingerCartridgeOffset - that.cartridgeDefaultY);
-  }
+function cartridgeTouchEndHandler(e) {
+  let currentCartridgePosY = e.changedTouches[0].clientY - e.currentTarget.offsetTop;
+  //this.cartridgePlaced(this.lastTouch.clientY - this.lastFingerCartridgeOffset - this.cartridgeDefaultY);
+  this.cartridgePlaced(currentCartridgePosY);
 }
 
-function scrubberTouchStartHandler(that) {
-  return (e)=> {
-    e.preventDefault();
-    that.scrubberFingerXOffset = getOffsetOfTouchObject(e).xOffset;
-    that.scrubber.addEventListener('touchmove', that.scrubberTouchMoveHandler);
-  }
+function scrubberTouchStartHandler(e) {
+  e.preventDefault();
+  this.scrubberFingerXOffset = getOffsetOfTouchObject(e).xOffset;
+  this.scrubber.addEventListener('touchmove', scrubberTouchMoveHandler.bind(this));
 }
 
 function reportTimelinePercentage(currentPos) {
   return ((parseInt(currentPos, 10) - scrubberDefaultX) / this.railWidth) * 100;
 }
 
-function scrubberTouchMoveHandle(that) {
-  return (e)=> {
-    let newPosition = (e.touches[0].clientX - that.scrubberFingerXOffset - that.scrubberDefaultX)
-      , lowerLimit  = 0
-      , upperLimit  = that.railWidth;
-    let newX = newPosition < lowerLimit ? lowerLimit :
-      (newPosition >= upperLimit ? upperLimit : newPosition);
-    that.scrubber.style.marginLeft = newX + 'px';
-  }
+function scrubberTouchMoveHandler(e) {
+  let newPosition = (e.touches[0].clientX - this.scrubberFingerXOffset - scrubberDefaultX)
+    , lowerLimit = 0
+    , upperLimit = this.railWidth;
+  let newX = newPosition < lowerLimit ? lowerLimit :
+    (newPosition >= upperLimit ? upperLimit : newPosition);
+  this.scrubber.style.left = newX + 'px';
 }
 
-function scrubberTouchEndHandler(that) {
-  return (e)=> {
-    scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
-    seek(currentSong, (parseInt(scrubber.style.marginLeft, 10) / that.railWidth) * 100, sources);
-    console.log(reportTimelinePercentage(scrubber.style.marginLeft));
-  }
+function scrubberTouchEndHandler(e) {
+  this.scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
+  this.audio.seek((parseInt(this.scrubber.style.left, 10) / this.railWidth) * 100);
+  //console.log(reportTimelinePercentage(this.scrubber.style.marginLeft));
 }
 
 //helper methods
@@ -216,6 +238,10 @@ function deactivateDots() {
     el.classList.remove('active');
   });
 };
+
+function activateSongDot(validDotIndex) {
+  qs('#dot' + validDotIndex).className = 'dot active'
+}
 
 function hideInstructions() {
   qs('.buttons').classList.remove('hidden');

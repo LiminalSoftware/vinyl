@@ -6,12 +6,12 @@ export default class Audio {
   constructor({songList, numberOfSongs, cartridgeYStart, cartridgeYEnd}) {
     this.songList = songList;
 
-    let range   = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
+    let range = (cartridgeYEnd - cartridgeYStart) // the range of vertical motion of the cartridge
       , dotStep = Math.abs(range / numberOfSongs)
       ;
 
-    this.currentSong = {};
-    this.lastSelectedSong = null;
+    this.currentSong = null;
+    //this.lastSelectedSong = null;
 
     //-- INIT
     [this.dotSongLookup, this.sources] = buildDotSongLookup({
@@ -25,14 +25,15 @@ export default class Audio {
   //  return this.songList;
   //}
 
-  playSong(currentTimeSpan, song) {
-    if (!song || !song.index) song = this.lastSelectedSong
+  playSong(song) {
+    let currentTimeSpan = qs('#current-time'); //TODO: fix this duplication
+    if (!song || !song.index) song = this.currentSong;
     //set current song so that we could stop/pause it later
     this.sources[song.index].play();
-    console.log(this.sources[song.index].currentTime);
+    //console.log(this.sources[song.index].currentTime);
 
-    let scrubber             = document.querySelector('.scrubber')
-      , rail                 = document.querySelector('.rail')
+    let scrubber = document.querySelector('.scrubber')
+      , rail = document.querySelector('.rail')
       , scrubberCenterOffset = 20;
 
     this.currentSong = song;
@@ -46,19 +47,29 @@ export default class Audio {
       let cTime = this.sources[song.index].currentTime;
       currentTimeSpan.innerText = formatCurrentTime(cTime);
       let percentage = ((cTime * 1000) / songLengthInMillisec) * 100;
-      console.log('percentage', percentage);
-      console.log('current time: ', cTime, 'songLengthInMillisec', songLengthInMillisec);
+      //console.log('percentage', percentage);
+      //console.log('current time: ', cTime, 'songLengthInMillisec', songLengthInMillisec);
 
       //TODO: this is a `control` concern
-      movePlayhead(233, percentage, scrubberCenterOffset, scrubber);
+      let event = new CustomEvent('moveHead', {
+        detail: {
+          currentSong: this.currentSong,
+          railWidth: 233,
+          percentage,
+          scrubberCenterOffset,
+          scrubber
+        }
+      });
+      document.dispatchEvent(event);
+      //movePlayhead(233, percentage, scrubberCenterOffset, scrubber);
     }, 1000);
   }
 
   pauseSong() {
     if (this.timer) clearInterval(this.timer);
     if (this.currentSong && this.currentSong.id) {
-      qs('#' + currentSong.id).pause();
-      console.log('pausing song: ', currentSong.file);
+      qs('#' + this.currentSong.id).pause();
+      //console.log('pausing song: ', this.currentSong.file);
       //TODO: disable scrubber here
     }
   }
@@ -74,25 +85,29 @@ export default class Audio {
   //  //}
   //}
 
-  selectSong(position) {
-    let validDotIndex = this.dotSongLookup.findIndex((arr)=> {
+  seek(position) {
+    console.log(`'seeking position ' ${position} 'on song' ${this.currentSong.title}`);
+    this.playSong(position);
+  }
+
+  getValidDotIndex(position) {
+    return this.dotSongLookup.findIndex((arr)=> {
       return between(position, ...arr);
     });
+  }
 
-    if (validDotIndex > -1) {
-      this.lastSelectedSong = this.songList[validDotIndex];
-      return this.lastSelectedSong.title;
-    } else {
-      return [null, null]
-    }
+  //returns [currentSong, validDotIndex]
+  selectSong(validDotIndex) {
+    this.currentSong = this.songList[validDotIndex];
+    return this.currentSong;
   }
 }
 
 function buildDotSongLookup({cartridgeYStart, dotStep, songList}) {
   /* Create a lookup map for matching cartridge y pos to dot/song numbers */
   let dotSongLookup = []
-    , sources       = []
-    , start         = cartridgeYStart + dotStep //first position of the first song dot
+    , sources = []
+    , start = cartridgeYStart + dotStep //first position of the first song dot
     ;
 
   [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach((n)=> {
@@ -102,7 +117,7 @@ function buildDotSongLookup({cartridgeYStart, dotStep, songList}) {
     dotSongLookup.push([from, to]);
     //dotSongLookup[(start - (n * dotStep))] = n;
   });
-  console.log('dotSongLookup.length', dotSongLookup.length, dotSongLookup);
+  //console.log('dotSongLookup.length', dotSongLookup.length, dotSongLookup);
 
   /* batch init audio sources */
   for (let index in songList) {
@@ -117,12 +132,12 @@ function setSongTitle(title) {
 }
 
 function formatCurrentTime(val) {
-  let ms        = val * 1000
+  let ms = val * 1000
     , minuteVal = parseInt(ms / 1000 / 60, 10)
-    , minute    = minuteVal > 9 ?
-        minuteVal :
-      '0' + minuteVal
-    , seconds   = parseInt(ms / 1000 % 60, 10)
+    , minute = minuteVal > 9 ?
+      minuteVal :
+    '0' + minuteVal
+    , seconds = parseInt(ms / 1000 % 60, 10)
     ;
   return (minute > 0) ?
   minute + ':' + seconds :
