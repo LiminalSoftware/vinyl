@@ -7,6 +7,7 @@ const qs = document.querySelector.bind(document)
 var cartridgeUp = false;
 //set the playbutton to default paused state
 var stateIsPause = true;
+var scrubberFingerXOffset = 0;
 
 export default class Controls {
   constructor({ audio, selectors, railWidth, cartridgeYStart }) {
@@ -47,8 +48,21 @@ export default class Controls {
     //set up custom event listener for moveHead
     document.addEventListener('moveHead', (e) => {
       let {currentSong, railWidth, percentage, scrubberCenterOffset, scrubber} = e.detail;
-      this.movePlayhead(railWidth, percentage, scrubberCenterOffset, this.scrubber);
+      this.movePlayhead(this.railWidth, percentage, scrubberCenterOffset, this.scrubber);
     }, false);
+
+
+    function songEndHandler(e) {
+      let {currentSong, target} = e.detail;
+      //pause song, reset currentTime to 0, togglePlayPaused
+      target.currentTime = 0;
+      target.pause();
+      togglePlayPause(this)
+
+    }
+
+
+    document.addEventListener('songEnd', songEndHandler.bind(this), false);
   }
 
   cartridgeLifted() {
@@ -90,8 +104,10 @@ export default class Controls {
 
   movePlayhead(railWidth, percentage, scrubberCenterOffset) {
     //TODO: different from `this.railWidth`?
-    let newpos = ((railWidth * (percentage / 100)) + scrubberCenterOffset).toString() + 'px';
+    //let newpos = ((railWidth * (percentage / 100)) + scrubberCenterOffset).toString() + 'px';
+    let newpos = ((this.railWidth * (percentage / 100))).toString() + 'px';
     //TODO: different from `this.scrubber`?
+    console.log(`movePlayhead, railWidth ${this.railWidth}, percentage ${percentage} newpos ${newpos}`);
     this.scrubber.style.left = newpos;
     //console.log('moved scrubber', newpos);
     return newpos;
@@ -209,7 +225,7 @@ function cartridgeTouchEndHandler(e) {
 
 function scrubberTouchStartHandler(e) {
   e.preventDefault();
-  this.scrubberFingerXOffset = getOffsetOfTouchObject(e).xOffset;
+  scrubberFingerXOffset = getOffsetOfTouchObject(e).xOffset;
   this.scrubber.addEventListener('touchmove', scrubberTouchMoveHandler.bind(this));
 }
 
@@ -218,7 +234,7 @@ function reportTimelinePercentage(currentPos) {
 }
 
 function scrubberTouchMoveHandler(e) {
-  let newPosition = (e.touches[0].clientX - this.scrubberFingerXOffset - scrubberDefaultX)
+  let newPosition = (e.touches[0].clientX - scrubberFingerXOffset - scrubberDefaultX)
     , lowerLimit = 0
     , upperLimit = this.railWidth;
   let newX = newPosition < lowerLimit ? lowerLimit :
@@ -228,8 +244,8 @@ function scrubberTouchMoveHandler(e) {
 
 function scrubberTouchEndHandler(e) {
   this.scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
+  //this.audio.seek((parseInt(this.scrubber.style.left, 10) - scrubberDefaultX / this.railWidth) * 100);
   this.audio.seek((parseInt(this.scrubber.style.left, 10) / this.railWidth) * 100);
-  //console.log(reportTimelinePercentage(this.scrubber.style.marginLeft));
 }
 
 //helper methods

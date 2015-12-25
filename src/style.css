@@ -64,6 +64,12 @@ canvas {
     width: 75%;
 }
 
+.scrubber-container {
+    position: relative;
+    background-color: green;
+    width: 200px;
+}
+
 .headsup {
     max-height: 105px;
     height: 105px;
@@ -162,7 +168,7 @@ canvas {
 .dots {
     position: absolute;
     left: 16px;
-    top: 176px;
+    top: 155px;
 }
 
 .dots-container {

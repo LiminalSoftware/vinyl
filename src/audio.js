@@ -17,7 +17,8 @@ export default class Audio {
     [this.dotSongLookup, this.sources] = buildDotSongLookup({
       cartridgeYStart,
       dotStep,
-      songList
+      songList,
+      that: this
     });
   }
 
@@ -37,17 +38,17 @@ export default class Audio {
       , scrubberCenterOffset = 20;
 
     this.currentSong = song;
-    //TODO: move this to the init function and add it to the songList: { duration: {mil: 23432, label: "03:45"}...}
-    let [min, sec] = song.duration.split(':');
-    let songLengthInMillisec = parseInt(min, 10) * 60 * 1000 + parseInt(sec, 10) * 1000;
+    ////TODO: move this to the init function and add it to the songList: { duration: {mil: 23432, label: "03:45"}...}
+    //let [min, sec] = song.duration.split(':');
+    //let songLengthInMillisec = parseInt(min, 10) * 60 * 1000 + parseInt(sec, 10) * 1000;
 
     setSongTitle(song.title);
 
     this.timer = setInterval(()=> {
       let cTime = this.sources[song.index].currentTime;
       currentTimeSpan.innerText = formatCurrentTime(cTime);
-      let percentage = ((cTime * 1000) / songLengthInMillisec) * 100;
-      //console.log('percentage', percentage);
+      let percentage = ((cTime * 1000) / song.durationInMillisec) * 100;
+      console.log('cTime', cTime);
       //console.log('current time: ', cTime, 'songLengthInMillisec', songLengthInMillisec);
 
       //TODO: this is a `control` concern
@@ -85,9 +86,12 @@ export default class Audio {
   //  //}
   //}
 
-  seek(position) {
-    console.log(`'seeking position ' ${position} 'on song' ${this.currentSong.title}`);
-    this.playSong(position);
+  seek(percentage) {
+    let currentSongElement = qs(`#${this.currentSong.id}`);
+    let newPos = getSongPositionFromPercentage(percentage, this.currentSong);
+    console.log(`'seeking position ' ${percentage} 'on song' ${this.currentSong.title} ${this.currentSong.duration}
+     ${this.currentSong.durationInMillisec} newPos: ${newPos}`);
+    currentSongElement.currentTime = newPos;
   }
 
   getValidDotIndex(position) {
@@ -103,7 +107,7 @@ export default class Audio {
   }
 }
 
-function buildDotSongLookup({cartridgeYStart, dotStep, songList}) {
+function buildDotSongLookup({cartridgeYStart, dotStep, songList, that}) {
   /* Create a lookup map for matching cartridge y pos to dot/song numbers */
   let dotSongLookup = []
     , sources = []
@@ -122,6 +126,19 @@ function buildDotSongLookup({cartridgeYStart, dotStep, songList}) {
   /* batch init audio sources */
   for (let index in songList) {
     sources[index] = document.querySelector('#' + songList[index].id);
+    sources[index].addEventListener('ended', (e) => {
+      let event = new CustomEvent('songEnd', {
+        detail: {
+          currentSong: that.currentSong,
+          target: e.target
+        }
+      });
+      document.dispatchEvent(event);
+
+
+      //emit stop play event? passing songElement and reset playPauseButton
+      console.log('ended', '', e);
+    }, false);
   }
 
   return [dotSongLookup, sources]
@@ -146,4 +163,15 @@ function formatCurrentTime(val) {
 
 function between(x, min, max) {
   return x >= min && x <= max;
+}
+
+function getSongPositionFromPercentage(percent, song) {
+  //get millisecond value of the whole song ex: 100% of 247000 = 4.07
+
+  let songDurationInSec = song.durationInMillisec / 1000;
+  let newSongPositionInSec = songDurationInSec * percent / 100;
+  let formattedString = formatCurrentTime(newSongPositionInSec * 60);
+  let value = parseFloat(formattedString);
+  console.log('getSongPositionFromPercentage', value);
+  return value;
 }
