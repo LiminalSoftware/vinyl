@@ -70,6 +70,7 @@ export default class Controls {
         deactivateDots();
         activateSongDot(index + 1);
         console.log('play next song: ', index + 1);
+        this.totalTimeSpan.innerText = this.audio.songList[index + 1].duration;
         this.audio.playSong(index + 1)
       }
 
