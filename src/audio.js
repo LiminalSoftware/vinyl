@@ -26,28 +26,25 @@ export default class Audio {
   //  return this.songList;
   //}
 
-  playSong(song) {
+  playSong(songIndex) {
+
     let currentTimeSpan = qs('#current-time'); //TODO: fix this duplication
-    if (!song || !song.index) song = this.currentSong;
+    if(songIndex !== null && songIndex !== undefined) {
+      this.currentSong = this.songList[songIndex];
+    }
     //set current song so that we could stop/pause it later
-    this.sources[song.index].play();
-    //console.log(this.sources[song.index].currentTime);
+    this.sources[this.currentSong.index].play();
 
     let scrubber = document.querySelector('.scrubber')
       , rail = document.querySelector('.rail')
       , scrubberCenterOffset = 20;
 
-    this.currentSong = song;
-    ////TODO: move this to the init function and add it to the songList: { duration: {mil: 23432, label: "03:45"}...}
-    //let [min, sec] = song.duration.split(':');
-    //let songLengthInMillisec = parseInt(min, 10) * 60 * 1000 + parseInt(sec, 10) * 1000;
-
-    setSongTitle(song.title);
+    setSongTitle(this.currentSong.title);
 
     this.timer = setInterval(()=> {
-      let cTime = this.sources[song.index].currentTime;
+      let cTime = this.sources[this.currentSong.index].currentTime;
       currentTimeSpan.innerText = formatCurrentTime(cTime);
-      let percentage = ((cTime * 1000) / song.durationInMillisec) * 100;
+      let percentage = ((cTime * 1000) / this.currentSong.durationInMillisec) * 100;
       console.log('cTime', cTime);
       //console.log('current time: ', cTime, 'songLengthInMillisec', songLengthInMillisec);
 
@@ -104,6 +101,14 @@ export default class Audio {
   selectSong(validDotIndex) {
     this.currentSong = this.songList[validDotIndex];
     return this.currentSong;
+  }
+
+  getLastSongIndex() {
+    let indices = [];
+    for (let song in this.songList) {
+      indices.push(this.songList[song].index);
+    }
+    return Math.max(...indices);
   }
 }
 

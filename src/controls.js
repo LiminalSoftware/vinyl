@@ -54,16 +54,29 @@ export default class Controls {
 
     function songEndHandler(e) {
       let {currentSong, target} = e.detail;
-      //pause song, reset currentTime to 0, togglePlayPaused
-      target.currentTime = 0;
       target.pause();
-      togglePlayPause(this)
+      //check if there's a next song
+      let lastSongIndex = this.audio.getLastSongIndex();
+      let {index} = currentSong;
+      if(index == lastSongIndex) {
+        target.currentTime = 0;
+        togglePlayPause(this)
+      }else{
+        //get the next song target
+        //move the cartridge up by a predetermined amount (i.e., the space between dots 25px)
+        this.tonearm.style.marginTop = (parseInt(this.tonearm.style.marginTop, 10) - 25) + 'px';
+        deactivateDots();
+        activateSongDot(index + 1);
+        console.log('play next song: ', index + 1);
+        this.audio.playSong(index + 1)
+      }
 
     }
 
 
     document.addEventListener('songEnd', songEndHandler.bind(this), false);
   }
+
 
   cartridgeLifted() {
     //simulate lift effect
@@ -83,7 +96,7 @@ export default class Controls {
     if (offsetTop > this.cartridgeYStart && this.audio.currentSong) {
       this.playhead.classList.remove('invisible');
       this.totalTimeSpan.innerText = this.audio.songList[this.audio.currentSong.index].duration;
-      this.audio.playSong(this.currentTimeSpan);
+      this.audio.playSong();
       this.playButton.classList.add('bounce-up-show');
       resetPlayPauseButton(this);
     } else if (offsetTop > 348) {
@@ -93,7 +106,7 @@ export default class Controls {
     } else {
       //-- case for playing a song different from what was playing last?
       this.playButton.classList.remove('bounce-up-show');
-      this.audio.playSong(this.currentTimeSpan);
+      this.audio.playSong();
       resetPlayPauseButton(this);
     }
   }
