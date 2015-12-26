@@ -30,6 +30,8 @@ export default class Controls {
     this.playToPauseRight = qs('#playToPauseRight');
     this.pauseToPlayLeft = qs('#pauseToPlayLeft');
     this.pauseToPlayRight = qs('#pauseToPlayRight');
+    this.disclaimerBtn = qs('.disclaimer-btn');
+
     this.cartridgeDefaultY = 348; //NOTE: identical to element's starting `top` css property
 
     this.suspendAutoScubberMovement = false;
@@ -60,10 +62,10 @@ export default class Controls {
       //check if there's a next song
       let lastSongIndex = this.audio.getLastSongIndex();
       let {index} = currentSong;
-      if(index == lastSongIndex) {
+      if (index == lastSongIndex) {
         target.currentTime = 0;
         togglePlayPause(this)
-      }else{
+      } else {
         //get the next song target
         //move the cartridge up by a predetermined amount (i.e., the space between dots 25px)
         this.tonearm.style.marginTop = (parseInt(this.tonearm.style.marginTop, 10) - 25) + 'px';
@@ -78,6 +80,7 @@ export default class Controls {
 
 
     document.addEventListener('songEnd', songEndHandler.bind(this), false);
+    this.disclaimerBtn.addEventListener('touchend', preprocessFiles.bind(this));
   }
 
 
@@ -264,6 +267,14 @@ function scrubberTouchEndHandler(e) {
   this.scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
   //this.audio.seek((parseInt(this.scrubber.style.left, 10) - scrubberDefaultX / this.railWidth) * 100);
   this.audio.seek((parseInt(this.scrubber.style.left, 10) / this.railWidth) * 100);
+}
+
+function preprocessFiles(e) {
+    //loop through all sources and trigger play/pause
+
+  //remove .blocker
+  this.audio.preprocessFiles()
+  qs('#main').removeChild(qs('.blocker'));
 }
 
 //helper methods

@@ -110,6 +110,13 @@ export default class Audio {
     }
     return Math.max(...indices);
   }
+
+  preprocessFiles() {
+    this.sources.map((s)=> {
+      s.play();
+      s.pause();
+    })
+  }
 }
 
 function buildDotSongLookup({cartridgeYStart, dotStep, songList, that}) {
