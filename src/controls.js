@@ -32,7 +32,7 @@ export default class Controls {
     this.pauseToPlayRight = qs('#pauseToPlayRight');
     this.cartridgeDefaultY = 348; //NOTE: identical to element's starting `top` css property
 
-
+    this.suspendAutoScubberMovement = false;
     this.playToPauseLeft.beginElement();
     this.playToPauseRight.beginElement();
 
@@ -48,7 +48,9 @@ export default class Controls {
     //set up custom event listener for moveHead
     document.addEventListener('moveHead', (e) => {
       let {currentSong, railWidth, percentage, scrubberCenterOffset, scrubber} = e.detail;
-      this.movePlayhead(this.railWidth, percentage, scrubberCenterOffset, this.scrubber);
+      if (!this.suspendAutoScubberMovement) {
+        this.movePlayhead(this.railWidth, percentage, scrubberCenterOffset, this.scrubber);
+      }
     }, false);
 
 
@@ -238,6 +240,7 @@ function cartridgeTouchEndHandler(e) {
 
 function scrubberTouchStartHandler(e) {
   e.preventDefault();
+  this.suspendAutoScubberMovement = true;
   scrubberFingerXOffset = getOffsetOfTouchObject(e).xOffset;
   this.scrubber.addEventListener('touchmove', scrubberTouchMoveHandler.bind(this));
 }
@@ -256,6 +259,7 @@ function scrubberTouchMoveHandler(e) {
 }
 
 function scrubberTouchEndHandler(e) {
+  this.suspendAutoScubberMovement = false;
   this.scrubber.removeEventListener('touchmove', scrubberTouchMoveHandler);
   //this.audio.seek((parseInt(this.scrubber.style.left, 10) - scrubberDefaultX / this.railWidth) * 100);
   this.audio.seek((parseInt(this.scrubber.style.left, 10) / this.railWidth) * 100);
