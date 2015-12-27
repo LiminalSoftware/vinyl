@@ -1,4 +1,6 @@
 //import { movePlayhead, cartridgeLifted, cartridgePlaced, calculateCartridgePosition } from './controls';
+import platform from 'platform';
+
 const qs = document.querySelector.bind(document)
   ;
 
@@ -22,14 +24,11 @@ export default class Audio {
     });
   }
 
-  //get songList() {
-  //  return this.songList;
-  //}
 
   playSong(songIndex) {
 
     let currentTimeSpan = qs('#current-time'); //TODO: fix this duplication
-    if(songIndex !== null && songIndex !== undefined) {
+    if (songIndex !== null && songIndex !== undefined) {
       this.currentSong = this.songList[songIndex];
     }
     //set current song so that we could stop/pause it later
@@ -112,10 +111,13 @@ export default class Audio {
   }
 
   preprocessFiles() {
-    this.sources.map((s)=> {
-      s.play();
-      s.pause();
-    })
+    console.log('platform', platform.os.family);
+    if (platform.os.family == 'iOS') {
+      this.sources.map((s)=> {
+        s.play();
+        s.pause();
+      })
+    }
   }
 }
 

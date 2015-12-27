@@ -1,4 +1,5 @@
 import {entries} from './util';
+import platform from 'platform';
 
 const qs = document.querySelector.bind(document)
   , scrubberDefaultY = 6
@@ -8,6 +9,8 @@ var cartridgeUp = false;
 //set the playbutton to default paused state
 var stateIsPause = true;
 var scrubberFingerXOffset = 0;
+var isProcessed = false;
+
 
 export default class Controls {
   constructor({ audio, selectors, railWidth, cartridgeYStart }) {
@@ -81,6 +84,15 @@ export default class Controls {
 
     document.addEventListener('songEnd', songEndHandler.bind(this), false);
     this.disclaimerBtn.addEventListener('touchend', preprocessFiles.bind(this));
+
+    window.addEventListener('orientationchange', (e)=> {
+      //get platform
+      //let p = platform.os.family;
+      //if(p === 'Android') {
+      //  console.log('android: ', window.orientation);
+      //}
+      checkOrientation()
+    })
   }
 
 
@@ -270,11 +282,43 @@ function scrubberTouchEndHandler(e) {
 }
 
 function preprocessFiles(e) {
-    //loop through all sources and trigger play/pause
+  //loop through all sources and trigger play/pause
 
   //remove .blocker
   this.audio.preprocessFiles()
   qs('#main').removeChild(qs('.blocker'));
+  isProcessed = true;
+  checkOrientation();
+}
+
+function showRotationWarning() {
+  //insert blocker into DOM
+  let blocker = document.createElement('div');
+  let instr = document.createElement('p');
+  let rotate = document.createElement('div');
+  rotate.className = 'rotate';
+  blocker.className = 'blocker';
+  instr.className = 'instructions';
+  instr.textContent = 'Please Rotate the Device';//TODO: translate this to German
+  blocker.appendChild(instr);
+  blocker.appendChild(rotate);
+  qs('#main').insertBefore(blocker, qs('#header'));
+}
+
+function removeRotationWarning() {
+  qs('#main').removeChild(qs('.blocker'));
+}
+
+function checkOrientation() {
+  let p = platform.os.family;
+  if(p === null) {return;}
+  if (isProcessed) {
+    if (window.orientation !== 0) {
+      showRotationWarning()
+    } else {
+      removeRotationWarning();
+    }
+  }
 }
 
 //helper methods
