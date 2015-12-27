@@ -13,7 +13,6 @@ export default class Audio {
       ;
 
     this.currentSong = null;
-    //this.lastSelectedSong = null;
 
     //-- INIT
     [this.dotSongLookup, this.sources] = buildDotSongLookup({
@@ -31,7 +30,6 @@ export default class Audio {
     if (songIndex !== null && songIndex !== undefined) {
       this.currentSong = this.songList[songIndex];
     }
-    //set current song so that we could stop/pause it later
     this.sources[this.currentSong.index].play();
 
     let scrubber = document.querySelector('.scrubber')
@@ -44,8 +42,6 @@ export default class Audio {
       let cTime = this.sources[this.currentSong.index].currentTime;
       currentTimeSpan.innerText = formatCurrentTime(cTime);
       let percentage = ((cTime * 1000) / this.currentSong.durationInMillisec) * 100;
-      console.log('cTime', cTime);
-      //console.log('current time: ', cTime, 'songLengthInMillisec', songLengthInMillisec);
 
       //TODO: this is a `control` concern
       let event = new CustomEvent('moveHead', {
@@ -58,7 +54,6 @@ export default class Audio {
         }
       });
       document.dispatchEvent(event);
-      //movePlayhead(233, percentage, scrubberCenterOffset, scrubber);
     }, 1000);
   }
 
@@ -66,27 +61,14 @@ export default class Audio {
     if (this.timer) clearInterval(this.timer);
     if (this.currentSong && this.currentSong.id) {
       qs('#' + this.currentSong.id).pause();
-      //console.log('pausing song: ', this.currentSong.file);
-      //TODO: disable scrubber here
     }
   }
-
-  //resumeSong() {
-  //  cartridgePlaced(calculateCartridgePosition());
-  //
-  //  //if (currentSong && currentSong.id) {
-  //  //  document.querySelector('#' + currentSong.id).play();
-  //  //  console.log('resumeSong');
-  //  //} else {
-  //  //  console.log('tried to resume song with no currentSong and/or currentSong.id');
-  //  //}
-  //}
 
   seek(percentage) {
     let currentSongElement = qs(`#${this.currentSong.id}`);
     let newPos = getSongPositionFromPercentage(percentage, this.currentSong);
-    console.log(`'seeking position ' ${percentage} 'on song' ${this.currentSong.title} ${this.currentSong.duration}
-     ${this.currentSong.durationInMillisec} newPos: ${newPos}`);
+    //console.log(`'seeking position ' ${percentage} 'on song' ${this.currentSong.title} ${this.currentSong.duration}
+    // ${this.currentSong.durationInMillisec} newPos: ${newPos}`);
     currentSongElement.currentTime = newPos;
   }
 
@@ -133,9 +115,7 @@ function buildDotSongLookup({cartridgeYStart, dotStep, songList, that}) {
     let from = base - dotStep / 2;
     let to = base + dotStep / 2;
     dotSongLookup.push([from, to]);
-    //dotSongLookup[(start - (n * dotStep))] = n;
   });
-  //console.log('dotSongLookup.length', dotSongLookup.length, dotSongLookup);
 
   /* batch init audio sources */
   for (let index in songList) {
@@ -147,11 +127,9 @@ function buildDotSongLookup({cartridgeYStart, dotStep, songList, that}) {
           target: e.target
         }
       });
+      /* emit stop play event passing
+         songElement and reset playPauseButton */
       document.dispatchEvent(event);
-
-
-      //emit stop play event? passing songElement and reset playPauseButton
-      console.log('ended', '', e);
     }, false);
   }
 
@@ -181,7 +159,6 @@ function between(x, min, max) {
 
 function getSongPositionFromPercentage(percent, song) {
   //get millisecond value of the whole song ex: 100% of 247000 = 4.07
-
   let songDurationInSec = song.durationInMillisec / 1000;
   let newSongPositionInSec = songDurationInSec * percent / 100;
   let formattedString = formatCurrentTime(newSongPositionInSec * 60);

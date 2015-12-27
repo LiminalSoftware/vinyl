@@ -1,11 +1,9 @@
 import Controls from './controls';
 import Audio from './audio';
-//import './polyfills';
 
 require('./style.css');
 
 const qs = document.querySelector.bind(document)
-  , qsa = document.querySelectorAll.bind(document)
   , platter = qs('canvas.platter')
   , platterContext = platter.getContext('2d')
   , platterImage = qs('img.platter')
@@ -23,14 +21,9 @@ const qs = document.querySelector.bind(document)
   , scrubberCenterOffset = 20
   , fps = 30
   , rpm = 34.6
-//, tableRotationDeg = 38.65
-
   , platterTranslateYPercent = 22.505
   , platterTranslateXPercent = 1.929
   , platterToPhoneWidthRatio = 559.424
-  , tonearmToPhoneWidthRatio = 447.770
-  , tonearmAspectRatio = 1.744
-
   , numberOfSongs = 9
   , railWidth = parseInt(window.getComputedStyle(qs('.scrubber-container'), null).getPropertyValue('width'), 10) - (scrubberCenterOffset / 2)
   , songList = {
@@ -44,6 +37,7 @@ const qs = document.querySelector.bind(document)
   7: {index: 7, id: 'ptg', title: 'Play The Game', file: 'songs/play-the-game.mp3', duration: '03:32'},
   8: {index: 8, id: 'tsmgo', title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
 };
+
 for (let song in songList) {
   let [min, sec] = songList[song].duration.split(':');
   songList[song].durationInMillisec = parseInt(min, 10) * 60 * 1000 + parseInt(sec, 10) * 1000;
@@ -52,31 +46,21 @@ for (let song in songList) {
 
 const audio = new Audio({songList, numberOfSongs, cartridgeYStart, cartridgeYEnd});
 const controls = new Controls({audio, selectors, railWidth, cartridgeYStart});
-
 const {playSong, pauseSong, seek} = audio;
 const {togglePlayPause, cartridgePlaced, cartridgeLifted} = controls;
 
-var {currentSong} = audio;
-
-
-var tonearmRotationDeg = 0
-  , rotateIntervalId = 0
+var rotateIntervalId = 0
   , platterRotationDeg = 0
-  , scrubberFingerXOffset
   ;
 
 
 function draw() {
-  //var width = platter.width = window.innerWidth
   platter.width = window.innerWidth;
   platter.height = window.innerHeight;
 
-  var width = 320
-  //, height = platter.height = window.innerHeight
+  var width = 320// TODO: do we need to set this absolute width?
     , height = 480
     , recordDiameter = width * (platterToPhoneWidthRatio / 100)
-  //, tonearmWidth = window.innerWidth * (tonearmToPhoneWidthRatio / 100)
-  //, tonearmHeight = tonearmWidth / tonearmAspectRatio
     ;
 
   platterContext.translate(
