@@ -1,3 +1,10 @@
+body {
+    padding: 0;
+    margin: 0;
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+}
+
 .hide {
     display: none;
 }
@@ -20,8 +27,6 @@ canvas {
     top: 0;
     left: 0;
 }
-
-
 
 .tonearm {
     position: fixed;
@@ -226,7 +231,7 @@ canvas {
     align-items: center;
     width: 100%;
     height: 150vh;
-    background-color: cadetblue;
+    background-color: #666666;
     position: fixed;
     top: 0;
     left: 0;
@@ -274,7 +279,6 @@ canvas {
     transition: bottom 250ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-
 .bounce {
     animation: bounce 2s infinite;
 }
@@ -288,5 +292,35 @@ canvas {
 }
 
 /*.offscreen {*/
-    /*animation-play-state: paused;*/
+/*animation-play-state: paused;*/
 /*}*/
+
+.step-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.step-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+}
+
+#brim-mask {
+    z-index: 100;
+    background-color: #666;
+}
+
+#brim-main {
+    z-index: 90;
+}
+
+#brim-main, #brim-mask {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}

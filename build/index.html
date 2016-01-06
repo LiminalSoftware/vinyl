@@ -21,330 +21,411 @@
     <title></title>
 </head>
 <body>
-<div class="hide">
-    <img class="platter" src="assets/platter-half.png" alt=""/>
-</div>
-<div id="main">
-    <div class="blocker">
-        <p class="instructions">
-                    Tonarm auf Scheibplatte bewegen und Musik genie&szlig;en.</p>
-        <div class="disclaimer-btn">OK</div>
+
+<div id="brim-main">
+    <div class="hide">
+        <img class="platter" src="assets/platter-half.png" alt=""/>
     </div>
-    <div id="header" class="header  invisible">
-        <div id="playhead" class="linear-playhead">
-            <div class="scrubber-container">
-                <div class="scrubber"></div>
+    <div id="main">
+        <!--<div class="blocker">-->
+            <!--<div class="step-1">-->
+                <!--<svg width="202px" height="246px" viewBox="0 0 202 246" version="1.1" xmlns="http://www.w3.org/2000/svg"-->
+                     <!--xmlns:xlink="http://www.w3.org/1999/xlink">-->
+                    <!--<title>stuff</title>-->
+                    <!--<defs>-->
+
+                    <!--</defs>-->
+                    <!--<style>-->
+                        <!--.text-style {-->
+                            <!--font-family: Helvetica, Arial, sans-serif;-->
+                            <!--font-weight: 400;-->
+                            <!--font-size: 20px;-->
+                        <!--}-->
+                    <!--</style>-->
+                    <!--<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">-->
+                        <!--<g id="stuff" transform="translate(-1.000000, 1.000000)">-->
+                            <!--<text id="Please-confirm-to-pl" class="text-style" fill="#FFFFFF">-->
+                                <!--<tspan x="0.31" y="109">Please confirm to play</tspan>-->
+                                <!--<tspan x="75.22" y="136">audio</tspan>-->
+                            <!--</text>-->
+                            <!--<g id="1-+-Oval-1" transform="translate(84.000000, 0.000000)">-->
+                                <!--<text id="1" class="text-style" fill="#FFFFFF">-->
+                                    <!--<tspan x="14" y="27">1</tspan>-->
+                                <!--</text>-->
+                                <!--<circle id="Oval-1" stroke="#FFFFFF" stroke-width="2" cx="20" cy="20" r="20"></circle>-->
+                            <!--</g>-->
+                            <!--<g id="confirm-to-play-button" transform="translate(9.000000, 173.000000)">-->
+                                <!--<rect id="Rectangle-3" fill="#D8D8D8" x="0" y="0" width="181" height="72" rx="8"></rect>-->
+                                <!--<text id="OK" class="text-style" fill="#565656">-->
+                                    <!--<tspan x="75" y="43">OK</tspan>-->
+                                <!--</text>-->
+                            <!--</g>-->
+                        <!--</g>-->
+                    <!--</g>-->
+                <!--</svg>-->
+                <!--&lt;!&ndash;<p class="instructions">&ndash;&gt;-->
+                <!--&lt;!&ndash;Tonarm auf Scheibplatte bewegen und Musik genie&szlig;en.</p>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="disclaimer-btn">OK</div>&ndash;&gt;-->
+            <!--</div>-->
+
+        <!--</div>-->
+        <div id="header" class="header  invisible">
+            <div id="playhead" class="linear-playhead">
+                <div class="scrubber-container">
+                    <div class="scrubber"></div>
+                </div>
+                <div class="rail"></div>
             </div>
-            <div class="rail"></div>
+            <p class="time-code">
+                <span id="current-time"></span>/
+                <span id="total-time"></span>
+            </p>
         </div>
-        <p class="time-code">
-            <span id="current-time"></span>/
-            <span id="total-time"></span>
-        </p>
-    </div>
-    <div class="headsup">
-        <p class="instructions">
-            Tonarm auf Scheibplatte bewegen und Musik genie&szlig;en.</p>
-        <div class="down-arrow bounce"></div>
-        <div class="buttons hidden">
-            <div class="button">
-                <div class="itunes"></div>
+        <div class="headsup">
+            <p class="instructions">
+                Tonarm auf Scheibplatte bewegen und Musik genie&szlig;en.</p>
+            <div class="down-arrow bounce"></div>
+            <div class="buttons hidden">
+                <div class="button">
+                    <div class="itunes"></div>
+                </div>
+                <div class="button">
+                    <div class="beatport"></div>
+                </div>
+                <div class="button">
+                    <div class="youtube"></div>
+                </div>
+                <div class="button">
+                    <div class="soundcloud"></div>
+                </div>
+                <div class="button">
+                    <div class="mp3"></div>
+                </div>
             </div>
-            <div class="button">
-                <div class="beatport"></div>
-            </div>
-            <div class="button">
-                <div class="youtube"></div>
-            </div>
-            <div class="button">
-                <div class="soundcloud"></div>
-            </div>
-            <div class="button">
-                <div class="mp3"></div>
+            <p class="song-title"></p>
+        </div>
+        <div class="dots">
+            <div class="dots-container">
+                <div id="dot8" class="dot"></div>
+                <div id="dot7" class="dot"></div>
+                <div id="dot6" class="dot"></div>
+                <div id="dot5" class="dot"></div>
+                <div id="dot4" class="dot"></div>
+                <div id="dot3" class="dot"></div>
+                <div id="dot2" class="dot"></div>
+                <div id="dot1" class="dot"></div>
+                <div id="dot0" class="dot"></div>
             </div>
         </div>
-        <p class="song-title"></p>
-    </div>
-    <div class="dots">
-        <div class="dots-container">
-            <div id="dot8" class="dot"></div>
-            <div id="dot7" class="dot"></div>
-            <div id="dot6" class="dot"></div>
-            <div id="dot5" class="dot"></div>
-            <div id="dot4" class="dot"></div>
-            <div id="dot3" class="dot"></div>
-            <div id="dot2" class="dot"></div>
-            <div id="dot1" class="dot"></div>
-            <div id="dot0" class="dot"></div>
-        </div>
-    </div>
-    <svg class="tonearm" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    	 viewBox="0 0 238.5 101" style="enable-background:new 0 0 238.5 101;" xml:space="preserve">
-    <style type="text/css">
-    	.st0 {
-            fill: none;
-            stroke: #86754D;
-            stroke-width: 3;
-            stroke-miterlimit: 10;
-        }
+        <svg class="tonearm" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        	 viewBox="0 0 238.5 101" style="enable-background:new 0 0 238.5 101;" xml:space="preserve">
+        <style type="text/css">
+        	.st0 {
+                fill: none;
+                stroke: #86754D;
+                stroke-width: 3;
+                stroke-miterlimit: 10;
+            }
 
-        .st1 {
-            fill: #FFFFFF;
-        }
+            .st1 {
+                fill: #FFFFFF;
+            }
 
-        .st2 {
-            fill: none;
-            stroke: #86754D;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
+            .st2 {
+                fill: none;
+                stroke: #86754D;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
 
-        .st3 {
-            fill: none;
-            stroke: #86754D;
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
+            .st3 {
+                fill: none;
+                stroke: #86754D;
+                stroke-width: 3;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
 
-        .st4 {
-            clip-path: url(#SVGID_2_);
-        }
+            .st4 {
+                clip-path: url(#SVGID_2_);
+            }
 
-        .st5 {
-            fill: none;
-            stroke: #86754D;
-            stroke-miterlimit: 10;
-        }
+            .st5 {
+                fill: none;
+                stroke: #86754D;
+                stroke-miterlimit: 10;
+            }
 
-        .st6 {
-            clip-path: url(#SVGID_4_);
-        }
+            .st6 {
+                clip-path: url(#SVGID_4_);
+            }
 
-        .st7 {
-            fill: #86754D;
-        }
+            .st7 {
+                fill: #86754D;
+            }
 
-        .st8 {
-            fill: none;
-            stroke: #86754D;
-            stroke-width: 13;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
+            .st8 {
+                fill: none;
+                stroke: #86754D;
+                stroke-width: 13;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
 
-        .st9 {
-            clip-path: url(#SVGID_6_);
-        }
+            .st9 {
+                clip-path: url(#SVGID_6_);
+            }
 
-        .st10 {
-            fill: none;
-            stroke: #FFFFFF;
-            stroke-width: 3;
-            stroke-miterlimit: 10;
-        }
+            .st10 {
+                fill: none;
+                stroke: #FFFFFF;
+                stroke-width: 3;
+                stroke-miterlimit: 10;
+            }
 
-        .st11 {
-            fill: none;
-            stroke: #FFFFFF;
-            stroke-miterlimit: 10;
-        }
+            .st11 {
+                fill: none;
+                stroke: #FFFFFF;
+                stroke-miterlimit: 10;
+            }
 
-        .st12 {
-            clip-path: url(#SVGID_8_);
-        }
+            .st12 {
+                clip-path: url(#SVGID_8_);
+            }
 
-        .st13 {
-            clip-path: url(#SVGID_10_);
-        }
-    </style>
-    <filter id="blur-filter" x="0" y="30%" height="200%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="8" />
+            .st13 {
+                clip-path: url(#SVGID_10_);
+            }
+        </style>
+        <filter id="blur-filter" x="0" y="30%" height="200%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="8" />
 
-        </filter>
-    <path id="outline" filter="url(#blur-filter)" d="M168.8,18.4v-5.7c0-0.3-0.2-0.7-0.4-0.9l-2.2-1.8c-0.2-0.2-0.5-0.3-0.7-0.3h-3.5c-0.4,0-0.7-0.2-0.9-0.5
-    	l-1.8-2.5c-0.2-0.3-0.6-0.5-0.9-0.5H149c-0.3,0-0.6,0.1-0.8,0.3l-2.8,2.7c-0.2,0.2-0.5,0.3-0.8,0.3h-13.8c-0.3,0-0.6,0.1-0.8,0.3
-    	l-3.2,2.9c-0.2,0.2-0.5,0.3-0.8,0.3h-1.9c-0.3,0-0.6-0.1-0.8-0.4l-2.7-2.8c-0.2-0.2-0.5-0.4-0.8-0.4H62.1c-0.2,0-0.4-0.1-0.6-0.1
-    	l-1.3-0.7c-0.4-0.2-0.6-0.6-0.6-1V3.6c0-0.6-0.5-1.1-1.1-1.1l-52.6,0c-0.3,0-0.6,0.1-0.8,0.3L2.9,4.9C2.7,5.1,2.6,5.4,2.6,5.7v48.9
-    	c0,0.3,0.1,0.6,0.3,0.8l2.2,2.2c0.2,0.2,0.5,0.3,0.8,0.3h52.6c0.6,0,1.1-0.5,1.1-1.1v-4.5c0-0.3,0.1-0.5,0.3-0.7l1.7-2.1
-    	c0.2-0.3,0.5-0.4,0.9-0.4L72.8,49c0.6,0,1.1,0.5,1.2,1.1l1,47.7c0,0.6,0.5,1.1,1.1,1.1h0c0.6,0,1.1-0.5,1.1-1.1l0.9-47.7
-    	c0-0.6,0.5-1.1,1.1-1.1h38.6c0.2,0,0.5,0.1,0.7,0.2l1.2,0.9c0.5,0.3,1.2,0.2,1.6-0.2l1.8-2.3c0.2-0.3,0.5-0.4,0.9-0.4h2.1
-    	c0.3,0,0.6,0.1,0.8,0.4l2.5,2.7c0.2,0.2,0.5,0.4,0.8,0.4l14.7,0.2c0.3,0,0.6,0.1,0.8,0.4l2.2,2.3c0.2,0.2,0.5,0.4,0.8,0.4h8.8
-    	c0.3,0,0.6-0.1,0.8-0.4l2.2-2.3c0.2-0.2,0.5-0.3,0.8-0.4l3.4-0.1c0.3,0,0.6-0.1,0.8-0.4l2.6-2.8c0.2-0.2,0.3-0.4,0.3-0.6l0.2-1.5
-    	c0.1-0.6,0.6-1,1.1-1h66.8c0.6,0,1.1-0.5,1.1-1.1V20.6c0-0.6-0.5-1.1-1.1-1.1h-66.7C169.3,19.5,168.8,19,168.8,18.4z"/>
-    <title>cartridge</title>
-    <path class="st0" d="M238.5,21.4c-17.3,0.5-38.8,0.3-61,0.1l-14.4-0.1c-6.1,0-11,4.8-11.1,10.9s4.8,11,10.9,11.1l14.4,0.1
-    	c22.2,0.2,43.6,0.3,61.2-0.1"/>
-    <path id="stub" class="st1" d="M238.5,21.4c-17.3,0.5-38.8,0.3-61,0.1l-14.4-0.1c-6.1,0-11,4.8-11.1,10.9s4.8,11,10.9,11.1l14.4,0.1
-    	c22.2,0.2,43.6,0.3,61.2-0.1"/>
-    <path class="st2" d="M238.5,38.7c-20.3,0.4-45.3,0.1-72.2,0"/>
-    <rect x="122.3" y="14.6" class="st1" width="6.1" height="31.2"/>
-    <rect x="122.3" y="14.6" class="st3" width="6.1" height="31.2"/>
-    <g>
-    	<defs>
+            </filter>
+        <path id="outline" filter="url(#blur-filter)" d="M168.8,18.4v-5.7c0-0.3-0.2-0.7-0.4-0.9l-2.2-1.8c-0.2-0.2-0.5-0.3-0.7-0.3h-3.5c-0.4,0-0.7-0.2-0.9-0.5
+        	l-1.8-2.5c-0.2-0.3-0.6-0.5-0.9-0.5H149c-0.3,0-0.6,0.1-0.8,0.3l-2.8,2.7c-0.2,0.2-0.5,0.3-0.8,0.3h-13.8c-0.3,0-0.6,0.1-0.8,0.3
+        	l-3.2,2.9c-0.2,0.2-0.5,0.3-0.8,0.3h-1.9c-0.3,0-0.6-0.1-0.8-0.4l-2.7-2.8c-0.2-0.2-0.5-0.4-0.8-0.4H62.1c-0.2,0-0.4-0.1-0.6-0.1
+        	l-1.3-0.7c-0.4-0.2-0.6-0.6-0.6-1V3.6c0-0.6-0.5-1.1-1.1-1.1l-52.6,0c-0.3,0-0.6,0.1-0.8,0.3L2.9,4.9C2.7,5.1,2.6,5.4,2.6,5.7v48.9
+        	c0,0.3,0.1,0.6,0.3,0.8l2.2,2.2c0.2,0.2,0.5,0.3,0.8,0.3h52.6c0.6,0,1.1-0.5,1.1-1.1v-4.5c0-0.3,0.1-0.5,0.3-0.7l1.7-2.1
+        	c0.2-0.3,0.5-0.4,0.9-0.4L72.8,49c0.6,0,1.1,0.5,1.2,1.1l1,47.7c0,0.6,0.5,1.1,1.1,1.1h0c0.6,0,1.1-0.5,1.1-1.1l0.9-47.7
+        	c0-0.6,0.5-1.1,1.1-1.1h38.6c0.2,0,0.5,0.1,0.7,0.2l1.2,0.9c0.5,0.3,1.2,0.2,1.6-0.2l1.8-2.3c0.2-0.3,0.5-0.4,0.9-0.4h2.1
+        	c0.3,0,0.6,0.1,0.8,0.4l2.5,2.7c0.2,0.2,0.5,0.4,0.8,0.4l14.7,0.2c0.3,0,0.6,0.1,0.8,0.4l2.2,2.3c0.2,0.2,0.5,0.4,0.8,0.4h8.8
+        	c0.3,0,0.6-0.1,0.8-0.4l2.2-2.3c0.2-0.2,0.5-0.3,0.8-0.4l3.4-0.1c0.3,0,0.6-0.1,0.8-0.4l2.6-2.8c0.2-0.2,0.3-0.4,0.3-0.6l0.2-1.5
+        	c0.1-0.6,0.6-1,1.1-1h66.8c0.6,0,1.1-0.5,1.1-1.1V20.6c0-0.6-0.5-1.1-1.1-1.1h-66.7C169.3,19.5,168.8,19,168.8,18.4z"/>
+        <title>cartridge</title>
+        <path class="st0" d="M238.5,21.4c-17.3,0.5-38.8,0.3-61,0.1l-14.4-0.1c-6.1,0-11,4.8-11.1,10.9s4.8,11,10.9,11.1l14.4,0.1
+        	c22.2,0.2,43.6,0.3,61.2-0.1"/>
+        <path id="stub" class="st1" d="M238.5,21.4c-17.3,0.5-38.8,0.3-61,0.1l-14.4-0.1c-6.1,0-11,4.8-11.1,10.9s4.8,11,10.9,11.1l14.4,0.1
+        	c22.2,0.2,43.6,0.3,61.2-0.1"/>
+        <path class="st2" d="M238.5,38.7c-20.3,0.4-45.3,0.1-72.2,0"/>
+        <rect x="122.3" y="14.6" class="st1" width="6.1" height="31.2"/>
+        <rect x="122.3" y="14.6" class="st3" width="6.1" height="31.2"/>
+        <g>
+        	<defs>
 
-    			<rect id="SVGID_1_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
-    	</defs>
-    	<clipPath id="SVGID_2_">
-    		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
-    	</clipPath>
-    	<g class="st4">
-    		<path class="st1" d="M128.4,46.2V14.1c0-1.6,1.3-2.8,2.8-2.8h33.1c1.6,0,2.8,1.3,2.8,2.8v32.1c0,1.6-1.3,2.8-2.8,2.8h-33.1
-    			C129.6,49,128.4,47.7,128.4,46.2"/>
-    		<path class="st0" d="M131.2,11.3h33.1c1.6,0,2.8,1.3,2.8,2.8v32.1c0,1.6-1.3,2.8-2.8,2.8h-33.1c-1.6,0-2.8-1.3-2.8-2.8V14.1
-    			C128.4,12.5,129.6,11.3,131.2,11.3z"/>
-    		<path class="st1" d="M146.6,49.2l-0.1-38.3c0-1.6,1.3-2.8,2.8-2.8h7.6c1.6,0,2.8,1.3,2.8,2.8l0.1,38.3c0,1.6-1.3,2.8-2.8,2.8h-7.6
-    			C147.9,52,146.6,50.7,146.6,49.2"/>
-    		<path class="st0" d="M146.6,49.2l-0.1-38.3c0-1.6,1.3-2.8,2.8-2.8h7.6c1.6,0,2.8,1.3,2.8,2.8l0.1,38.3c0,1.6-1.3,2.8-2.8,2.8h-7.6
-    			C147.9,52,146.6,50.7,146.6,49.2z"/>
-    	</g>
-    </g>
-    <path class="st5" d="M159.9,48.7l-13.2,0.1 M159.9,45.5l-13.2,0.1 M159.9,42.4l-13.2,0.1 M159.9,39.3l-13.2,0.1 M159.9,36.1
-    	l-13.2,0.1 M159.9,33l-13.2,0.1 M159.8,29.9L146.7,30 M159.8,26.8l-13.2,0.1 M159.8,23.7l-13.2,0.1 M159.8,20.5l-13.2,0.1
-    	 M159.8,17.4l-13.2,0.1 M159.8,14.3l-13.2,0.1 M159.7,11.2l-13.2,0.1 M149.6,8.2l0.2,43.8 M153,8.2l0.2,43.8 M156.4,8.3l0.2,43.7"/>
-    <g>
-    	<defs>
-
-    			<rect id="SVGID_3_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
-    	</defs>
-    	<clipPath id="SVGID_4_">
-    		<use xlink:href="#SVGID_3_"  style="overflow:visible;"/>
-    	</clipPath>
-    	<g class="st6">
-    		<path class="st7" d="M59.6,51.9c0-1.6,1.2-2.9,2.8-2.9c0,0,0,0,0,0h56.9c1.6,0,2.8-1.3,2.8-2.8v-32c0-1.6-1.3-2.8-2.8-2.8H62.5
-    			c-1.6,0-2.8-1.3-2.8-2.8v-6l-54.2,0c-1.6,0-2.8,1.3-2.8,2.8v49.8c0,1.6,1.3,2.8,2.8,2.8h54.2V51.9L59.6,51.9z"/>
-    		<path class="st3" d="M59.6,51.9c0-1.6,1.2-2.9,2.8-2.9c0,0,0,0,0,0h56.9c1.6,0,2.8-1.3,2.8-2.8v-32c0-1.6-1.3-2.8-2.8-2.8H62.5
-    			c-1.6,0-2.8-1.3-2.8-2.8v-6l-54.2,0c-1.6,0-2.8,1.3-2.8,2.8v49.8c0,1.6,1.3,2.8,2.8,2.8h54.2V51.9L59.6,51.9z"/>
-    		<path class="st1" d="M75.9,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5c6.3,0,11.5,5.1,11.5,11.4
-    			C87.3,36.5,82.2,41.6,75.9,41.6C75.9,41.6,75.9,41.6,75.9,41.6 M104.3,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5
-    			c6.3,0,11.5,5.1,11.5,11.4C115.8,36.5,110.7,41.6,104.3,41.6C104.3,41.6,104.3,41.6,104.3,41.6"/>
-    		<path class="st2" d="M75.9,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5c6.3,0,11.5,5.1,11.5,11.4
-    			C87.3,36.5,82.2,41.6,75.9,41.6C75.9,41.6,75.9,41.6,75.9,41.6z M104.3,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5
-    			c6.3,0,11.5,5.1,11.5,11.4C115.8,36.5,110.7,41.6,104.3,41.6L104.3,41.6z"/>
-    	</g>
-    </g>
-    <path class="st8" d="M86.1,30.2H65.6 M114.8,30.2H94.3"/>
-    <g>
-    	<defs>
-
-    			<rect id="SVGID_5_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
-    	</defs>
-    	<clipPath id="SVGID_6_">
-    		<use xlink:href="#SVGID_5_"  style="overflow:visible;"/>
-    	</clipPath>
-    	<g class="st9">
-    		<path class="st10" d="M16.9,13.2c0,3.4,2.7,6.2,6.1,6.3h24.6c3.5,0,6.3-2.8,6.3-6.3S51,7,47.6,7H23C19.6,7,16.9,9.8,16.9,13.2z"/>
-    		<path class="st11" d="M19.5,13.2c0,2,1.6,3.6,3.6,3.7h24.3c2,0,3.7-1.6,3.7-3.7c0-2-1.6-3.7-3.7-3.7H23.1
-    			C21.1,9.6,19.5,11.3,19.5,13.2z"/>
-    	</g>
-    </g>
-    <polygon class="st7" points="74.9,98.9 73.9,49.7 78.2,49.7 77.2,98.9 "/>
-    <polygon class="st3" points="74.9,98.9 73.9,49.7 78.2,49.7 77.2,98.9 "/>
-    <g>
-    	<defs>
-
-    			<rect id="SVGID_7_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
-    	</defs>
-    	<clipPath id="SVGID_8_">
-    		<use xlink:href="#SVGID_7_"  style="overflow:visible;"/>
-    	</clipPath>
-    	<g class="st12">
-    		<path class="st1" d="M32.1,13.1c0-3.6,2.9-6.4,6.4-6.4c3.6,0,6.4,2.9,6.4,6.4c0,3.6-2.9,6.4-6.4,6.4c0,0,0,0,0,0
-    			C35,19.5,32.1,16.7,32.1,13.1C32.1,13.1,32.1,13.1,32.1,13.1"/>
-    		<circle class="st5" cx="38.5" cy="13.1" r="6.4"/>
-    	</g>
-    </g>
-    <line class="st5" x1="35.9" y1="7.7" x2="41.2" y2="18.7"/>
-    <g>
-    	<defs>
-
-    			<rect id="SVGID_9_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
-    	</defs>
-    	<clipPath id="SVGID_10_">
-    		<use xlink:href="#SVGID_9_"  style="overflow:visible;"/>
-    	</clipPath>
-    	<g class="st13">
-    		<path class="st10" d="M16.9,47.2c0,3.4,2.7,6.2,6.1,6.3h24.6c3.5,0,6.3-2.8,6.3-6.3S51.1,41,47.6,41H23
-    			C19.6,41,16.9,43.8,16.9,47.2z"/>
-    		<path class="st11" d="M19.5,47.2c0,2,1.6,3.6,3.6,3.7h24.3c2,0,3.7-1.6,3.7-3.7c0-2-1.6-3.7-3.7-3.7H23.1
-    			C21.1,43.6,19.5,45.3,19.5,47.2z"/>
-    		<path class="st1" d="M34.6,52.2c-2.8-2.2-3.3-6.2-1.1-9s6.2-3.3,9-1.1s3.3,6.2,1.1,9c0,0,0,0,0,0C41.4,53.8,37.4,54.3,34.6,52.2"
-    			/>
-    		<ellipse transform="matrix(0.6148 -0.7887 0.7887 0.6148 -22.31 48.5138)" class="st5" cx="38.5" cy="47.1" rx="6.4" ry="6.4"/>
-    	</g>
-    </g>
-    <line class="st5" x1="32.6" y1="45.8" x2="44.6" y2="48.4"/>
-    </svg>
-
-    <!--play pause button-->
-    <svg id="playbtn" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 65">
-        <defs>
-            <style>
-                .cls-2 {
-                    fill: #f05046;
-                    stroke: #f05046;
-                    stroke-width: 0.5px;
-                    fill-rule: evenodd;
-                }
-
-                .circle {
-                    fill: #fff;
-                    stroke: #f05046;
-                    stroke-width: 2px;
-                }
-            </style>
-        </defs>
-        <title>playPauseButton</title>
-        <g id="play-btn">
-            <g id="circle">
-                <path class="circle" d="M32.5,2A30.5,30.5,0,1,1,2,32.5,30.53,30.53,0,0,1,32.5,2Z"/>
-            </g>
-            <polygon id="left" class="cls-2" points="23,19 32,24 32,43 23,47">
-                <animate id="playToPauseLeft" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
-                         to="21,19 30,19 30,47 21,47"/>
-                <animate id="pauseToPlayLeft" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
-                         to="23,19 32,24 32,43 23,47"/>
-            </polygon>
-            <polygon id="right" class="cls-2" points="32,24 51,34.1 51,34.1 32,43">
-                <animate id="playToPauseRight" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
-                         to="35,19 44,19 44,47 35,47"/>
-                <animate id="pauseToPlayRight" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
-                         to="32,24 51,34.1 51,34.1 32,43"/>
-            </polygon>
+        			<rect id="SVGID_1_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
+        	</defs>
+        	<clipPath id="SVGID_2_">
+        		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+        	</clipPath>
+        	<g class="st4">
+        		<path class="st1" d="M128.4,46.2V14.1c0-1.6,1.3-2.8,2.8-2.8h33.1c1.6,0,2.8,1.3,2.8,2.8v32.1c0,1.6-1.3,2.8-2.8,2.8h-33.1
+        			C129.6,49,128.4,47.7,128.4,46.2"/>
+        		<path class="st0" d="M131.2,11.3h33.1c1.6,0,2.8,1.3,2.8,2.8v32.1c0,1.6-1.3,2.8-2.8,2.8h-33.1c-1.6,0-2.8-1.3-2.8-2.8V14.1
+        			C128.4,12.5,129.6,11.3,131.2,11.3z"/>
+        		<path class="st1" d="M146.6,49.2l-0.1-38.3c0-1.6,1.3-2.8,2.8-2.8h7.6c1.6,0,2.8,1.3,2.8,2.8l0.1,38.3c0,1.6-1.3,2.8-2.8,2.8h-7.6
+        			C147.9,52,146.6,50.7,146.6,49.2"/>
+        		<path class="st0" d="M146.6,49.2l-0.1-38.3c0-1.6,1.3-2.8,2.8-2.8h7.6c1.6,0,2.8,1.3,2.8,2.8l0.1,38.3c0,1.6-1.3,2.8-2.8,2.8h-7.6
+        			C147.9,52,146.6,50.7,146.6,49.2z"/>
+        	</g>
         </g>
-    </svg>
+        <path class="st5" d="M159.9,48.7l-13.2,0.1 M159.9,45.5l-13.2,0.1 M159.9,42.4l-13.2,0.1 M159.9,39.3l-13.2,0.1 M159.9,36.1
+        	l-13.2,0.1 M159.9,33l-13.2,0.1 M159.8,29.9L146.7,30 M159.8,26.8l-13.2,0.1 M159.8,23.7l-13.2,0.1 M159.8,20.5l-13.2,0.1
+        	 M159.8,17.4l-13.2,0.1 M159.8,14.3l-13.2,0.1 M159.7,11.2l-13.2,0.1 M149.6,8.2l0.2,43.8 M153,8.2l0.2,43.8 M156.4,8.3l0.2,43.7"/>
+        <g>
+        	<defs>
 
+        			<rect id="SVGID_3_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
+        	</defs>
+        	<clipPath id="SVGID_4_">
+        		<use xlink:href="#SVGID_3_"  style="overflow:visible;"/>
+        	</clipPath>
+        	<g class="st6">
+        		<path class="st7" d="M59.6,51.9c0-1.6,1.2-2.9,2.8-2.9c0,0,0,0,0,0h56.9c1.6,0,2.8-1.3,2.8-2.8v-32c0-1.6-1.3-2.8-2.8-2.8H62.5
+        			c-1.6,0-2.8-1.3-2.8-2.8v-6l-54.2,0c-1.6,0-2.8,1.3-2.8,2.8v49.8c0,1.6,1.3,2.8,2.8,2.8h54.2V51.9L59.6,51.9z"/>
+        		<path class="st3" d="M59.6,51.9c0-1.6,1.2-2.9,2.8-2.9c0,0,0,0,0,0h56.9c1.6,0,2.8-1.3,2.8-2.8v-32c0-1.6-1.3-2.8-2.8-2.8H62.5
+        			c-1.6,0-2.8-1.3-2.8-2.8v-6l-54.2,0c-1.6,0-2.8,1.3-2.8,2.8v49.8c0,1.6,1.3,2.8,2.8,2.8h54.2V51.9L59.6,51.9z"/>
+        		<path class="st1" d="M75.9,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5c6.3,0,11.5,5.1,11.5,11.4
+        			C87.3,36.5,82.2,41.6,75.9,41.6C75.9,41.6,75.9,41.6,75.9,41.6 M104.3,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5
+        			c6.3,0,11.5,5.1,11.5,11.4C115.8,36.5,110.7,41.6,104.3,41.6C104.3,41.6,104.3,41.6,104.3,41.6"/>
+        		<path class="st2" d="M75.9,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5c6.3,0,11.5,5.1,11.5,11.4
+        			C87.3,36.5,82.2,41.6,75.9,41.6C75.9,41.6,75.9,41.6,75.9,41.6z M104.3,41.6c-6.3,0-11.5-5.1-11.5-11.5c0-6.3,5.1-11.5,11.5-11.5
+        			c6.3,0,11.5,5.1,11.5,11.4C115.8,36.5,110.7,41.6,104.3,41.6L104.3,41.6z"/>
+        	</g>
+        </g>
+        <path class="st8" d="M86.1,30.2H65.6 M114.8,30.2H94.3"/>
+        <g>
+        	<defs>
+
+        			<rect id="SVGID_5_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
+        	</defs>
+        	<clipPath id="SVGID_6_">
+        		<use xlink:href="#SVGID_5_"  style="overflow:visible;"/>
+        	</clipPath>
+        	<g class="st9">
+        		<path class="st10" d="M16.9,13.2c0,3.4,2.7,6.2,6.1,6.3h24.6c3.5,0,6.3-2.8,6.3-6.3S51,7,47.6,7H23C19.6,7,16.9,9.8,16.9,13.2z"/>
+        		<path class="st11" d="M19.5,13.2c0,2,1.6,3.6,3.6,3.7h24.3c2,0,3.7-1.6,3.7-3.7c0-2-1.6-3.7-3.7-3.7H23.1
+        			C21.1,9.6,19.5,11.3,19.5,13.2z"/>
+        	</g>
+        </g>
+        <polygon class="st7" points="74.9,98.9 73.9,49.7 78.2,49.7 77.2,98.9 "/>
+        <polygon class="st3" points="74.9,98.9 73.9,49.7 78.2,49.7 77.2,98.9 "/>
+        <g>
+        	<defs>
+
+        			<rect id="SVGID_7_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
+        	</defs>
+        	<clipPath id="SVGID_8_">
+        		<use xlink:href="#SVGID_7_"  style="overflow:visible;"/>
+        	</clipPath>
+        	<g class="st12">
+        		<path class="st1" d="M32.1,13.1c0-3.6,2.9-6.4,6.4-6.4c3.6,0,6.4,2.9,6.4,6.4c0,3.6-2.9,6.4-6.4,6.4c0,0,0,0,0,0
+        			C35,19.5,32.1,16.7,32.1,13.1C32.1,13.1,32.1,13.1,32.1,13.1"/>
+        		<circle class="st5" cx="38.5" cy="13.1" r="6.4"/>
+        	</g>
+        </g>
+        <line class="st5" x1="35.9" y1="7.7" x2="41.2" y2="18.7"/>
+        <g>
+        	<defs>
+
+        			<rect id="SVGID_9_" x="10.7" y="-48.1" transform="matrix(0.6232 -0.7821 0.7821 0.6232 5.9906 74.7301)" width="139.8" height="158.4"/>
+        	</defs>
+        	<clipPath id="SVGID_10_">
+        		<use xlink:href="#SVGID_9_"  style="overflow:visible;"/>
+        	</clipPath>
+        	<g class="st13">
+        		<path class="st10" d="M16.9,47.2c0,3.4,2.7,6.2,6.1,6.3h24.6c3.5,0,6.3-2.8,6.3-6.3S51.1,41,47.6,41H23
+        			C19.6,41,16.9,43.8,16.9,47.2z"/>
+        		<path class="st11" d="M19.5,47.2c0,2,1.6,3.6,3.6,3.7h24.3c2,0,3.7-1.6,3.7-3.7c0-2-1.6-3.7-3.7-3.7H23.1
+        			C21.1,43.6,19.5,45.3,19.5,47.2z"/>
+        		<path class="st1" d="M34.6,52.2c-2.8-2.2-3.3-6.2-1.1-9s6.2-3.3,9-1.1s3.3,6.2,1.1,9c0,0,0,0,0,0C41.4,53.8,37.4,54.3,34.6,52.2"
+        			/>
+        		<ellipse transform="matrix(0.6148 -0.7887 0.7887 0.6148 -22.31 48.5138)" class="st5" cx="38.5" cy="47.1" rx="6.4" ry="6.4"/>
+        	</g>
+        </g>
+        <line class="st5" x1="32.6" y1="45.8" x2="44.6" y2="48.4"/>
+        </svg>
+
+        <!--play pause button-->
+        <svg id="playbtn" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 65">
+            <defs>
+                <style>
+                    .cls-2 {
+                        fill: #f05046;
+                        stroke: #f05046;
+                        stroke-width: 0.5px;
+                        fill-rule: evenodd;
+                    }
+
+                    .circle {
+                        fill: #fff;
+                        stroke: #f05046;
+                        stroke-width: 2px;
+                    }
+                </style>
+            </defs>
+            <title>playPauseButton</title>
+            <g id="play-btn">
+                <g id="circle">
+                    <path class="circle" d="M32.5,2A30.5,30.5,0,1,1,2,32.5,30.53,30.53,0,0,1,32.5,2Z"/>
+                </g>
+                <polygon id="left" class="cls-2" points="23,19 32,24 32,43 23,47">
+                    <animate id="playToPauseLeft" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
+                             to="21,19 30,19 30,47 21,47"/>
+                    <animate id="pauseToPlayLeft" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
+                             to="23,19 32,24 32,43 23,47"/>
+                </polygon>
+                <polygon id="right" class="cls-2" points="32,24 51,34.1 51,34.1 32,43">
+                    <animate id="playToPauseRight" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
+                             to="35,19 44,19 44,47 35,47"/>
+                    <animate id="pauseToPlayRight" begin="indefinite" fill="freeze" attributeName="points" dur="150ms"
+                             to="32,24 51,34.1 51,34.1 32,43"/>
+                </polygon>
+            </g>
+        </svg>
+
+
+    </div>
+    <canvas class="platter"></canvas>
+    <audio id="nu-disco">
+        <source src="mixes/nu-disco.mp3" type="audio/mp3">
+    </audio>
+    <audio id="cafe-del-mar">
+        <source src="mixes/cafe-del-mar.mp3" type="audio/mp3">
+    </audio>
+    <audio id="cosy-chill">
+        <source src="mixes/cosy-chill.mp3" type="audio/mp3">
+    </audio>
+    <audio id="chillout-dreams">
+        <source src="mixes/chillout-dreams.mp3" type="audio/mp3">
+    </audio>
+    <audio id="club-hits-1">
+        <source src="mixes/club-hits-1.mp3" type="audio/mp3">
+    </audio>
+    <audio id="monster-beat">
+        <source src="mixes/monster-beat.mp3" type="audio/mp3">
+    </audio>
+    <audio id="loml">
+        <source src="songs/love-of-my-life.mp3" type="audio/mp3">
+    </audio>
+    <audio id="ptg">
+        <source src="songs/play-the-game.mp3" type="audio/mp3">
+    </audio>
+    <audio id="tsmgo">
+        <source src="songs/the-show-must-go-on.mp3" type="audio/mp3">
+    </audio>
+    <script src="./../node_modules/brim/dist/brim.js"></script>
+    <script src="./../node_modules/scream/dist/scream.js"></script>
+
+    <script src="bundle.js"></script>
 
 </div>
-<canvas class="platter"></canvas>
-<audio id="nu-disco">
-    <source src="mixes/nu-disco.mp3" type="audio/mp3">
-</audio>
-<audio id="cafe-del-mar">
-    <source src="mixes/cafe-del-mar.mp3" type="audio/mp3">
-</audio>
-<audio id="cosy-chill">
-    <source src="mixes/cosy-chill.mp3" type="audio/mp3">
-</audio>
-<audio id="chillout-dreams">
-    <source src="mixes/chillout-dreams.mp3" type="audio/mp3">
-</audio>
-<audio id="club-hits-1">
-    <source src="mixes/club-hits-1.mp3" type="audio/mp3">
-</audio>
-<audio id="monster-beat">
-    <source src="mixes/monster-beat.mp3" type="audio/mp3">
-</audio>
-<audio id="loml">
-    <source src="songs/love-of-my-life.mp3" type="audio/mp3">
-</audio>
-<audio id="ptg">
-    <source src="songs/play-the-game.mp3" type="audio/mp3">
-</audio>
-<audio id="tsmgo">
-    <source src="songs/the-show-must-go-on.mp3" type="audio/mp3">
-</audio>
-<input id="tonearmRotate" type="range" min="1" max="100" style="display: none"/>
-<script src="bundle.js"></script>
+<div id="brim-mask">
+    <div class="step-2">
+        <div class="top">
+            <div class="top-wrapper">
+                <img src="assets/2-top.svg" alt=""/>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="bottom-wrapper">
+                <img src="assets/2-bottom.svg" alt=""/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        var scream,
+            brim;
+
+
+
+//        if (platform.os.family == 'iOS' && parseInt(platform.os.version, 10) > 8 || platform.ua.indexOf('like Mac OS X') != -1) {
+            scream = gajus.Scream({
+                width: {
+                    portrait: 320,
+                    landscape: 568
+                }
+            });
+
+            brim = gajus.Brim({
+                viewport: scream
+            });
+
+            brim.on('viewchange', function (e) {
+//                document.body.className = e.viewName;
+            });
+//        }
+    </script>
 </body>
 </html>

@@ -34,7 +34,7 @@ export default class Controls {
     this.playToPauseRight = qs('#playToPauseRight');
     this.pauseToPlayLeft = qs('#pauseToPlayLeft');
     this.pauseToPlayRight = qs('#pauseToPlayRight');
-    this.disclaimerBtn = qs('.disclaimer-btn');
+    //this.disclaimerBtn = qs('#confirm-to-play-button');
     this.cartridgeDefaultY = 348;
     this.suspendAutoScubberMovement = false;
     this.playToPauseLeft.beginElement();
@@ -57,8 +57,9 @@ export default class Controls {
     }, false);
 
     document.addEventListener('songEnd', songEndHandler.bind(this), false);
-    this.disclaimerBtn.addEventListener('touchend', preprocessFiles.bind(this));
+    //this.disclaimerBtn.addEventListener('touchend', preprocessFiles.bind(this));
 
+    //or use orientationchangeend
     window.addEventListener('orientationchange', (e)=> {
       checkOrientation()
     });
@@ -259,7 +260,8 @@ function songEndHandler(e) {
 function preprocessFiles(e) {
   //loop through all sources and trigger play/pause
   this.audio.preprocessFiles()
-  qs('#main').removeChild(qs('.blocker'));
+  qs('.blocker').removeChild(qs('.step-1'));
+  qs('.step-2').classList.remove('hidden');
   isProcessed = true;
   checkOrientation();
 }
