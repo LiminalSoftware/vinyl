@@ -61,7 +61,6 @@ export default class Controls {
 
     //or use orientationchangeend
     window.addEventListener('orientationchange', (e)=> {
-      console.log('orientation changed!');
       checkOrientation()
     });
   }
@@ -263,7 +262,6 @@ function preprocessFiles(e) {
   this.audio.preprocessFiles();
   qs('#main').removeChild(qs('.button-blocker'));
   qs('.step-1').classList.remove('hidden');
-  console.log('isProcessed is true!');
   isProcessed = true;
   checkOrientation();
 }
@@ -283,7 +281,8 @@ function showRotationWarning() {
 }
 
 function removeRotationWarning() {
-  qs('#main').removeChild(qs('.rotate-blocker'));
+  let rotateBlocker = qs('.rotate-blocker');
+  if (rotateBlocker) qs('#main').removeChild(rotateBlocker);
 }
 
 function checkOrientation() {
@@ -292,8 +291,6 @@ function checkOrientation() {
     return;
   }
   if (isProcessed) {
-    console.log('window.orientation: ' + window.orientation);
-    //debugger;
     if (window.orientation !== 0) {
       showRotationWarning()
     } else {
