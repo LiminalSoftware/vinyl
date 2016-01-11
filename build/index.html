@@ -369,6 +369,7 @@
     </audio>
     <script src="./../node_modules/brim/dist/brim.js"></script>
     <script src="./../node_modules/scream/dist/scream.js"></script>
+    <script src="./../node_modules/platform/platform.js"></script>
 
     <script src="bundle.js"></script>
 
@@ -389,13 +390,15 @@
 </div>
 
 <script>
-        var scream,
-            brim;
+    document.addEventListener('DOMContentLoaded', function () {
+        var qs = document.querySelector.bind(document)
+            , scream
+            , brim;
 
-//        if (platform.os.family == 'iOS' && parseInt(platform.os.version, 10) > 8 || platform.ua.indexOf('like Mac OS X') != -1) {
+        if (platform.os.family == 'iOS' && parseInt(platform.os.version, 10) > 8 || platform.ua.indexOf('like Mac OS X') != -1) {
             scream = gajus.Scream({
                 width: {
-                    portrait: 320,
+                    portrait : 320,
                     landscape: 568
                 }
             });
@@ -403,7 +406,11 @@
             brim = gajus.Brim({
                 viewport: scream
             });
-//        }
+        } else {
+            qs('#brim-mask').classList.add('hidden');
+            qs('#main .button-blocker').classList.add('hidden');
+        }
+    });
     </script>
 </body>
 </html>

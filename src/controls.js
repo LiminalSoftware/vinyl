@@ -7,7 +7,8 @@ const qs = document.querySelector.bind(document)
 var cartridgeUp = false;
 var stateIsPause = true;
 var scrubberFingerXOffset = 0;
-var isProcessed = false;
+// if platform is ios, initialize `isProcessed` to false; otherwize, set it to true so orientation check shows/hides message correctly
+var isProcessed = !(platform.os.family == 'iOS' && parseInt(platform.os.version, 10) > 8 || platform.ua.indexOf('like Mac OS X') != -1);
 
 
 export default class Controls {
