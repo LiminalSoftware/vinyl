@@ -224,7 +224,8 @@ canvas {
     margin: 90px auto;
 }
 
-.blocker {
+.button-blocker,
+.rotate-blocker {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -295,14 +296,14 @@ canvas {
 /*animation-play-state: paused;*/
 /*}*/
 
-.step-1 {
+.step-2 {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.step-2 {
+.step-1 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

@@ -34,7 +34,7 @@ export default class Controls {
     this.playToPauseRight = qs('#playToPauseRight');
     this.pauseToPlayLeft = qs('#pauseToPlayLeft');
     this.pauseToPlayRight = qs('#pauseToPlayRight');
-    //this.disclaimerBtn = qs('#confirm-to-play-button');
+    this.disclaimerBtn = qs('#confirm-to-play-button');
     this.cartridgeDefaultY = 348;
     this.suspendAutoScubberMovement = false;
     this.playToPauseLeft.beginElement();
@@ -57,10 +57,11 @@ export default class Controls {
     }, false);
 
     document.addEventListener('songEnd', songEndHandler.bind(this), false);
-    //this.disclaimerBtn.addEventListener('touchend', preprocessFiles.bind(this));
+    this.disclaimerBtn.addEventListener('touchend', preprocessFiles.bind(this));
 
     //or use orientationchangeend
     window.addEventListener('orientationchange', (e)=> {
+      console.log('orientation changed!');
       checkOrientation()
     });
   }
@@ -259,9 +260,10 @@ function songEndHandler(e) {
 
 function preprocessFiles(e) {
   //loop through all sources and trigger play/pause
-  this.audio.preprocessFiles()
-  qs('.blocker').removeChild(qs('.step-1'));
-  qs('.step-2').classList.remove('hidden');
+  this.audio.preprocessFiles();
+  qs('#main').removeChild(qs('.button-blocker'));
+  qs('.step-1').classList.remove('hidden');
+  console.log('isProcessed is true!');
   isProcessed = true;
   checkOrientation();
 }
@@ -272,7 +274,7 @@ function showRotationWarning() {
   let instr = document.createElement('p');
   let rotate = document.createElement('div');
   rotate.className = 'rotate';
-  blocker.className = 'blocker';
+  blocker.className = 'rotate-blocker';
   instr.className = 'instructions';
   instr.textContent = 'Please Rotate the Device';//TODO: translate this to German
   blocker.appendChild(instr);
@@ -281,7 +283,7 @@ function showRotationWarning() {
 }
 
 function removeRotationWarning() {
-  qs('#main').removeChild(qs('.blocker'));
+  qs('#main').removeChild(qs('.rotate-blocker'));
 }
 
 function checkOrientation() {
@@ -290,6 +292,8 @@ function checkOrientation() {
     return;
   }
   if (isProcessed) {
+    console.log('window.orientation: ' + window.orientation);
+    //debugger;
     if (window.orientation !== 0) {
       showRotationWarning()
     } else {
