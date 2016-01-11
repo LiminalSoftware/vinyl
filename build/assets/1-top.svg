@@ -7,10 +7,9 @@
     <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
         <g id="top" sketch:type="MSLayerGroup" transform="translate(0.000000, 2.000000)">
             <text id="Please-swipe-up" sketch:type="MSTextLayer" font-family="Avenir Next" font-size="20" font-weight="420" fill="#FFFFFF">
-                <tspan x="0" y="127">Please </tspan>
-                <tspan x="64.62" y="127">swipe up</tspan>
-                <tspan x="0" y="154">to collapse the </tspan>
-                <tspan x="0" y="181">address bar</tspan>
+                <tspan x="0" y="127">Nach oben </tspan>
+                <tspan x="0" y="154">schieben um Adresszeile </tspan>
+                <tspan x="0" y="181">zu verbergen</tspan>
             </text>
             <path d="M111,177 C111,177 219.610433,148.218045 153.59148,3 M145.973987,17.7751566 L152.13782,0.396803246 L166.051058,10.1652126" id="Path-4" stroke="#FFFFFF" stroke-width="2" sketch:type="MSShapeGroup"></path>
             <g id="1-+-Oval-1" transform="translate(47.000000, 47.000000)">
