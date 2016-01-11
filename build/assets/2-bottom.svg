@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="63px" height="223px" viewBox="0 0 63 223" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.2 (15855) - http://www.bohemiancoding.com/sketch -->
+    <title>finger</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="finger" sketch:type="MSLayerGroup" transform="translate(1.000000, 0.000000)" stroke="#FFFFFF" stroke-width="2">
+            <path d="M0,221.999998 L0,117 C0,117 2,100 4,97 C6,94 9,84 13,83 C17,82 21,79 28,80 C35,81 43,82 44,85 C45,88 47,93 47,95 C47,97 56,111.000002 56,129 C56,146.999998 59,188 59,188 L61,221.999998" id="Path-1" sketch:type="MSShapeGroup"></path>
+            <path d="M8,90 L10,123 C10,123 9,134 16,134 C23,134 36,138 40,134 C44,130 48,94 46,89 C44,84 37,80 29,79 C21,78 8,90 8,90 Z" id="Path-2" sketch:type="MSShapeGroup"></path>
+            <path d="M28,70 L28,2.99253773" id="Path-5" sketch:type="MSShapeGroup"></path>
+            <path d="M18.4902909,20.5024245 L24.6541237,3.12407113 L38.5673612,12.8924805" id="Path-5" sketch:type="MSShapeGroup" transform="translate(29.016303, 12.727268) rotate(-343.000000) translate(-29.016303, -12.727268) "></path>
+        </g>
+    </g>
+</svg>
