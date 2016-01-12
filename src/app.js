@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
       duration: '07:33'
     },
     4: {index: 4, id: 'club-hits-1', title: 'Club Hits 1', file: 'mixes/club-hits-1.mp3', duration: '05:03'},
-    5: {index: 5, id: 'monster-beat', title: 'Monster Beat', file: 'mixes/monster-beat.mp3', duration: '05:34'},
-    6: {index: 6, id: 'loml', title: 'Love Of My Life', file: 'songs/love-of-my-life.mp3', duration: '03:38'},
-    7: {index: 7, id: 'ptg', title: 'Play The Game', file: 'songs/play-the-game.mp3', duration: '03:32'},
+    5: {index: 5, id: 'club-hits-2', title: 'Club Hits 2', file: 'mixes/club-hits-2.mp3', duration: '03:34'},
+    6: {index: 6, id: 'club-hits-3', title: 'Club Hits 3', file: 'mixes/club-hits-3.mp3', duration: '03:17'},
+    7: {index: 7, id: 'monster-beat', title: 'Monster Beat', file: 'mixes/monster-beat.mp3', duration: '05:34'},
     8: {index: 8, id: 'tsmgo', title: 'The Show Must Go On', file: 'songs/the-show-must-go-on.mp3', duration: '04:32'}
   };
 
