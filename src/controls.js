@@ -126,17 +126,25 @@ function togglePlayPauseHandler(e) {
   togglePlayPause(this);
 }
 
-function togglePlayPause(that) {
+function playPlayback(that) {
+  stateIsPause = true;
+  console.log('sateIsPause changed: ' + stateIsPause)
+  that.playToPauseLeft.beginElement();
+  that.playToPauseRight.beginElement();
+  that.cartridgePlaced(that.calculateCartridgePosition())
+}
+function pausePlayback(that) {
+  stateIsPause = false;
+  console.log('sateIsPause changed: ' + stateIsPause)
+  that.pauseToPlayLeft.beginElement();
+  that.pauseToPlayRight.beginElement();
+  that.cartridgeLifted()
+}
+function togglePlayPause(that, forceStateIsPause) {
   if (!stateIsPause) {
-    stateIsPause = true;
-    that.playToPauseLeft.beginElement();
-    that.playToPauseRight.beginElement();
-    that.cartridgePlaced(that.calculateCartridgePosition())
+    playPlayback(that);
   } else {
-    stateIsPause = false;
-    that.pauseToPlayLeft.beginElement();
-    that.pauseToPlayRight.beginElement();
-    that.cartridgeLifted()
+    pausePlayback(that);
   }
 }
 
@@ -154,7 +162,8 @@ function cartridgeTouchStartHandler(e) {
     lastFingerCartridgeOffset: this.lastFingerCartridgeOffset
   });
   showInstructions(false);
-  this.cartridgeLifted();
+  console.log('stateIsPause - before: ' + stateIsPause)
+  pausePlayback(this, true);
 }
 
 function cartrigeTouchMoveHandler(e) {
