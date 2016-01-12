@@ -1,6 +1,10 @@
 import Controls from './controls';
 import Audio from './audio';
 
+require('script!./../node_modules/brim/dist/brim.js');
+require('script!./../node_modules/scream/dist/scream.js');
+require('script!./../node_modules/platform/platform.js');
+
 document.addEventListener('DOMContentLoaded', function () {
 
   require('./style.css');
