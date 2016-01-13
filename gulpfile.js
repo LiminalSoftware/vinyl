@@ -4,7 +4,7 @@ var gulp           = require('gulp')
   , del            = require('del')
   , revReplace     = require('gulp-rev-replace')
   , gzip           = require('gulp-gzip')
-  , s3             = require('gulp-s3')
+  , s3             = require('../gulp-s3')
   , fs             = require('fs')
   , awsCredentials = JSON.parse(fs.readFileSync('./.aws.json'))
   ;
@@ -66,36 +66,33 @@ gulp.task("revreplace", ["rev"], function () {
     .pipe(gulp.dest('./dist/'));
 });
 
-//gulp.task('usemin', ['clean'], function () {
-//  return gulp.src('./build/index.html')
-//    .pipe(usemin({
-//      js: [rev()],
-//      //audio: [rev()]
-//    }))
-//    .pipe(gulp.dest('./dist/'))
-//    ;
-//});
-
-//gulp.task('useref', ['clean'], function () {
-//  return gulp.src('./build/index.html')
-//    .pipe(usemin({
-//      js: [rev()],
-//      //audio: [rev()]
-//    }))
-//    .pipe(gulp.dest('./dist/'))
-//    ;
-//});
-
 gulp.task('watch', function () {
   gulp.watch('./build/**/*', ['default'])
 });
 
 gulp.task('default', ['revreplace']);
 
-gulp.task('deploy', function () {
-  return gulp.src('./dist/**')
-    .pipe(gzip())
-    .pipe(s3(awsCredentials, {gzippedOnly: true}))
+gulp.task('deploy', ['deploy:code', 'deploy:assets', 'deploy:mixes']);
+
+gulp.task('deploy:code', function () {
+  return gulp.src('./dist/*')
+    //-- TODO: use gzip
+    //.pipe(gzip())
+    .pipe(s3(awsCredentials))
+});
+
+gulp.task('deploy:assets', function () {
+  return gulp.src('./dist/assets/**/*')
+    //-- TODO: use gzip
+    //.pipe(gzip())
+    .pipe(s3(awsCredentials))
+});
+
+gulp.task('deploy:mixes', function () {
+  return gulp.src('./dist/mixes/**/*')
+    //-- TODO: use gzip
+    //.pipe(gzip())
+    .pipe(s3(awsCredentials))
 });
 
 //-- TODO: figure out how to specify order here without requiring build from deploy
