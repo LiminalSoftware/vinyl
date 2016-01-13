@@ -1,10 +1,12 @@
-var gulp       = require('gulp')
-  , merge      = require('merge-stream')
-  , rev        = require('gulp-rev')
-  , del        = require('del')
-  , revReplace = require('gulp-rev-replace')
-    //, usemin = require('gulp-usemin')
-    //, useref = require('gulp-useref')
+var gulp           = require('gulp')
+  , merge          = require('merge-stream')
+  , rev            = require('gulp-rev')
+  , del            = require('del')
+  , revReplace     = require('gulp-rev-replace')
+  , gzip           = require('gulp-gzip')
+  , s3             = require('gulp-s3')
+  , fs             = require('fs')
+  , awsCredentials = JSON.parse(fs.readFileSync('./.aws.json'))
   ;
 
 gulp.task('clean', function () {
@@ -89,3 +91,12 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['revreplace']);
+
+gulp.task('deploy', function () {
+  return gulp.src('./dist/**')
+    .pipe(gzip())
+    .pipe(s3(awsCredentials, {gzippedOnly: true}))
+});
+
+//-- TODO: figure out how to specify order here without requiring build from deploy
+//gulp.task('deploy:build', ['build', 'deploy'])
