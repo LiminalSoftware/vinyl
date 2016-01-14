@@ -5,9 +5,6 @@ body {
     /*height: 100vh;*/
 }
 
-.hide {
-    display: none;
-}
 
 canvas.platter {
     z-index: -1;

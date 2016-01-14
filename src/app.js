@@ -9,37 +9,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
   require('./style.css');
 
-  const qs                     = document.querySelector.bind(document)
-    , platter                  = qs('canvas.platter')
-    , platterContext           = platter.getContext('2d')
-    , platterImage             = qs('img.platter')
-    , cartridgeYStart          = 0
-    , cartridgeYEnd            = 216
-    , selectors                = {
-    playButton     : '#playbtn',
-    tonearm        : '.tonearm',
+  const qs = document.querySelector.bind(document)
+    , platter = qs('canvas.platter')
+    , platterContext = platter.getContext('2d')
+    , platterImage = qs('img.platter')
+    , cartridgeYStart = 0
+    , cartridgeYEnd = 216
+    , selectors = {
+    playButton: '#playbtn',
+    tonearm: '.tonearm',
     currentTimeSpan: '#current-time',
-    totalTimeSpan  : '#total-time',
-    playhead       : '#header',
-    scrubber       : '.scrubber',
-    rail           : '.rail'
+    totalTimeSpan: '#total-time',
+    playhead: '#header',
+    scrubber: '.scrubber',
+    rail: '.rail'
   }
-    , scrubberCenterOffset     = 20
-    , fps                      = 30
-    , rpm                      = 34.6
+    , scrubberCenterOffset = 20
+    , fps = 30
+    , rpm = 34.6
     , platterTranslateYPercent = 22.505
     , platterTranslateXPercent = 1.929
     , platterToPhoneWidthRatio = 559.424
-    , numberOfSongs            = 9
-    , railWidth                = parseInt(window.getComputedStyle(qs('.scrubber-container'), null).getPropertyValue('width'), 10) - (scrubberCenterOffset / 2)
-    , songList                 = {
+    , numberOfSongs = 9
+    , railWidth = parseInt(window.getComputedStyle(qs('.scrubber-container'), null).getPropertyValue('width'), 10) - (scrubberCenterOffset / 2)
+    , songList = {
     0: {index: 0, id: 'nu-disco', title: 'Nu Disco', file: 'mixes/nu-disco.mp3', duration: '04:12'},
     1: {index: 1, id: 'cafe-del-mar', title: 'Cafe Del Mar', file: 'mixes/cafe-del-mar.mp3', duration: '05:41'},
     2: {index: 2, id: 'cosy-chill', title: 'Cosy Chill', file: 'mixes/cosy-chill.mp3', duration: '04:07'},
-    3: {index : 3,
-      id      : 'chillout-dreams',
-      title   : 'Chillout Dreams',
-      file    : 'mixes/chillout-dreams.mp3',
+    3: {
+      index: 3,
+      id: 'chillout-dreams',
+      title: 'Chillout Dreams',
+      file: 'mixes/chillout-dreams.mp3',
       duration: '07:33'
     },
     4: {index: 4, id: 'club-hits-1', title: 'Club Hits 1', file: 'mixes/club-hits-1.mp3', duration: '05:03'},
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const {playSong, pauseSong, seek} = audio;
   const {togglePlayPause, cartridgePlaced, cartridgeLifted} = controls;
 
-  var rotateIntervalId   = 0
+  var rotateIntervalId = 0
     , platterRotationDeg = 0
     ;
 
@@ -69,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
     platter.width = window.innerWidth;
     platter.height = window.innerHeight;
 
-    var width          = 320// TODO: do we need to set this absolute width?
-      , height         = 480
+    var width = 320// TODO: do we need to set this absolute width?
+      , height = 480
       , recordDiameter = width * (platterToPhoneWidthRatio / 100)
       ;
 
@@ -107,6 +108,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 //-- INIT
-  draw();
-  rotate();
+  function initApp() {
+    //remove hidden from #brim-main
+    document.querySelector('#brim-main').classList.remove('hidden');
+    draw();
+    rotate();
+  }
+
+  window.initApp = initApp;
+
 });

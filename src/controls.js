@@ -1,5 +1,6 @@
 import {entries} from './util';
 import platform from 'platform';
+require('./vendor/modernizr-custom');
 
 const qs = document.querySelector.bind(document)
   , scrubberDefaultX = 0;
