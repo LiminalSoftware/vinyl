@@ -335,7 +335,7 @@ canvas {
 .download-page {
     width: 100%;
     height: 100vh;
-    background: #EB2500 url(/build/assets/downloads-bg@2x.png) no-repeat;
+    background: #EB2500 url(/build/assets/downloads-bg.png) no-repeat;
     background-size: cover;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 20px;
