@@ -5,9 +5,7 @@ require('script!./../node_modules/brim/dist/brim.js');
 require('script!./../node_modules/scream/dist/scream.js');
 require('script!./../node_modules/platform/platform.js');
 
-document.addEventListener('DOMContentLoaded', function () {
-
-  require('./style.css');
+function initApp() {
 
   const qs = document.querySelector.bind(document)
     , platter = qs('canvas.platter')
@@ -107,14 +105,11 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
 
-//-- INIT
-  function initApp() {
+  //-- INIT
     //remove hidden from #brim-main
     document.querySelector('#brim-main').classList.remove('hidden');
     draw();
     rotate();
-  }
+}
 
-  window.initApp = initApp;
-
-});
+window.initApp = initApp;

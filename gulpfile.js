@@ -14,7 +14,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('rev', ['clean'], function () {
-  var scripts = gulp.src('./build/bundle.js')
+  var scripts = gulp.src('./build/*.js')
     .pipe(rev())
     .pipe(gulp.dest('./dist/'))
     .pipe(rev.manifest({
