@@ -17,7 +17,7 @@ gulp.task('rev', ['clean'], function () {
   var scripts = gulp.src('./build/*.js')
     .pipe(rev())
     .pipe(gulp.dest('./dist/'))
-    .pipe(rev.manifest({
+    .pipe(rev.manifest('./dist/rev-manifest.json', {
       base : 'dist',
       merge: true
     }))
@@ -27,7 +27,7 @@ gulp.task('rev', ['clean'], function () {
   var assets = gulp.src('./build/assets/**/*')
     .pipe(rev())
     .pipe(gulp.dest('./dist/assets/'))
-    .pipe(rev.manifest({
+    .pipe(rev.manifest('./dist/rev-manifest.json', {
       base : 'dist',
       merge: true
     }))
@@ -37,7 +37,7 @@ gulp.task('rev', ['clean'], function () {
   var mixes = gulp.src('./build/mixes/**/*')
     .pipe(rev())
     .pipe(gulp.dest('./dist/mixes/'))
-    .pipe(rev.manifest({
+    .pipe(rev.manifest('./dist/rev-manifest.json', {
       base : 'dist',
       merge: true
     }))
@@ -47,7 +47,7 @@ gulp.task('rev', ['clean'], function () {
   //-- TODO: remove
   var songs = gulp.src('./build/songs/**/*')
     .pipe(rev())
-    .pipe(rev.manifest({
+    .pipe(rev.manifest('./dist/rev-manifest.json', {
       base : 'dist',
       merge: true
     }))
@@ -61,7 +61,7 @@ gulp.task('rev', ['clean'], function () {
 gulp.task("revreplace", ["rev"], function () {
   var manifest = gulp.src("./dist/rev-manifest.json");
 
-  return gulp.src("./build/index.html")
+  return gulp.src("./build/*.html")
     .pipe(revReplace({manifest: manifest}))
     .pipe(gulp.dest('./dist/'));
 });
