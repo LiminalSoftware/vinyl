@@ -21,12 +21,18 @@
     <title></title>
 
     <script src="style.js" async="true"></script>
-
     <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
         ga('create', 'UA-38562257-2', 'auto');
         ga('send', 'pageview');
@@ -421,14 +427,12 @@
             return Modernizr[feature] === true;
         });
 
-        var msg = "Sorry, you are using an unsupported platform/browser.";
+
+        // The vinyl is not made for this player, use below options to continue.
+
         if (!passed) {
-            var audioNodes = document.querySelectorAll('audio');
-            document.querySelector('#brim-mask').classList.add('hidden');
-            Array.prototype.forEach.call(audioNodes, function (node) {
-                node.parentNode.removeChild(node);
-            });
-            alert(msg);
+            window.location = 'error.html';
+
         } else {
             initApp();
             if (platform.os.family == 'iOS' && parseInt(platform.os.version, 10) > 8 || platform.ua.indexOf('like Mac OS X') != -1) {

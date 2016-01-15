@@ -282,7 +282,7 @@ function showRotationWarning() {
   rotate.className = 'rotate';
   blocker.className = 'rotate-blocker';
   instr.className = 'instructions';
-  instr.textContent = 'Please Rotate the Device';//TODO: translate this to German
+  instr.textContent = 'Dreh das Ger&auml;t';//Please rotate the device
   blocker.appendChild(instr);
   blocker.appendChild(rotate);
   qs('#main').insertBefore(blocker, qs('#header'));
