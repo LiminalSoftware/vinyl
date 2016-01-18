@@ -106,14 +106,6 @@ export default class Controls {
   }
 
   calculateCartridgePosition(touch) {
-    //console.log('last touch:');
-    //console.log(this.lastTouch);
-    //
-    //console.log('\ntouch:');
-    //console.log(touch);
-    //console.log('clientY: ' + touch.clientY);
-    //console.log('offset: ' + this.lastFingerCartridgeOffset);
-    //console.log('defaultY: ' + this.cartridgeDefaultY);
     return (touch || this.lastTouch).clientY - this.lastFingerCartridgeOffset - this.cartridgeDefaultY
   }
 
@@ -170,11 +162,11 @@ function cartridgeTouchStartHandler(e) {
   this.cartridgeFirstTouch = e.touches[0].clientY;
   this.lastFingerCartridgeOffset = getOffsetOfTouchObject(e).yOffset;
 
-  console.log({
-    cartridgeFirstTouch: this.cartridgeFirstTouch,
-    cartridgeY: e.currentTarget.getBoundingClientRect().top,
-    lastFingerCartridgeOffset: this.lastFingerCartridgeOffset
-  });
+  //console.log({
+  //  cartridgeFirstTouch: this.cartridgeFirstTouch,
+  //  cartridgeY: e.currentTarget.getBoundingClientRect().top,
+  //  lastFingerCartridgeOffset: this.lastFingerCartridgeOffset
+  //});
   showInstructions(false);
   pausePlayback(this, true);
 }
@@ -188,8 +180,6 @@ function cartridgeTouchMoveHandler(e) {
     , currentSong
     , direction = (e.touches[0].clientY < this.cartridgeFirstTouch) ? 'UP' : 'DOWN'
     ;
-
-  //console.log('new pos: ' + newPosition);
 
   //CASE we are moving DOWN and we have reached the resting position
   if ((e.currentTarget.getBoundingClientRect().top > this.cartridgeDefaultY) && (direction == 'DOWN')) {
@@ -224,12 +214,9 @@ function cartridgeTouchMoveHandler(e) {
 
   this.cleanUp();
   //TODO: refactor --v
-  console.log('wait for it...');
   if (this.audio.currentSong && validDotIndex != null) {
-    console.log('almost...');
     activateSongDot(validDotIndex);
     if (this.audio.currentSong) {
-      console.log(this.songTitle);
       this.songTitle.textContent = this.audio.currentSong.title;
     }
   }

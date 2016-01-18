@@ -93,7 +93,7 @@ export default class Audio {
   }
 
   preprocessFiles() {
-    console.log('platform', platform.os.family);
+    console.log('platform: ', platform.os.family);
     if (platform.os.family == 'iOS') {
       this.sources.map((s)=> {
         s.play();
@@ -163,6 +163,6 @@ function getSongPositionFromPercentage(percent, song) {
   let newSongPositionInSec = songDurationInSec * percent / 100;
   let formattedString = formatCurrentTime(newSongPositionInSec * 60);
   let value = parseFloat(formattedString);
-  console.log('getSongPositionFromPercentage', value);
+  //console.log('getSongPositionFromPercentage', value);
   return value;
 }
