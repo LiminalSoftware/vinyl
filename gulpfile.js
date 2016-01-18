@@ -3,6 +3,7 @@ var gulp           = require('gulp')
   , rev            = require('gulp-rev')
   , del            = require('del')
   , revReplace     = require('gulp-rev-replace')
+  , vinylPaths     = require('vinyl-paths')
   , gzip           = require('gulp-gzip')
   , s3             = require('../gulp-s3')
   , fs             = require('fs')
@@ -14,7 +15,8 @@ gulp.task('clean', function () {
 });
 
 gulp.task('rev', function () {
-  var scripts = gulp.src('./build/*.js')
+  var scripts = gulp.src('./dist/*.js')
+    .pipe(vinylPaths(del))
     .pipe(rev())
     .pipe(gulp.dest('./dist/'))
     .pipe(rev.manifest('./dist/rev-manifest.json', {

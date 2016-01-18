@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "serve": "webpack-dev-server --content-base build/",
+    "serve:prod": "webpack-dev-server --content-base dist/ --port 8081",
     "watch": "webpack --watch",
     "build": "gulp clean && webpack -p --config webpack-production.config.js && gulp",
     "lint": "npm run lint-js && npm run lint-css",
@@ -49,6 +50,7 @@
     "script-loader": "^0.6.1",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
+    "vinyl-paths": "^2.1.0",
     "wallaby-webpack": "0.0.11",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
