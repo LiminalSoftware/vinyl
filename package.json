@@ -8,6 +8,7 @@
     "serve:prod": "webpack-dev-server --content-base dist/ --port 8081",
     "watch": "webpack --watch",
     "build": "gulp clean && webpack -p --config webpack-production.config.js && gulp",
+    "build:staging": "gulp clean && webpack --config webpack-production.config.js && gulp",
     "lint": "npm run lint-js && npm run lint-css",
     "lint-js": "eslint . --ext .js --ext .jsx",
     "lint-css": "csslint build/styles.css --quiet",
