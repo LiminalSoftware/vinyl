@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "webpack-dev-server --content-base build/",
-    "build": "webpack --watch",
+    "serve": "webpack-dev-server --content-base build/",
+    "watch": "webpack --watch",
+    "build": "gulp clean && webpack -p --config webpack-production.config.js && gulp",
     "lint": "npm run lint-js && npm run lint-css",
     "lint-js": "eslint . --ext .js --ext .jsx",
     "lint-css": "csslint build/styles.css --quiet",

@@ -13,7 +13,7 @@ gulp.task('clean', function () {
   return del('./dist/')
 });
 
-gulp.task('rev', ['clean'], function () {
+gulp.task('rev', function () {
   var scripts = gulp.src('./build/*.js')
     .pipe(rev())
     .pipe(gulp.dest('./dist/'))
