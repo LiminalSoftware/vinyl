@@ -99,6 +99,14 @@ export default class Controls {
   }
 
   calculateCartridgePosition(touch) {
+    //console.log('last touch:');
+    //console.log(this.lastTouch);
+    //
+    //console.log('\ntouch:');
+    //console.log(touch);
+    //console.log('clientY: ' + touch.clientY);
+    //console.log('offset: ' + this.lastFingerCartridgeOffset);
+    //console.log('defaultY: ' + this.cartridgeDefaultY);
     return (touch || this.lastTouch).clientY - this.lastFingerCartridgeOffset - this.cartridgeDefaultY
   }
 
@@ -173,6 +181,8 @@ function cartridgeTouchMoveHandler(e) {
     , currentSong
     , direction = (e.touches[0].clientY < this.cartridgeFirstTouch) ? 'UP' : 'DOWN'
     ;
+
+  //console.log('new pos: ' + newPosition);
 
   //CASE we are moving DOWN and we have reached the resting position
   if ((e.currentTarget.offsetTop > this.cartridgeDefaultY) && (direction == 'DOWN')) {
@@ -328,8 +338,9 @@ function showInstructions(show) {
 }
 
 function getOffsetOfTouchObject(e) {
-  let yOffset = e.touches[0].clientY - e.currentTarget.offsetTop;
-  let xOffset = e.touches[0].clientX - e.currentTarget.offsetLeft;
+  let boundingRect = e.currentTarget.getBoundingClientRect();
+  let yOffset = e.touches[0].clientY - boundingRect.top;
+  let xOffset = e.touches[0].clientX - boundingRect.left;
   return {xOffset, yOffset};
 }
 
