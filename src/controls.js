@@ -79,10 +79,10 @@ export default class Controls {
   cartridgePlaced(position) {
     this.tonearm.classList.remove('up');
     cartridgeUp = false;
-    let offsetTop = qs('.tonearm').offsetTop;
+    let offsetTop = qs('.tonearm').getBoundingClientRect().top;
     if (offsetTop > this.cartridgeYStart && this.audio.currentSong) {
       this.playhead.classList.remove('invisible');
-      this.totalTimeSpan.innerText = this.audio.songList[this.audio.currentSong.index].duration;
+      this.totalTimeSpan.textContent = this.audio.songList[this.audio.currentSong.index].duration;
       this.audio.playSong();
       this.playButton.classList.add('bounce-up-show');
       resetPlayPauseButton(this);
@@ -117,9 +117,9 @@ export default class Controls {
   }
 
   cleanUp() {
-    this.currentTimeSpan.innerText = '';
-    this.totalTimeSpan.innerText = '';
-    this.songTitle.innerText = '';
+    this.currentTimeSpan.textContent = '';
+    this.totalTimeSpan.textContent = '';
+    this.songTitle.textContent = '';
     deactivateDots();
   }
 }
@@ -165,7 +165,7 @@ function cartridgeTouchStartHandler(e) {
 
   console.log({
     cartridgeFirstTouch: this.cartridgeFirstTouch,
-    cartridgeY: e.currentTarget.offsetTop,
+    cartridgeY: e.currentTarget.getBoundingClientRect().top,
     lastFingerCartridgeOffset: this.lastFingerCartridgeOffset
   });
   showInstructions(false);
@@ -185,7 +185,7 @@ function cartridgeTouchMoveHandler(e) {
   //console.log('new pos: ' + newPosition);
 
   //CASE we are moving DOWN and we have reached the resting position
-  if ((e.currentTarget.offsetTop > this.cartridgeDefaultY) && (direction == 'DOWN')) {
+  if ((e.currentTarget.getBoundingClientRect().top > this.cartridgeDefaultY) && (direction == 'DOWN')) {
     this.cleanUp();
     showInstructions(true);
     this.playButton.classList.remove('bounce-up-show');
@@ -217,16 +217,19 @@ function cartridgeTouchMoveHandler(e) {
 
   this.cleanUp();
   //TODO: refactor --v
+  console.log('wait for it...');
   if (this.audio.currentSong && validDotIndex != null) {
+    console.log('almost...');
     activateSongDot(validDotIndex);
     if (this.audio.currentSong) {
-      this.songTitle.innerText = this.audio.currentSong.title;
+      console.log(this.songTitle);
+      this.songTitle.textContent = this.audio.currentSong.title;
     }
   }
 }
 
 function cartridgeTouchEndHandler(e) {
-  let currentCartridgePosY = e.changedTouches[0].clientY - e.currentTarget.offsetTop;
+  let currentCartridgePosY = e.changedTouches[0].clientY - e.currentTarget.getBoundingClientRect().top;
   this.cartridgePlaced(currentCartridgePosY);
 }
 
@@ -270,7 +273,7 @@ function songEndHandler(e) {
     this.tonearm.style.marginTop = (parseInt(this.tonearm.style.marginTop, 10) - 25) + 'px';
     deactivateDots();
     activateSongDot(index + 1);
-    this.totalTimeSpan.innerText = this.audio.songList[index + 1].duration;
+    this.totalTimeSpan.textContent = this.audio.songList[index + 1].duration;
     this.audio.playSong(index + 1)
   }
 }

@@ -40,7 +40,7 @@ export default class Audio {
 
     this.timer = setInterval(()=> {
       let cTime = this.sources[this.currentSong.index].currentTime;
-      currentTimeSpan.innerText = formatCurrentTime(cTime);
+      currentTimeSpan.textContent = formatCurrentTime(cTime);
       let percentage = ((cTime * 1000) / this.currentSong.durationInMillisec) * 100;
 
       //TODO: this is a `control` concern
@@ -137,7 +137,7 @@ function buildDotSongLookup({cartridgeYStart, dotStep, songList, that}) {
 }
 
 function setSongTitle(title) {
-  document.querySelector('.song-title').innerText = title;
+  document.querySelector('.song-title').textContent = title;
 }
 
 function formatCurrentTime(val) {
