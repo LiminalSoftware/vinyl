@@ -195,7 +195,7 @@ function cartridgeTouchMoveHandler(e) {
     if (validDotIndex !== null) {
       this.audio.currentSong = this.audio.selectSong(validDotIndex);
     }
-    this.tonearm.style.marginTop = newPosition + 'px';
+    this.tonearm.style.transform = 'translateY(' + newPosition + 'px' + ')';
     this.lastTouch = e.touches[0];
 
   } else if (lowerLimit < newPosition) {
@@ -204,7 +204,7 @@ function cartridgeTouchMoveHandler(e) {
     if (validDotIndex !== null) {
       this.audio.currentSong = this.audio.selectSong(validDotIndex);
     }
-    this.tonearm.style.marginTop = lowerLimit + 'px';
+    this.tonearm.style.transform = 'translateY(' + lowerLimit + 'px' + ')';
 
   } else if (newPosition < upperLimit) {
     showInstructions(false);
@@ -212,7 +212,7 @@ function cartridgeTouchMoveHandler(e) {
     if (validDotIndex !== null) {
       this.audio.currentSong = this.audio.selectSong(validDotIndex);
     }
-    this.tonearm.style.marginTop = upperLimit + 'px';
+    this.tonearm.style.transform = 'translateY(' + upperLimit + 'px' + ')';
   }
 
   this.cleanUp();
@@ -270,7 +270,7 @@ function songEndHandler(e) {
      get the next song target
      move the cartridge up by a predetermined amount (i.e., the space between dots 25px)
      */
-    this.tonearm.style.marginTop = (parseInt(this.tonearm.style.marginTop, 10) - 25) + 'px';
+    this.tonearm.style.transform = (parseInt(this.tonearm.style.transform.match(/translateY\((\d+)\)/)[1], 10) - 25) + 'px';
     deactivateDots();
     activateSongDot(index + 1);
     this.totalTimeSpan.textContent = this.audio.songList[index + 1].duration;
