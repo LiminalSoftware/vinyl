@@ -7,6 +7,7 @@ var gulp           = require('gulp')
   , gzip           = require('gulp-gzip')
   , s3             = require('../gulp-s3')
   , fs             = require('fs')
+  , mirror         = require('gulp-mirror')
   , awsCredentials = JSON.parse(fs.readFileSync('./.aws.json'))
   ;
 
@@ -19,53 +20,60 @@ gulp.task('rev', function () {
     .pipe(vinylPaths(del))
     .pipe(rev())
     .pipe(gulp.dest('./dist/'))
-    .pipe(rev.manifest('./dist/rev-manifest.json', {
-      base : 'dist',
-      merge: true
-    }))
+    .pipe(mirror(
+      rev.manifest('./dist/rev-index-manifest.json', {
+        base : 'dist', merge: true
+      }),
+      rev.manifest('./dist/rev-other-manifest.json', {
+        base : 'dist', merge: true
+      })
+    ))
     .pipe(gulp.dest('./dist/'))
     ;
 
   var assets = gulp.src('./build/assets/**/*')
     .pipe(rev())
     .pipe(gulp.dest('./dist/assets/'))
-    .pipe(rev.manifest('./dist/rev-manifest.json', {
-      base : 'dist',
-      merge: true
-    }))
+    .pipe(mirror(
+      rev.manifest('./dist/rev-index-manifest.json', {
+        base : 'dist', merge: true
+      }),
+      rev.manifest('./dist/rev-other-manifest.json', {
+        base : 'dist', merge: true
+      })
+    ))
     .pipe(gulp.dest('./dist/'))
     ;
 
   var mixes = gulp.src('./build/mixes/**/*')
     .pipe(rev())
     .pipe(gulp.dest('./dist/mixes/'))
-    .pipe(rev.manifest('./dist/rev-manifest.json', {
-      base : 'dist',
-      merge: true
+    .pipe(rev.manifest('./dist/rev-index-manifest.json', {
+      base : 'dist', merge: true
     }))
     .pipe(gulp.dest('./dist/'))
     ;
 
-  //-- TODO: remove
-  var songs = gulp.src('./build/songs/**/*')
-    .pipe(rev())
-    .pipe(rev.manifest('./dist/rev-manifest.json', {
-      base : 'dist',
-      merge: true
-    }))
-    .pipe(gulp.dest('./dist/songs/'))
-    ;
-  //-- END TODO
-
-  return merge(scripts, assets, songs, mixes);
+  return merge(scripts, assets, mixes);
 });
 
 gulp.task("revreplace", ["rev"], function () {
-  var manifest = gulp.src("./dist/rev-manifest.json");
+  var indexManifest = gulp.src("./dist/rev-index-manifest.json")
+    , otherManifest = gulp.src('./dist/rev-other-manifest.json')
+    ;
 
-  return gulp.src("./build/*.html")
-    .pipe(revReplace({manifest: manifest}))
+  var index = gulp.src('./build/index.html')
+    .pipe(revReplace({manifest: indexManifest}))
     .pipe(gulp.dest('./dist/'));
+
+  var other = gulp.src([
+      './build/download.html',
+      './build/error.html'
+    ])
+    .pipe(revReplace({manifest: otherManifest}))
+    .pipe(gulp.dest('./dist/'));
+
+  return merge(index, other);
 });
 
 gulp.task('watch', function () {
