@@ -193,6 +193,7 @@ function cartridgeTouchMoveHandler(e) {
       this.audio.currentSong = this.audio.selectSong(validDotIndex);
     }
     this.tonearm.style.transform = 'translateY(' + newPosition + 'px' + ')';
+    this.tonearm.style['-webkit-transform'] = 'translateY(' + newPosition + 'px' + ')';
     this.lastTouch = e.touches[0];
 
   } else if (lowerLimit < newPosition) {
@@ -202,6 +203,7 @@ function cartridgeTouchMoveHandler(e) {
       this.audio.currentSong = this.audio.selectSong(validDotIndex);
     }
     this.tonearm.style.transform = 'translateY(' + lowerLimit + 'px' + ')';
+    this.tonearm.style['-webkit-transform'] = 'translateY(' + lowerLimit + 'px' + ')';
 
   } else if (newPosition < upperLimit) {
     showInstructions(false);
@@ -210,6 +212,7 @@ function cartridgeTouchMoveHandler(e) {
       this.audio.currentSong = this.audio.selectSong(validDotIndex);
     }
     this.tonearm.style.transform = 'translateY(' + upperLimit + 'px' + ')';
+    this.tonearm.style['-webkit-transform'] = 'translateY(' + upperLimit + 'px' + ')';
   }
 
   this.cleanUp();
@@ -264,7 +267,14 @@ function songEndHandler(e) {
      get the next song target
      move the cartridge up by a predetermined amount (i.e., the space between dots 25px)
      */
-    this.tonearm.style.transform = (parseInt(this.tonearm.style.transform.match(/translateY\((\d+)\)/)[1], 10) - 25) + 'px';
+    let style = this.tonearm.style
+      , transform  = typeof(style.transform) === 'undefined' ? style['-webkit-transform'] : style.transform
+      , matches    = transform.match(/translateY\((\d+)\)/)
+      , translateY = matches && matches[1]
+      ;
+
+    this.tonearm.style.transform = 'translateY(' + (parseInt(translateY, 10) - 25) + 'px)';
+    this.tonearm.style['-webkit-transform'] = 'translateY(' + (parseInt(translateY, 10) - 25) + 'px)';
     deactivateDots();
     activateSongDot(index + 1);
     this.totalTimeSpan.textContent = this.audio.songList[index + 1].duration;
