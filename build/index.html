@@ -681,7 +681,14 @@
 
     } else {
       initApp();
-      if (platform.name == 'Safari' && platform.os.family == 'iOS' && parseInt(platform.os.version, 10) > 8 || platform.ua.indexOf('like Mac OS X') != -1) {
+
+      var excludeByUAStrings = function(UAs){
+        return UAs.every(function(UA){
+          return platform.ua.indexOf(UA) === -1;
+        })
+      };
+
+      if (platform.os.family == 'iOS' && parseInt(platform.os.version, 10) > 8 || (platform.ua.indexOf('like Mac OS X') != -1 && excludeByUAStrings(['CriOS', 'FxiOS']))) {
         scream = gajus.Scream({
           width: {
             portrait : 320,
