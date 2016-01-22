@@ -1,3 +1,4 @@
+import './polyfil'
 import Controls from './controls';
 import Audio from './audio';
 
